@@ -1,0 +1,62 @@
+<div class="py-4 px-8	lg:container flex justify-between items-center">
+  <img src="{{ section.settings.logo }}" class="w-42"/>
+
+  <div>
+      {% if section.settings.menu %}
+        <nav>
+          {% set menu_items=menuitems.filter(menu__handle=section.settings.menu) %}
+
+          {% for item in menu_items %}
+            <a class="ml-4 font-bold" href="{% nav item %}">
+              {{ item.label}}
+            </a>
+          {% endfor %}
+        </nav>
+    {% endif %}
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name":"Header",
+  "limit":1,
+  "settings":[
+    {
+      "id":"logo",
+      "type":"image_picker",
+      "label":"Logo image"
+    },
+    {
+      "id":"logo",
+      "type":"select",
+      "label":"Logo Position",
+      "options":[
+        {
+          "value":"left",
+          "label":"Left"
+        },
+        {
+          "value":"center",
+          "label":"Centered"
+        }
+      ],
+      "default":"center"
+    }
+  ],
+  "presets":{
+    "settings":{
+      "logo":"https://preview.colorlib.com/theme/chariter/assets/img/logo/logo.png.webp",
+      "menu": "main-menu"
+    }
+  },
+  "locales":{
+    "en":{
+      "title":"Header"
+    },
+    "it":{
+      "title":"Header"
+    }
+  }
+}
+{% endschema %}

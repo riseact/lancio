@@ -1,0 +1,21 @@
+{
+    "current": {
+        "primary_color": "#C30047",
+        "sections": {
+            "banner": {
+                "type": "banner",
+                "settings": {
+                }
+            },
+            "header": {
+                "type": "header",
+                "settings": {}
+            }
+        }
+    },
+    "presets": {
+        "Default": {
+            "sections": {}
+        }
+    }
+}

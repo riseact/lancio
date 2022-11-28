@@ -1,0 +1,87 @@
+{
+  "name": "homepage",
+  "sections": {
+    "hero": {
+      "type": "image_banner",
+      "settings": {
+        "title": "Support a causes you care about",
+        "subtitle": "Sedac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor etiam lacus eros",
+        "image": "https://preview.colorlib.com/theme/chariter/assets/img/hero/h1_hero2.jpg.webp",
+        "button_label": "Dona ora",
+        "button_link": "http://text.com"
+      }
+    },
+    "who_we_are": {
+      "type": "image_text",
+      "settings": {
+        "title": "Who we are?",
+        "content": "The legal definition of a charitable organization (and of charity) varies between countries and in some instances regions of the country. The regulation, the tax treatment, and the way in which charity lawaffects charitable organizations also vary.",
+        "button_label": "Scopri di più",
+        "button_link": "http://text.com"
+      }
+    },
+    "we_serve_people": {
+      "type": "multicolumn",
+      "settings": {
+        "title": "We serve for peoples",
+        "subtitle": "Sedac odio aliquet, fringilla odio eget, tincidunt nunc duis aliquet pulvinar ante."
+      },
+      "blocks": {
+        "column1": {
+          "type": "column",
+          "settings": {
+            "title": "Pure Food & Water",
+            "image": "https://preview.colorlib.com/theme/chariter/assets/img/icon/services2.svg",
+            "content": "Odio aliquet, fringilla odio eget, tincidunt nunc duis aliquet pulvinar ante employeesand organizations to support."
+          }
+        },
+        "column2": {
+          "type": "column",
+          "settings": {
+            "title": "Health & Medicine",
+            "image": "https://preview.colorlib.com/theme/chariter/assets/img/icon/services2.svg",
+            "content": "Odio aliquet, fringilla odio eget, tincidunt nunc duis aliquet pulvinar ante employeesand organizations to support."
+          }
+        },
+        "column4": {
+          "type": "column",
+          "settings": {
+            "title": "Education",
+            "image": "https://preview.colorlib.com/theme/chariter/assets/img/icon/services2.svg",
+            "content": "Odio aliquet, fringilla odio eget, tincidunt nunc duis aliquet pulvinar ante employeesand organizations to support."
+          }
+        }
+      },
+      "block_order": ["column1", "column2", "column4"]
+    },
+    "they_need_you": {
+      "type": "image_banner",
+      "settings": {
+        "title": "They Need Your Help",
+        "subtitle": "Sedac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor etiam lacus eros",
+        "image": "https://preview.colorlib.com/theme/chariter/assets/img/gallery/section-bg2.jpg.webp",
+        "button_label": "Dona ora",
+        "button_link": "http://text.com",
+        "with_background": true,
+        "text_align": "justify-end"
+      }
+    },
+    "join_us": {
+      "type": "image_text",
+      "settings": {
+        "title": "Join Us",
+        "image_position": "right",
+        "content": "The legal definition of a charitable organization (and of charity) varies between countries and in some instances regions of the country. The regulation, the tax treatment, and the way in which charity lawaffects charitable organizations also vary.",
+        "button_label": "Scopri di più",
+        "button_link": "http://text.com"
+      }
+    }
+  },
+  "order": [
+    "hero", 
+    "who_we_are", 
+    "we_serve_people", 
+    "they_need_you", 
+    "join_us"
+  ]
+}

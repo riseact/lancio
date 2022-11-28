@@ -1,0 +1,71 @@
+<div class="container py-20">
+  <h1 class="text-center text-4xl font-bold">{{ section.settings.title }}</h1>
+  <p class="text-center text-xl mt-4 text-gray-500">{{ section.settings.subtitle }}</p>
+  <div class="flex mt-20">
+    {% for b in section.block_order %}
+      {% with b=section.blocks[b] %}
+        <div class="flex-1 text-center mx-4">
+          {% if b.settings.image %}
+            <img src="{{ b.settings.image}} " alt="{{ b.settings.title }}" class="mx-auto"/>
+          {% endif %}
+          <h2 class="text-2xl font-bold my-5">{{ b.settings.title }}</h2>
+          <p class="text-gray-500">{{ b.settings.content }}</p>
+        </div>
+      {% endwith %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Multicolumns",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    }
+  ],
+  "blocks": [
+     {
+       "name": "Column",
+       "type": "column",
+       "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+            
+          },
+          {
+            "type": "textarea",
+            "id": "content",
+            "label": "Content"
+          }
+       ]
+     }
+  ],
+  "max_blocks": 6,
+  "presets": {
+    "settings": {
+      "title": "Example Title",
+      "subtitle": "Example subtitle text"
+    },
+    "blocks": []
+  },
+  "locales": {},
+  "templates": ["campaign"]
+}
+{% endschema %}
+

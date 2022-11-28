@@ -1,0 +1,37 @@
+{% if section.settings.visible %}
+    <div class="py-2 text-center bg-[color:var(--primary-color)]">
+        {{ section.settings.message}}
+    </div>
+{% endif %}
+
+{% schema %}
+{
+  "name":"Banner",
+  "limit":1,
+  "settings":[
+    {
+      "id":"message",
+      "type":"text",
+      "label":"Message"
+    },
+    {
+      "id":"visible",
+      "type":"checkbox",
+      "label":"Visible"
+    }
+  ],
+  "presets":{
+    "settings":{
+      "message": "Welcome to our site"
+    }
+  },
+  "locales":{
+    "en":{
+      "title":"Banner"
+    },
+    "it":{
+      "title":"Banner"
+    }
+  }
+}
+{% endschema %}

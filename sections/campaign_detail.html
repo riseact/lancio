@@ -1,0 +1,17 @@
+
+<div class="container mx-aut">
+  <h1 class="font-extrabold text-6xl">{{campaign.name}}</h1>
+  <div class="mt-10 text-xl font-light leading-10" >
+    {{campaign.description}}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Campaign Details",
+  "limit": 1,
+  "settings": [],
+  "locales": {},
+  "templates": ["campaign"]
+}
+{% endschema %}

@@ -1,0 +1,101 @@
+<div class="w-full h-[24rem] md:h-[48rem] bg-[url('{{ section.settings.image }}')] bg-cover bg-center flex justify-center md:justify-start items-center">
+  <div class="flex {{ section.settings.text_align }} lg:container " >
+    <div class="w-1/2 text-center lg:text-left mx-auto lg:mx-0 p-20 rounded-xl {{ 'bg-white' if section.settings.with_background else 'bg-transparent' }}">
+      <h1 class="text-center lg:text-left text-3xl lg:text-5xl {{ 'text-black' if section.settings.with_background else 'text-white' }} font-bold drop-shadow-lg">{{ section.settings.title }}</h1>
+      <p class="mt-5 text-center lg:text-left text-lg lg:text-2xl {{ 'text-black' if section.settings.with_background else 'text-white' }} opacity-70">{{ section.settings.subtitle }}</p>
+
+      {% if section.settings.button_label and section.settings.button_link %}
+          <a class="inline-block mt-8 px-12 py-3 text-lg font-semibold bg-[color:var(--primary-color)] rounded-full" href="{{ section.settings.button_link }}">
+            <span class="text-white">{{ section.settings.button_label }}</span>
+          </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Image Banner",
+  "limit": 1,
+  "settings": [
+    {
+      "id": "title",
+      "type": "text",
+      "label": "Title"
+    },
+    {
+      "id": "subtitle",
+      "type": "text",
+      "label": "Sub title"
+    },
+    {
+      "id": "text_align",
+      "type": "select",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "justify-start",
+          "label": "Left"
+        },
+        {
+          "value": "justify-center",
+          "label": "Center"
+        },
+        {
+          "value": "justify-end",
+          "label": "Right"
+        }
+      ],
+      "default": "start"
+    },
+    {
+      "id": "image",
+      "type": "image_picker",
+      "label": "Cover Image"
+    },
+    {
+      "id": "with_background",
+      "type": "checkbox",
+      "label": "Has background"
+    },
+    {
+      "id": "button_label",
+      "type": "text",
+      "label": "Button Label"
+    },
+    {
+      "id": "button_link",
+      "type": "text",
+      "label": "Button Link"
+    },
+    {
+      "id": "background_color",
+      "type": "text",
+      "label": "Background Color"
+    }
+
+  ],
+  "max_blocks": 0,
+  "blocks": [],
+  "presets": {
+    "settings": {
+      "title": "Hello world",
+      "content": "I'm an example text",
+      "text_align": "justify-end",
+      "image": "https://preview.colorlib.com/theme/chariter/assets/img/hero/h1_hero1.jpg"
+    },
+    "blocks": []
+  },
+  "locales": {
+    "en": {
+      "title": "Slideshow"
+    },
+    "fr": {
+      "title": "Diaporama"
+    }
+  },
+  "templates": ["article", "homepage", "page", "product"]
+}
+{% endschema %}
+

@@ -1,0 +1,100 @@
+<div class="bg-red-50 py-10">
+    <div class="container flex flex-col md:flex-row items-center">
+        {% if section.settings.image_position == "left" %}
+          <div class="w-full md:w-1/2 py-10 flex justify-center items-center">
+              <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="rounded-lg h-[28rem] object-cover"/>
+          </div>
+        {% endif %}
+
+        <div class="w-full md:w-1/2 flex justify-center items-center ">
+            <div class="md:px-20">
+                <h1 class="text-2xl lg:text-4xl font-bold">{{ section.settings.title }}</h1>
+                <p class="mt-5 text-lg lg:text-lg text-black opacity-70">{{ section.settings.content }}</p>
+
+                {% if section.settings.button_label and section.settings.button_link %}
+                    <a class="inline-block mt-8 px-12 py-3 text-lg font-semibold bg-[color:var(--primary-color)] rounded-full" href="{{ section.settings.button_link }}">
+                        <span class="text-white">{{ section.settings.button_label }}</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if section.settings.image_position == "right" %}
+          <div class="w-full md:w-1/2 py-10 flex justify-center items-center">
+              <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="rounded-lg h-[28rem] object-cover"/>
+          </div>
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "limit": 1,
+  "settings": [
+    {
+      "id": "title",
+      "type": "text",
+      "label": "Title"
+    },
+    {
+      "id": "content",
+      "type": "text",
+      "label": "Content"
+    },
+    {
+      "id": "image",
+      "type": "image_picker",
+      "label": "Cover Image"
+    },
+    {
+      "id": "image_position",
+      "type": "select",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "id": "button_label",
+      "type": "text",
+      "label": "Button Label"
+    },
+    {
+      "id": "button_link",
+      "type": "text",
+      "label": "Button Link"
+    }
+
+  ],
+  "max_blocks": 0,
+  "blocks": [],
+  "presets": {
+    "settings": {
+      "title": "Hello world",
+      "content": "I'm an example text",
+      "image_position": "left",
+      "image": "https://preview.colorlib.com/theme/chariter/assets/img/hero/h1_hero1.jpg"
+    },
+    "blocks": []
+  },
+  "locales": {
+    "en": {
+      "title": "Slideshow"
+    },
+    "fr": {
+      "title": "Diaporama"
+    }
+  },
+  "templates": ["article", "homepage", "page", "product"]
+}
+{% endschema %}
+
