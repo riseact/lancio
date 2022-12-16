@@ -1,11 +1,23 @@
-<div class="w-full h-[24rem] md:h-[48rem] bg-[url('{{ section.settings.image }}')] bg-cover bg-center flex justify-center md:justify-start items-center">
+<div class="w-full h-[24rem] md:h-[48rem] bg-cover bg-center flex justify-center md:justify-start items-center"
+  style="background-image:url('{{ section.settings.image }}')">
   <div class="flex {{ section.settings.text_align }} lg:container " >
-    <div class="w-1/2 text-center lg:text-left mx-auto lg:mx-0 p-20 rounded-xl {{ 'bg-white' if section.settings.with_background else 'bg-transparent' }}">
-      <h1 class="text-center lg:text-left text-3xl lg:text-5xl {{ 'text-black' if section.settings.with_background else 'text-white' }} font-bold drop-shadow-lg">{{ section.settings.title }}</h1>
-      <p class="mt-5 text-center lg:text-left text-lg lg:text-2xl {{ 'text-black' if section.settings.with_background else 'text-white' }} opacity-70">{{ section.settings.subtitle }}</p>
+    <div class="w-4/5 md:w-1/2 text-center lg:text-left mx-auto lg:mx-0 p-5 md:p-20 rounded-xl"
+        style="background-color: {{ section.settings.background_color or '#FFF' if section.settings.with_background else 'transparent' }}">
+      <h1 class="
+        text-center 
+        lg:text-left 
+        text-2xl 
+        lg:text-5xl 
+        font-bold 
+        {{ 'text-black' if section.settings.with_background else 'text-white' }} 
+        drop-shadow-lg">
+        {{ section.settings.title }}
+      </h1>
+
+      <p class="mt-5 text-center lg:text-left md:text-lg text-sm lg:text-2xl {{ 'text-black' if section.settings.with_background else 'text-white' }} opacity-70">{{ section.settings.subtitle }}</p>
 
       {% if section.settings.button_label and section.settings.button_link %}
-          <a class="inline-block mt-8 px-12 py-3 text-lg font-semibold bg-[color:var(--primary-color)] rounded-full" href="{{ section.settings.button_link }}">
+          <a class="inline-block mt-8 btn-primary">
             <span class="text-white">{{ section.settings.button_label }}</span>
           </a>
       {% endif %}
@@ -13,16 +25,29 @@
   </div>
 </div>
 
-
 {% schema %}
 {
   "name": "Image Banner",
-  "limit": 1,
   "settings": [
+    {
+      "id": "image",
+      "type": "image_picker",
+      "label": "Cover Image"
+    },
     {
       "id": "title",
       "type": "text",
       "label": "Title"
+    },
+    {
+      "id": "other_title",
+      "type": "text",
+      "label": "Altro titolo"
+    },
+    {
+      "id": "other_image",
+      "type": "image_picker",
+      "label": "Altra immagine"
     },
     {
       "id": "subtitle",
@@ -50,11 +75,6 @@
       "default": "start"
     },
     {
-      "id": "image",
-      "type": "image_picker",
-      "label": "Cover Image"
-    },
-    {
       "id": "with_background",
       "type": "checkbox",
       "label": "Has background"
@@ -71,7 +91,7 @@
     },
     {
       "id": "background_color",
-      "type": "text",
+      "type": "color_picker",
       "label": "Background Color"
     }
 

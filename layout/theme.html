@@ -6,9 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page_title }}</title>
 
+    {{ content_for_header }}
+
     <style>
         :root {
-            --primary-color: {{ theme.primary_color }};
+            --primary-fg-color: {{ theme.primary_fg_color }};
+            --primary-bg-color: {{ theme.primary_bg_color }};
         }
     </style>
 

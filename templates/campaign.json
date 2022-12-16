@@ -1,23 +1,12 @@
 {
     "name": "campaign",
     "sections": {
-        "sbiridulu_multi": {
-            "type": "multicolumn",
-            "settings": {
-                "title": "Io sono una sezione del template delle campagne"
-            }
-        },
-        "372186-321983721-31827-38721": {
-            "type": "multicolumn"
-        },
         "campaign_detail": {
             "type": "campaign_detail",
             "settings": {}
         }
     },
     "order": [
-        "sbiridulu_multi",
-        "campaign_detail",
-        "372186-321983721-31827-38721"
+        "campaign_detail"
     ]
 }

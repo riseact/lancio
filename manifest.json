@@ -1,8 +1,8 @@
 {
-    "name": "Launch",
-    "slug": "launch",
-    "version": "0.0.1",
-    "author": "Metadonors",
-    "documentation_url": "",
-    "support_url": ""
+  "name": "Launch",
+  "slug": "launch",
+  "version": "0.0.2",
+  "author": "Riseact",
+  "documentation_url": "",
+  "support_url": ""
 }

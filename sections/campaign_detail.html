@@ -1,8 +1,43 @@
 
 <div class="container mx-aut">
-  <h1 class="font-extrabold text-6xl">{{campaign.name}}</h1>
-  <div class="mt-10 text-xl font-light leading-10" >
-    {{campaign.description}}
+  <h1 class="mt-10 mb-10">{{campaign.title}}</h1>
+  <div class="grid grid-cols-7 gap-4">
+    <div class="col-span-5">
+      <img src="{{ campaign.cover.full }}" alt="{{ campaign.title }}" class="object-cover h-96 w-full rounded-lg"/>
+      <div class="mt-10 text-xl font-light leading-10" >
+        {{ campaign.content }}
+      </div>
+    </div>
+    <div class="col-span-2 ">
+      <div class="shadow-md border rounded-lg px-5 py-8 sticky">
+        <div class="flex items-end">
+          <h3 class="text-gray-800  text-2xl">
+            {{ stats.amount }} €
+          </h3>
+          <span class="text-gray-500 ml-2 font-bold text-md">raccolti</span>
+          {% if campaign.goal %}
+            <span class="text-gray-500 ml-2 font-bold text-md">di {{ campaign.goal }} €</span>
+          
+          {% endif %}
+        </div>
+
+        <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 my-4">
+          <div class="bg-[color:var(--primary-bg-color)] h-1.5 rounded-full" style="width: 45%"></div>
+        </div>
+
+        <div class="text-sm text-gray-500">
+          {{ stats.total_donations}} donazioni
+        </div>
+
+        <div class="mt-8">
+          <a class="block btn-primary"
+            href="/campaigns/{{ campaign.slug }}/donate">Dona ora</a>
+
+          <a class="block mt-2 btn-outline"
+            href="">Condividi</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

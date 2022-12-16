@@ -1,5 +1,10 @@
 {
     "name": "article",
-    "sections": {},
-    "order": []
+    "sections": {
+        "article_detail": {
+            "type": "article_detail",
+            "settings": {}
+        }
+    },
+    "order": ["article_detail"]
 }

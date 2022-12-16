@@ -1,12 +1,83 @@
-<div>
-footer
+<style>
+  .footer {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.fg_color }};
+  }
+
+  .footer a {
+    color: {{ section.settings.fg_color }};
+  }
+</style>
+
+<div class="footer">
+  <div class="container py-10">
+     hel
+  </div>
 </div>
 
 {% schema %}
 {
   "name": "Footer",
   "limit": 1,
-  "settings": [],
+  "settings": [
+    {
+      "id":"bg_color",
+      "type":"color_picker",
+      "label":"Background Color",
+      "default": "#212529"
+    },
+    {
+      "id":"fg_color",
+      "type":"color_picker",
+      "label":"Text Color",
+      "default": "#E6DAD8"
+    },
+    {
+      "id":"show_payment_methods",
+      "type":"checkbox",
+      "label":"Show Payment Methods",
+      "default": true
+    }
+    
+  ],
+  "blocks": [
+     {
+       "name": "Links",
+       "type": "links",
+       "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+            
+          },
+          {
+            "id": "menu",
+            "type": "menu_picker",
+            "label": "Menu"
+          }
+       ]
+     },
+     {
+       "name": "Infos",
+       "type": "infos",
+       "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+            
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Text"
+            
+          }
+       ]
+     }
+  ],
+  "max_blocks": 4,
   "locales": {},
   "templates": []
 }

@@ -1,5 +1,6 @@
 {% if section.settings.visible %}
-    <div class="py-2 text-center bg-[color:var(--primary-color)]">
+    <div class="py-2 text-center bg-[color:var(--primary-color)]" 
+         style="background-color: {{ section.settings.bg_color }};color: {{ section.settings.fg_color }}">
         {{ section.settings.message}}
     </div>
 {% endif %}
@@ -7,7 +8,6 @@
 {% schema %}
 {
   "name":"Banner",
-  "limit":1,
   "settings":[
     {
       "id":"message",
@@ -15,16 +15,24 @@
       "label":"Message"
     },
     {
+      "id":"bg_color",
+      "type":"color_picker",
+      "label":"Background Color",
+      "default": "#000000"
+    },
+    {
+      "id":"fg_color",
+      "type":"color_picker",
+      "label":"Text Color",
+      "default": "#FFFFFF"
+    },
+    {
       "id":"visible",
       "type":"checkbox",
-      "label":"Visible"
+      "label":"Visible",
+      "default": false
     }
   ],
-  "presets":{
-    "settings":{
-      "message": "Welcome to our site"
-    }
-  },
   "locales":{
     "en":{
       "title":"Banner"

@@ -1,21 +1,29 @@
 {
-    "current": {
-        "primary_color": "#C30047",
-        "sections": {
-            "banner": {
-                "type": "banner",
-                "settings": {
-                }
-            },
-            "header": {
-                "type": "header",
-                "settings": {}
-            }
-        }
+  "settings": {
+    "primary_fg_color": "#FFFFFF",
+    "primary_bg_color": "#C30047",
+    "page_width": "1600",
+    "social_twitter_link": "",
+    "social_facebook_link": "",
+    "social_pinterest_link": "",
+    "social_instagram_link": "",
+    "social_tiktok_link": "",
+    "social_snapchat_link": "",
+    "social_youtube_link": "",
+    "social_vimeo_link": ""
+  },
+  "sections": {
+    "banner": {
+      "type": "banner",
+      "settings": {}
     },
-    "presets": {
-        "Default": {
-            "sections": {}
-        }
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
     }
+  }
 }

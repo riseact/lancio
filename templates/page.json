@@ -1,5 +1,10 @@
 {
     "name": "page",
-    "sections": {},
-    "order": []
+    "sections": {
+        "page_detail": {
+            "type": "page_detail",
+            "settings": {}
+        }
+    },
+    "order": ["page_detail"]
 }

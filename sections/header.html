@@ -1,34 +1,46 @@
-<div class="py-4 px-8	lg:container flex justify-between items-center">
-  <img src="{{ section.settings.logo }}" class="w-42"/>
-
-  <div>
-      {% if section.settings.menu %}
-        <nav>
-          {% set menu_items=menuitems.filter(menu__handle=section.settings.menu) %}
-
-          {% for item in menu_items %}
-            <a class="ml-4 font-bold" href="{% nav item %}">
-              {{ item.label}}
-            </a>
-          {% endfor %}
-        </nav>
+<div class="border sticky">
+  <div class="py-4 px-8	lg:container flex justify-between items-center">
+    {% if section.settings.logo %}
+      <img src="{{ section.settings.logo }}" style="width: {{ section.settings.logo_width }}px"/>
+    {% else %}
+      {{ organization.name }}
     {% endif %}
-  </div>
+    <div>
+        {% if section.settings.menu %}
+          <nav class="hidden md:block">
+            {% set menu_items=menuitems.filter(menu__handle=section.settings.menu) %}
 
+            {% for item in menu_items %}
+              <a class="ml-4 font-bold" href="{% nav item %}">
+                {{ item.label}}
+              </a>
+            {% endfor %}
+          </nav>
+      {% endif %}
+    </div>
+
+  </div>
 </div>
 
 {% schema %}
 {
   "name":"Header",
-  "limit":1,
-  "settings":[
+  "settings": [
     {
       "id":"logo",
       "type":"image_picker",
       "label":"Logo image"
     },
     {
-      "id":"logo",
+      "id":"logo_width",
+      "type":"slider",
+      "label":"Logo width",
+      "min": 50,
+      "max": 250,
+      "default": 100
+    },
+    {
+      "id":"position",
       "type":"select",
       "label":"Logo Position",
       "options":[
@@ -40,16 +52,15 @@
           "value":"center",
           "label":"Centered"
         }
-      ],
-      "default":"center"
+      ]
+    },
+    {
+      "id": "menu",
+      "type": "menu_picker",
+      "label": "Main navigation",
+      "default": "main-menu"
     }
   ],
-  "presets":{
-    "settings":{
-      "logo":"https://preview.colorlib.com/theme/chariter/assets/img/logo/logo.png.webp",
-      "menu": "main-menu"
-    }
-  },
   "locales":{
     "en":{
       "title":"Header"

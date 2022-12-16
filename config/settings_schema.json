@@ -1,11 +1,94 @@
 [
   {
-    "name": "theme_info",
-    "theme_name": "Launch (dev)",
-    "theme_slug": "launch",
-    "theme_author": "Metadonors",
-    "theme_version": "0.0.1",
-    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes/os20/themes-by-shopify/dawn",
-    "theme_support_url": "https://support.shopify.com/"
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Primary colors"
+      },
+      {
+        "type": "color_picker",
+        "id": "primary_fg_color",
+        "label": "Primary foreground color",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color_picker",
+        "id": "primary_bg_color",
+        "label": "Primary background color",
+        "default": "#C30047"
+      }
+    ]
+  },
+  {
+    "name": "Page Layout",
+    "settings": [
+      {
+        "type": "select",
+        "id": "page_width",
+        "options": [
+          {
+            "value": "1200",
+            "label": "Small"
+          },
+          {
+            "value": "1600",
+            "label": "Large"
+          }
+        ],
+        "default": "1600",
+        "label": "Page Width"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social links"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "Tiktok"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat_link",
+        "label": "Snapchat"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "Youtube"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo_link",
+        "label": "Vimeo"
+      }
+    ]
   }
+
 ]

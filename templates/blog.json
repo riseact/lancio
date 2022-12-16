@@ -1,5 +1,10 @@
 {
     "name": "blog",
-    "sections": {},
-    "order": []
+    "sections": {
+        "blog_detail": {
+            "type": "blog_detail",
+            "settings": {}
+        }
+    },
+    "order": ["blog_detail"]
 }

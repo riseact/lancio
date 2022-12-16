@@ -1,0 +1,20 @@
+
+<div class="container mx-aut">
+  <div class="grid grid-cols-3 gap-4">
+    {% for campaign in campaigns.all()[:4] %}
+      {{ campaign.title }}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Campaigns List",
+  "settings": [],
+  "locales": {},
+  "max_blocks": 0,
+  "blocks": [],
+  "presets": {},
+  "templates": ["article", "homepage", "page", "product"]
+}
+{% endschema %}
