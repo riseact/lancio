@@ -13,9 +13,11 @@
                 <div class="text-xs mt-2 mb-2 text-gray-600 uppercase">
                     {{ article.create_date.strftime('%d %B %Y') }}
                 </div>
-                <p class="truncate">
-                    {{ article.content[:250]}}
-                </p>
+                {% if article.content %}
+                  <p class="truncate">
+                      {{ article.content[:250]}}
+                  </p>
+                {% endif %}
             </div>
         </div>
     </a>
