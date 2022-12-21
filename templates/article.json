@@ -1,10 +1,10 @@
 {
     "name": "article",
     "sections": {
-        "article_detail": {
-            "type": "article_detail",
+        "main_article": {
+            "type": "main_article",
             "settings": {}
         }
     },
-    "order": ["article_detail"]
+    "order": ["main_article"]
 }

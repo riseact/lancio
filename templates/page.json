@@ -1,10 +1,10 @@
 {
     "name": "page",
     "sections": {
-        "page_detail": {
-            "type": "page_detail",
+        "main_page": {
+            "type": "main_page",
             "settings": {}
         }
     },
-    "order": ["page_detail"]
+    "order": ["main_page"]
 }

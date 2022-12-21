@@ -1,12 +1,12 @@
 {
     "name": "campaign",
     "sections": {
-        "campaign_detail": {
-            "type": "campaign_detail",
+        "main_campaign": {
+            "type": "main_campaign",
             "settings": {}
         }
     },
     "order": [
-        "campaign_detail"
+        "main_campaign"
     ]
 }
