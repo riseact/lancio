@@ -1,0 +1,10 @@
+{
+    "name": "500",
+    "sections": {
+        "main_500": {
+            "type": "main_500",
+            "settings": {}
+        }
+    },
+    "order": ["main_500"]
+}
