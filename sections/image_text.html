@@ -9,10 +9,10 @@
         <div class="w-full md:w-1/2 flex justify-center items-center ">
             <div class="md:px-20">
                 <h1 class="text-2xl lg:text-4xl font-bold">{{ section.settings.title }}</h1>
-                <p class="mt-5 text-lg lg:text-lg text-black opacity-70">{{ section.settings.content }}</p>
+                <p class="my-10 text-lg lg:text-lg text-black opacity-70">{{ section.settings.content }}</p>
 
                 {% if section.settings.button_label and section.settings.button_link %}
-                    <a class="inline-block mt-8 px-12 py-3 text-lg font-semibold bg-[color:var(--primary-color)] rounded-full" href="{{ section.settings.button_link }}">
+                    <a class="inline-block btn-primary" href="{{ section.settings.button_link }}">
                         <span class="text-white">{{ section.settings.button_label }}</span>
                     </a>
                 {% endif %}

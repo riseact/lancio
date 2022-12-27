@@ -11,7 +11,9 @@
 
 <div class="footer">
   <div class="container py-10">
-     hel
+     {% for b in section.blocks %}
+        {{ b.type }}
+     {% endfor %}
   </div>
 </div>
 
@@ -49,7 +51,6 @@
             "type": "text",
             "id": "title",
             "label": "Title"
-            
           },
           {
             "id": "menu",
@@ -69,14 +70,27 @@
             
           },
           {
-            "type": "text",
+            "type": "textarea",
             "id": "subtitle",
             "label": "Text"
             
           }
        ]
+     },
+     {
+       "name": "Image",
+       "type": "image",
+       "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+            
+          }
+       ]
      }
   ],
+  "block_order": [],
   "max_blocks": 4,
   "locales": {},
   "templates": []

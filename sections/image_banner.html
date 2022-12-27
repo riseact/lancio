@@ -14,10 +14,10 @@
         {{ section.settings.title }}
       </h1>
 
-      <p class="mt-5 text-center lg:text-left md:text-lg text-sm lg:text-2xl {{ 'text-black' if section.settings.with_background else 'text-white' }} opacity-70">{{ section.settings.subtitle }}</p>
+      <p class="my-5 text-center lg:text-left md:text-lg text-sm lg:text-2xl {{ 'text-black' if section.settings.with_background else 'text-white' }} opacity-70">{{ section.settings.subtitle }}</p>
 
       {% if section.settings.button_label and section.settings.button_link %}
-          <a class="inline-block btn-primary">
+          <a class="inline-block btn-primary" href="{{ section.settings.button_link }}">
             <span class="text-white">{{ section.settings.button_label }}</span>
           </a>
       {% endif %}
@@ -86,7 +86,7 @@
     },
     {
       "id": "button_link",
-      "type": "text",
+      "type": "url",
       "label": "Button Link"
     },
     {

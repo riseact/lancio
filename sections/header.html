@@ -1,3 +1,4 @@
+
 <div class="border sticky">
   <div class="py-4 px-8	lg:container flex justify-between items-center">
     {% if section.settings.logo %}
@@ -8,7 +9,7 @@
     <div>
         {% if section.settings.menu %}
           <nav class="hidden md:block">
-            {% set menu_items=menuitems.filter(menu__handle=section.settings.menu) %}
+            {% set menu_items=section.settings.menu.items.all() %}
 
             {% for item in menu_items %}
               <a class="ml-4 font-bold" href="{% nav item %}">

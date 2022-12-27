@@ -1,5 +1,27 @@
-<div class="lg:container " >
-    featured campaign
+<div class="md:container py-20">
+    {% if section.settings.campaign %}
+      {% with campaign=section.settings.campaign %}
+        <div class="grid grid-cols-1 md:grid-cols-2 md:gap-20 ">
+          <div>
+            <img src="{{ campaign.cover.file.url }}" alt="{{ campaign.title }}" class="rounded-lg w-full object-cover"/>
+          </div>
+          <div class="w-full md:w-3/4 py-5">
+            <h2>{{ campaign.title }}</h2>
+            <p class="my-8 text-gray-500 text-lg">
+              {{ campaign.content|striptags|truncate(350)}}
+            </p>
+
+            <div class="mt-10">
+              <a class="btn-outline w-full block mb-4 md:w-auto md:inline-block" href="{{ campaign.url }}">Sopri di più</a>
+              <a class="btn-primary w-full block md:w-auto md:inline-block" href="{{ campaign.url }}/donate">Dona ora</a>
+            </div>  
+          </div>
+          
+        </div>
+      {% endwith %}
+    {% else %}
+      No campaign
+    {% endif %}
 </div>
 
 {% schema %}
@@ -7,7 +29,7 @@
   "name": "Featured Campaign",
   "settings": [
     {
-      "id": "campaign_id",
+      "id": "campaign",
       "type": "campaign_picker",
       "label": "Campaign"
     }
