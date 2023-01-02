@@ -1,0 +1,12 @@
+{
+    "name": "project",
+    "sections": {
+        "main_project": {
+            "type": "main_project",
+            "settings": {}
+        }
+    },
+    "order": [
+        "main_project"
+    ]
+}

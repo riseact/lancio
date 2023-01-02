@@ -1,0 +1,13 @@
+<a href="{{ article.url }}"
+   class="block">
+    <div class="w-full border rounded-lg shadow">
+        <img src="{{ article.cover.file.url }}"
+             class="w-full h-60 object-cover"
+             alt="{{ article.title }}"/>
+        <div class="p-4 bg-gray-100 relative h-60">
+            <h3 class="font-bold text-lg">{{ article.title }}</h3>
+            <p class="text-gray-500 text-sm mt-4">{{ article.content|striptags|truncate(150)}}</p>
+            <div class="uppercase underline font-bold text-xs absolute bottom-5 left-5">scopri di più</div>
+        </div>
+    </div>
+</a>

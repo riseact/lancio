@@ -1,25 +1,36 @@
-<div class="lg:container " >
-    featured page
+<div class="lg:container py-10 px-5 lg:px-0">
+  <div class="flex justify-between">
+    <h2>{{ section.settings.page.title }}</h2>
+    <a href="{{ section.settings.page.url }}"
+       class="uppercase underline font-bold text-xs">Leggi tutto</a>
+  </div>
+ 
+  <p class="my-8 text-gray-500 text-lg w-full lg:w-1/2">
+    {% if section.settings.page.content %}
+      {{ section.settings.page.content|striptags|truncate(350)}}
+    {% else %}
+      Place some example text in your page
+    {% endif %}
+  </p>
 </div>
 
 {% schema %}
-{
+  {
   "name": "Featured Page",
   "settings": [
-    {
-      "id": "page",
-      "type": "page_picker",
-      "label": "Page"
-    }
+  {
+  "id": "page",
+  "type": "page_picker",
+  "label": "Page"
+  }
   ],
   "max_blocks": 0,
   "blocks": [],
   "presets": {
-    "settings": {},
-    "blocks": []
+  "settings": {},
+  "blocks": []
   },
   "locales": {},
   "templates": ["article", "homepage", "page", "product"]
-}
+  }
 {% endschema %}
-

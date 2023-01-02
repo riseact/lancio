@@ -10,10 +10,36 @@
 </style>
 
 <div class="footer">
-  <div class="container py-10">
-     {% for b in section.blocks %}
-        {{ b.type }}
-     {% endfor %}
+  <div class="container pt-20 pb-2">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        {% for key, b in section.blocks.items() %}
+          {% if b.type == "links" %}
+            <div>
+
+              <h5 class="mb-5">{{ b.settings.title }}</h5>
+              {% for item in b.settings.menu.menu_items %}
+                <div class="my-2">
+                  <a class="text-gray-500 font-light" href="{{ item.link }}" class="hover:underline">
+                    {{ item.label}}
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
+          {% elif b.type == "infos" %}
+            <div class="gap-4">
+              <h5>{{ b.settings.title }}<h5>
+              <p class=" font-light">
+                {{ b.settings.subtitle }}
+              </p>
+            </div>
+          {% elif b.type == "image" %}
+            <img src="{{ b.settings.image }}"/>
+          {% endif %}
+        {% endfor %}
+      </div>
+  </div>
+  <div class="py-4 text-center text-sm font-light text-gray-400" style="filter: brightness(1.20);background-color: {{ section.settings.bg_color }};">
+    {{ section.settings.copyright }}
   </div>
 </div>
 
@@ -39,8 +65,12 @@
       "type":"checkbox",
       "label":"Show Payment Methods",
       "default": true
+    },
+    {
+      "id":"copyright",
+      "type":"textarea",
+      "label":"Copyright"
     }
-    
   ],
   "blocks": [
      {
@@ -90,7 +120,6 @@
        ]
      }
   ],
-  "block_order": [],
   "max_blocks": 4,
   "locales": {},
   "templates": []

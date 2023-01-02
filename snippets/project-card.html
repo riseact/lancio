@@ -1,0 +1,21 @@
+<div class="w-full border  shadow bg-gray-50">
+    <a href="{{ project.url }}"
+       class="block w-full">
+        <div class="h-[16rem] w-full">
+            {% if project.cover %}
+                <img src="{{ project.cover.file.url }}"
+                     class="h-full w-full object-cover"
+                     alt="{{ project.title }}"/>
+            {% endif %}
+        </div>
+    </a>
+
+    <div class="p-4 relative border-t">
+        <a href="{{ project.url }}"
+           class="block hover:text-[var(--primary-bg-color)]">
+            <div class="flex items-center justify-between">
+                <h2 class="font-light text-lg">{{ project.title }}</h2>
+            </div>
+        </a>
+    </div>
+</div>

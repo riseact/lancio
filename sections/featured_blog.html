@@ -1,25 +1,46 @@
-<div class="lg:container " >
-    featured blog
+<div class="lg:container py-14 px-5 lg:px-0">
+  <div class="flex justify-between">
+    <h5>{{ section.settings.title }}</h5>
+    <a href="{{ section.settings.blog.url }}"
+       class="uppercase underline font-bold text-xs">Leggi altre storie</a>
+  </div>
+  <h4 class="my-5">{{ section.settings.blog.title }}</h4>
+  <p class="text-gray-500 text-sm md:w-96">{{ section.settings.description }}</p>
+
+  <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    {% for article in section.settings.blog.articles.all() %}
+      {% include "snippets/article-card.html" %}
+    {% endfor %}
+  </div>
 </div>
 
 {% schema %}
-{
+  {
   "name": "Featured Blog",
   "settings": [
-    {
-      "id": "blog",
-      "type": "blog_picker",
-      "label": "Blog"
-    }
+  {
+  "id": "blog",
+  "type": "blog_picker",
+  "label": "Blog"
+  },
+  {
+  "id": "title",
+  "type": "text",
+  "label": "Title"
+  },
+  {
+  "id": "description",
+  "type": "textarea",
+  "label": "Description"
+  }
   ],
   "max_blocks": 0,
   "blocks": [],
   "presets": {
-    "settings": {},
-    "blocks": []
+  "settings": {},
+  "blocks": []
   },
   "locales": {},
   "templates": ["article", "homepage", "page", "product"]
-}
+  }
 {% endschema %}
-

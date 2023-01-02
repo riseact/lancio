@@ -14,11 +14,19 @@
     h4 {
         @apply font-extrabold text-2xl
     }
+
+    h5 {
+      @apply font-extrabold text-lg
+    }
 }
 
 @layer components {
   .btn-primary {
     @apply text-center px-8 md:px-12 py-2 md:py-3 md:text-lg font-semibold text-[var(--primary-fg-color)] bg-[color:var(--primary-bg-color)] rounded-full;
+  }
+
+  .btn-sm {
+    @apply px-4 md:px-8 py-1 md:py-2 md:text-sm
   }
 
   .btn-outline {

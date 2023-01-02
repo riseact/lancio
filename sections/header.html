@@ -1,74 +1,85 @@
 
 <div class="border sticky">
-  <div class="py-4 px-8	lg:container flex justify-between items-center">
-    {% if section.settings.logo %}
-      <img src="{{ section.settings.logo }}" style="width: {{ section.settings.logo_width }}px"/>
-    {% else %}
-      {{ organization.name }}
-    {% endif %}
-    <div>
-        {% if section.settings.menu %}
-          <nav class="hidden md:block">
-            {% set menu_items=section.settings.menu.items.all() %}
-
-            {% for item in menu_items %}
-              <a class="ml-4 font-bold" href="{% nav item %}">
-                {{ item.label}}
-              </a>
-            {% endfor %}
-          </nav>
+  <div class="py-5 px-8	lg:container flex justify-between items-center">
+    <a href="/">
+      {% if section.settings.logo %}
+        <img src="{{ section.settings.logo }}"
+             alt="{{ organization.name }}"
+             style="width: {{ section.settings.logo_width }}px"/>
+      {% else %}
+        {{ organization.name }}
+      {% endif %}
+    </a>
+    <div class="flex items-center">
+      {% if section.settings.menu %}
+        <nav class="hidden md:block">
+          {% for item in section.settings.menu.menu_items %}
+            <a class="ml-8 hover:underline"
+               href="{{ item.link }}">{{ item.label }}</a>
+          {% endfor %}
+        </nav>
+      {% endif %}
+      {% if section.settings.main_campaign %}
+        <a class="inline-block btn-primary btn-sm ml-8"
+           href="/campaigns/{{ section.settings.main_campaign.slug }}/donate">
+          <span class="text-white">Dona ora</span>
+        </a>
       {% endif %}
     </div>
-
   </div>
 </div>
 
 {% schema %}
-{
+  {
   "name":"Header",
   "settings": [
-    {
-      "id":"logo",
-      "type":"image_picker",
-      "label":"Logo image"
-    },
-    {
-      "id":"logo_width",
-      "type":"slider",
-      "label":"Logo width",
-      "min": 50,
-      "max": 250,
-      "default": 100
-    },
-    {
-      "id":"position",
-      "type":"select",
-      "label":"Logo Position",
-      "options":[
-        {
-          "value":"left",
-          "label":"Left"
-        },
-        {
-          "value":"center",
-          "label":"Centered"
-        }
-      ]
-    },
-    {
-      "id": "menu",
-      "type": "menu_picker",
-      "label": "Main navigation",
-      "default": "main-menu"
-    }
+  {
+  "id":"logo",
+  "type":"image_picker",
+  "label":"Logo image"
+  },
+  {
+  "id":"logo_width",
+  "type":"slider",
+  "label":"Logo width",
+  "min": 50,
+  "max": 250,
+  "default": 100
+  },
+  {
+  "id":"position",
+  "type":"select",
+  "label":"Logo Position",
+  "options":[
+  {
+  "value":"left",
+  "label":"Left"
+  },
+  {
+  "value":"center",
+  "label":"Centered"
+  }
+  ]
+  },
+  {
+  "id": "menu",
+  "type": "menu_picker",
+  "label": "Main navigation",
+  "default": "main-menu"
+  },
+  {
+  "id": "main_campaign",
+  "type": "campaign_picker",
+  "label": "Main Campaign"
+  }
   ],
   "locales":{
-    "en":{
-      "title":"Header"
-    },
-    "it":{
-      "title":"Header"
-    }
+  "en":{
+  "title":"Header"
+  },
+  "it":{
+  "title":"Header"
   }
-}
+  }
+  }
 {% endschema %}

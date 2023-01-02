@@ -23,7 +23,9 @@
     },
     "footer": {
       "type": "footer",
-      "settings": {}
+      "settings": {},
+      "blocks": {},
+      "block_order": []
     }
   }
 }
