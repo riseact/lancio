@@ -3,13 +3,10 @@
   {% if article.cover %}
     <img src="{{ article.cover.full }}" alt="{{ article.title }}" class="object-cover h-96 w-full rounded-lg"/>
   {% endif %}
-  <div class="grid grid-cols-7 gap-4">
-    <div class="col-span-1"></div>
-    <div class="col-span-5">
-    <h1 class="mt-10 mb-10">{{article.title}}</h1>
-      <div class="mt-10 text-xl font-light leading-10" >
-        {{ article.content }}
-      </div>
+  <div class="px-5">
+    <h1 class="my-7 md:my-10">{{article.title}}</h1>
+    <div class="text-md md:text-xl font-light leading-10" >
+      {{ article.content }}
     </div>
   </div>
 </div>

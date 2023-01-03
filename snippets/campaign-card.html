@@ -13,16 +13,16 @@
         {% if campaign.content %}
             <p class="text-gray-500 text-sm mt-4">{{ campaign.content|striptags|truncate(150)}}</p>
         {% endif %}
-        <div class="grid grid-cols-3 items-center gap-4 items-center mt-10 absolute bottom-5 left-5 w-full">
+        <div class="grid grid-cols-3 items-center gap-4 items-center mt-10 absolute bottom-5 left-5 right-5">
             <a href="/campaigns/{{ campaign.slug }}/donate"
-               class="btn-primary btn-sm inline-block">Dona</a>
+               class="btn-primary btn-sm block md:inline-block col-span-3 md:col-span-1">Dona</a>
             {% if campaign.goal %}
-                <div class="pl-4">
+                <div class="pl-4 hidden md:block">
                     <div class="text-[var(--primary-bg-color)] font-bold text-lg">{{ campaign.goal }} €</div>
                     <div>Goal</div>
                 </div>
             {% endif %}
-            <div class="pl-4">
+            <div class="pl-4 hidden md:block">
                 <div class="text-[var(--primary-bg-color)] font-bold text-lg">12.000 €</div>
                 <div>Raccolto</div>
             </div>

@@ -5,9 +5,9 @@
   {% with article=blog.articles.first() %}
     <a href="{{ article.url }}"
        class="mb-10 block">
-      <div class="bg-gray-200">
+      <div class="bg-gray-100">
         {% if article.cover %}
-          <img class="w-full h-96 object-cover rounded-lg"
+          <img class="w-full h-96 object-cover"
                src="{{ article.cover.full }}"
                alt="{{ article.title }}"/>
         {% endif %}
@@ -22,24 +22,24 @@
 
   <div class="md:mx-24 lg:mx-48">
     {% for article in blog.articles.all()[1:]  %}
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 mb-10 border md:border-0 rounded-lg">
         <div>
           {% if article.cover %}
             <a href="{{ article.url }}">
-              <img class="w-full h-96 object-cover rounded-lg"
+              <img class="w-full h-48 md:h-96 object-cover rounded-t-lg "
                    src="{{ article.cover.full }}"
                    alt="{{ article.title }}"/>
             </a>
           {% endif %}
         </div>
-        <div class="relative">
-          <div class="text-xs mt-2 mb-2 text-gray-600 uppercase">{{ article.create_date.strftime('%d %B %Y') }}</div>
+        <div class="relative px-5 md:px-0 pb-5 md:pb-0">
+          <div class="text-xs  md:mt-2 mb-2 text-gray-600 uppercase">{{ article.create_date.strftime('%d %B %Y') }}</div>
           <a href="{{ article.url }}">
             <h4 class="mt-5">{{ article.title }}</h4>
           </a>
           {% if article.content %}<p class="truncate">{{ article.content|striptags|truncate(450)}}</p>{% endif %}
 
-          <a class="absolute bottom-10 uppercase text-sm underline font-bold" href="{{ article.url }}">
+          <a class="absolute bottom-10 uppercase text-sm underline font-bold hidden md:block" href="{{ article.url }}">
             Leggi tutta la storia
           </a>
         </div>
