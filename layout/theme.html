@@ -13,15 +13,25 @@
             --primary-fg-color: {{ theme.primary_fg_color }};
             --primary-bg-color: {{ theme.primary_bg_color }};
         }
+
+
+        html {
+            height: 100%
+        }
+        
+        body {
+            min-height: 100%
+        }
     </style>
 
     {% style 'main.css' %}
 </head>
-<body>
+<body class="flex flex-col">
     {% section 'banner' %}
     {% section 'header' %}
-
+    <div class="flex-1">
     {{ content_for_layout }}
+    </div>
     
     {% section 'footer' %}
 </body>
