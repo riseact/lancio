@@ -1,10 +1,12 @@
 <div class="w-full border rounded-lg shadow">
-    <a href="{{ campaign.url }}"
-       class="block">
-        <img src="{{ campaign.cover.file.url }}"
-             class="w-full h-60 object-cover rounded-t-lg"
-             alt="{{ campaign.title }}"/>
-    </a>
+    {% if campaign.cover and campaign.cover.file %}
+        <a href="{{ campaign.url }}"
+        class="block">
+            <img src="{{ campaign.cover.file.url }}"
+                class="w-full h-60 object-cover rounded-t-lg"
+                alt="{{ campaign.title }}"/>
+        </a>
+    {% endif %}
     <div class="p-4  h-60 relative">
         <a href="{{ campaign.url }}"
            class="block hover:text-[var(--primary-bg-color)]">
