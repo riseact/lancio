@@ -1,0 +1,30 @@
+{% if supporter %}
+<div id="avatarButton" type="button" class="relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 cursor-pointer" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start">
+  <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{supporter.initial}}</span>
+</div>
+{% else %}
+<div id="avatarButton" type="button" class="relative w-8 h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 cursor-pointer" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start">
+  <svg class="absolute w-10 h-10 text-gray-400 -left-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+</div>
+{% endif %}
+<!-- Dropdown menu -->
+<div id="userDropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+    {% if supporter %}
+    <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+      <div>{{ supporter.name }}</div>
+      <div class="font-medium truncate">{{ supporter.email }}</div>
+    </div>
+    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+      <li>
+        <a href="{{ supporter_urls.donations }}" rel="keep-params" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Donazioni</a>
+      </li>
+    </ul>
+    <div class="py-1">
+      <a href="{{ supporter_urls.logout }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Esci</a>
+    </div>
+    {% else %}
+    <div class="py-1">
+      <a href="{{ supporter_urls.login }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Login</a>
+    </div>
+    {% endif %}
+</div>
