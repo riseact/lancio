@@ -1,6 +1,10 @@
 {% if supporter %}
-<div id="avatarButton" type="button" class="relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 cursor-pointer" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start">
-  <span class="text-sm font-medium text-gray-600 dark:text-gray-300">{{supporter.initial}}</span>
+<div id="avatarButton" type="button" class="relative bg-gray-100 rounded-full cursor-pointer" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start">
+  {% if supporter.image %}
+  <img class="w-8 h-8 rounded-full object-cover object-center" src="{{ supporter.image.file.url }}" alt="{{ supporter }}" />
+  {% else %}
+  <span class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-600 text-sm font-medium text-gray-600 dark:text-gray-300">{{supporter.initial}}</span>
+  {% endif %}
 </div>
 {% else %}
 <div id="avatarButton" type="button" class="relative w-8 h-8 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 cursor-pointer" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start">
@@ -17,6 +21,9 @@
     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
       <li>
         <a href="{{ supporter_urls.donations }}" rel="keep-params" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Donazioni</a>
+      </li>
+      <li>
+        <a href="{{ supporter_urls.campaigns }}" rel="keep-params" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Campagne</a>
       </li>
     </ul>
     <div class="py-1">

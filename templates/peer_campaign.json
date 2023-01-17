@@ -1,0 +1,12 @@
+{
+    "name": "peer_campaign",
+    "sections": {
+        "peer_campaign": {
+            "type": "peer_campaign",
+            "settings": {}
+        }
+    },
+    "order": [
+        "peer_campaign"
+    ]
+}

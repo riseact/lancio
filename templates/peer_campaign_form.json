@@ -1,0 +1,12 @@
+{
+    "name": "peer_campaign_form",
+    "sections": {
+        "peer_campaign_form": {
+            "type": "peer_campaign_form",
+            "settings": {}
+        }
+    },
+    "order": [
+        "peer_campaign_form"
+    ]
+}

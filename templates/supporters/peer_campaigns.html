@@ -1,0 +1,28 @@
+
+<div class="w-full max-w-screen-xl mx-auto mt-16">
+    <h2 class="text-4xl font-extrabold dark:text-white mb-8">Le tue campagne</h2>
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Campagna
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Totale raccolto
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for peer_campaign in peer_campaigns.all() %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="px-6 py-4 font-medium text-blue-500 whitespace-nowrap dark:text-white">
+                    <a href="{{ peer_campaign.campaign.url }}/{{ peer_campaign.slug }}">{{ peer_campaign.campaign }}</a>
+                </th>
+                <td class="px-6 py-4">
+                    0
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
