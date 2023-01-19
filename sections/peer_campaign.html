@@ -6,58 +6,105 @@
       <img src="{{ campaign.cover.full }}"
            alt="{{ campaign.title }}"
            class="object-cover h-96 w-full rounded-lg"/>
-        <div class="mt-8 mb-4 border-b border-gray-200 dark:border-gray-700">
-          <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-              <li class="mr-2" role="presentation">
-                  <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Campagna</button>
-              </li>
-              <li class="mr-2" role="presentation">
-                  <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Aggiornamenti</button>
-              </li>
-              <li class="mr-2" role="presentation">
-                  <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Donatori</button>
-              </li>
-          </ul>
+      <div class="mt-8 mb-4 border-b border-gray-200 dark:border-gray-700">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center"
+            id="myTab"
+            data-tabs-toggle="#myTabContent"
+            role="tablist">
+          <li class="mr-2"
+              role="presentation">
+            <button class="inline-block p-4 border-b-2 rounded-t-lg"
+                    id="profile-tab"
+                    data-tabs-target="#profile"
+                    type="button"
+                    role="tab"
+                    aria-controls="profile"
+                    aria-selected="false">
+              Campagna
+            </button>
+          </li>
+          <li class="mr-2"
+              role="presentation">
+            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    id="dashboard-tab"
+                    data-tabs-target="#dashboard"
+                    type="button"
+                    role="tab"
+                    aria-controls="dashboard"
+                    aria-selected="false">
+              Aggiornamenti
+            </button>
+          </li>
+          <li class="mr-2"
+              role="presentation">
+            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                    id="settings-tab"
+                    data-tabs-target="#settings"
+                    type="button"
+                    role="tab"
+                    aria-controls="settings"
+                    aria-selected="false">
+              Donatori
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div id="myTabContent">
+        <div class="hidden"
+             id="profile"
+             role="tabpanel"
+             aria-labelledby="profile-tab">
+          <figure class="max-w-screen-md mx-auto text-center mt-10">
+            <blockquote>
+              <p class="text-2xl font-medium text-gray-900 dark:text-white">{{ peer_campaign.custom_message }}</p>
+            </blockquote>
+            <figcaption class="flex items-center justify-center mt-6 space-x-3">
+              <img class="w-6 h-6 rounded-full"
+                   src="{{ peer_campaign.supporter_image.url }}"
+                   alt="{{ peer_campaign.supporter_name }}"/>
+              <div class="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
+                <cite class="pr-3 font-medium text-gray-900 dark:text-white">{{ peer_campaign.supporter_name }}</cite>
+                <cite class="pl-3 text-sm font-light text-gray-500 dark:text-gray-400">Fundraiser</cite>
+              </div>
+            </figcaption>
+          </figure>
+          <div class="mt-10 text-xl font-light leading-10">{{ campaign.content }}</div>
         </div>
-        <div id="myTabContent">
-          <div class="hidden" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <figure class="max-w-screen-md mx-auto text-center mt-10">
-              <blockquote>
-                  <p class="text-2xl font-medium text-gray-900 dark:text-white">{{ peer_campaign.custom_message }}</p>
-              </blockquote>
-              <figcaption class="flex items-center justify-center mt-6 space-x-3">
-                  <img class="w-6 h-6 rounded-full" src="{{ peer_campaign.supporter_image.url }}" alt="{{ peer_campaign.supporter_name }}">
-                  <div class="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
-                      <cite class="pr-3 font-medium text-gray-900 dark:text-white">{{ peer_campaign.supporter_name }}</cite>
-                      <cite class="pl-3 text-sm font-light text-gray-500 dark:text-gray-400">Fundraiser</cite>
-                  </div>
-              </figcaption>
-            </figure>
-            <div class="mt-10 text-xl font-light leading-10">{{ campaign.content }}</div>
-          </div>
-          <div class="hidden" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-              <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-          </div>
-          <div class="hidden" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-              <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-          </div>
+        <div class="hidden"
+             id="dashboard"
+             role="tabpanel"
+             aria-labelledby="dashboard-tab">
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.
+          </p>
         </div>
+        <div class="hidden"
+             id="settings"
+             role="tabpanel"
+             aria-labelledby="settings-tab">
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.
+          </p>
+        </div>
+      </div>
     </div>
     <div class="col-span-2">
       <div class="shadow-md border rounded-lg px-5 py-8 sticky top-4">
         {% if peer_campaign %}
-        <div class="flex items-end items-space-between mb-4">
-          <div>
-            <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
-            <h3 class="text-gray-800 text-md">sta raccogliendo per</h3>
+          <div class="flex items-end items-space-between mb-4">
+            <div>
+              <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
+              <h3 class="text-gray-800 text-md">sta raccogliendo per</h3>
+            </div>
+            {% if peer_campaign.supporter.image %}
+              <img class="w-12 h-12 ml-auto rounded-full object-cover object-center"
+                   src="{{ peer_campaign.supporter_image.url }}"
+                   alt="{{ peer_campaign.supporter_name }}"/>
+            {% endif %}
           </div>
-          {% if peer_campaign.supporter.image %}
-          <img class="w-12 h-12 ml-auto rounded-full object-cover object-center" src="{{ peer_campaign.supporter_image.url }}" alt="{{ peer_campaign.supporter_name }}" />
-          {% endif %}
-        </div>
-        <div class="mb-4">
-          <h3 class="text-gray-800 text-2xl">{{ campaign.title }}</h3>
-        </div>
+          <div class="mb-4">
+            <h3 class="text-gray-800 text-2xl">{{ campaign.title }}</h3>
+          </div>
         {% endif %}
 
         <div class="flex items-end">
@@ -70,13 +117,15 @@
           <div class="bg-[color:var(--primary-bg-color)] h-1.5 rounded-full"
                style="width: 45%"></div>
         </div>
-          
+ 
         <div class="text-sm text-gray-500">{{ stats.total_donations }} donazioni</div>
 
         <div class="mt-8">
-          <a class="block btn-primary mb-2" href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/donate">Dona ora</a>
+          <a class="block btn-primary mb-2"
+             href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/donate">Dona ora</a>
           {% if supporter == peer_campaign.supporter %}
-          <a class="block btn-outline w-full mb-2" href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/update">Aggiorna</a>
+            <a class="block btn-outline w-full mb-2"
+               href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/update">Aggiorna</a>
           {% endif %}
           <a class="block btn-outline"
              href="">Condividi</a>
@@ -86,12 +135,13 @@
   </div>
 </div>
 
+{# djlint:off #}
 {% schema %}
-  {
-  "name": "Peer Campaign Details",
-  "limit": 1,
-  "settings": [],
-  "locales": {},
-  "templates": ["peer_campaign"]
-  }
+{
+"name": "Peer Campaign Details",
+"limit": 1,
+"settings": [],
+"locales": {},
+"templates": ["peer_campaign"]
+}
 {% endschema %}

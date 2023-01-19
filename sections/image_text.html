@@ -1,4 +1,4 @@
-<div class="bg-red-50 py-10">
+<div class="py-10">
     <div class="container flex flex-col md:flex-row items-center">
         {% if section.settings.image_position == "left" %}
           <div class="w-full md:w-1/2 py-10 flex justify-center items-center">
@@ -27,9 +27,10 @@
     </div>
 </div>
 
+{# djlint:off #}
 {% schema %}
 {
-  "name": "Image with text",
+  "name": "Immagine con testo",
   "limit": 1,
   "settings": [
     {
@@ -82,7 +83,7 @@
       "title": "Hello world",
       "content": "I'm an example text",
       "image_position": "left",
-      "image": "https://preview.colorlib.com/theme/chariter/assets/img/hero/h1_hero1.jpg"
+      "image": "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
     },
     "blocks": []
   },

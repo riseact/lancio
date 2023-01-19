@@ -6,7 +6,7 @@
       {% with b=section.blocks[b] %}
         <div class="text-center mx-4">
           {% if b.settings.image %}
-            <img src="{{ b.settings.image}} " alt="{{ b.settings.title }}" class="mx-auto"/>
+            <img src="{{ b.settings.image }}" alt="{{ b.settings.title }}" class="mx-auto"/>
           {% endif %}
           <h2 class="text-2xl font-bold my-5">{{ b.settings.title }}</h2>
           <p class="text-gray-500">{{ b.settings.content }}</p>
@@ -16,9 +16,10 @@
   </div>
 </div>
 
+{# djlint:off #}
 {% schema %}
 {
-  "name": "Multicolumns",
+  "name": "Multicolonna",
   "limit": 1,
   "settings": [
     
@@ -70,4 +71,4 @@
   "templates": ["campaign"]
 }
 {% endschema %}
-
+{# djlint:on #}

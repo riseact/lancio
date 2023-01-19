@@ -4,9 +4,9 @@
     "hero": {
       "type": "image_banner",
       "settings": {
-        "title": "Support a causes you care about",
+        "title": "Aiuta le cause a cui tieni",
         "subtitle": "Sedac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor etiam lacus eros",
-        "image": "https://preview.colorlib.com/theme/chariter/assets/img/hero/h1_hero2.jpg.webp",
+        "image": "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
         "button_label": "Dona ora",
         "button_link": "http://text.com"
       }
@@ -31,7 +31,7 @@
           "type": "column",
           "settings": {
             "title": "Pure Food & Water",
-            "image": "https://preview.colorlib.com/theme/chariter/assets/img/icon/services2.svg",
+            "image": "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
             "content": "Odio aliquet, fringilla odio eget, tincidunt nunc duis aliquet pulvinar ante employeesand organizations to support."
           }
         },
@@ -39,7 +39,7 @@
           "type": "column",
           "settings": {
             "title": "Health & Medicine",
-            "image": "https://preview.colorlib.com/theme/chariter/assets/img/icon/services2.svg",
+            "image": "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
             "content": "Odio aliquet, fringilla odio eget, tincidunt nunc duis aliquet pulvinar ante employeesand organizations to support."
           }
         },
@@ -47,7 +47,7 @@
           "type": "column",
           "settings": {
             "title": "Education",
-            "image": "https://preview.colorlib.com/theme/chariter/assets/img/icon/services2.svg",
+            "image": "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
             "content": "Odio aliquet, fringilla odio eget, tincidunt nunc duis aliquet pulvinar ante employeesand organizations to support."
           }
         }
@@ -59,7 +59,7 @@
       "settings": {
         "title": "They Need Your Help",
         "subtitle": "Sedac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor etiam lacus eros",
-        "image": "https://preview.colorlib.com/theme/chariter/assets/img/gallery/section-bg2.jpg.webp",
+        "image": "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
         "button_label": "Dona ora",
         "button_link": "http://text.com",
         "with_background": true,

@@ -1,127 +1,136 @@
 <div class="container mx-auto mb-20">
   {% if peer_campaign %}
-  <h1 class="text-center mb-4 mt-16">La tua campagna di fundraising</h3>
+    <h1 class="text-center mb-4 mt-16">La tua campagna di fundraising</h1>
   {% else %}
-  <h1 class="text-center mb-4 mt-16">Inizia una campagna di fundraising</h3>
+    <h1 class="text-center mb-4 mt-16">Inizia una campagna di fundraising</h1>
   {% endif %}
 
   <div class="w-full max-w-xl mx-auto mt-8 p-4">
-      {% if peer_campaign %}
-      <p>Ciao <strong>{{ supporter}},</strong></p>
+    {% if peer_campaign %}
+      <p>
+        Ciao <strong>{{ supporter }},</strong>
+      </p>
       <p class="my-2">Qua puoi visualizzare e modificare le informazioni della tua campagna:</p>
-      {% else %}
-      <p>Grazie <strong>{{ supporter}},</strong></p>
-      <p class="my-2">sei a un passo dall'iniziare a raccogliere fondi per <strong>{{ campaign }}</strong>.</p>
+    {% else %}
+      <p>
+        Grazie <strong>{{ supporter }},</strong>
+      </p>
+      <p class="my-2">
+        sei a un passo dall'iniziare a raccogliere fondi per <strong>{{ campaign }}</strong>.
+      </p>
       <p class="my-2">Prima dobbiamo chiederti un paio di informazioni:</p>
-      {% endif %}
-      <form enctype="multipart/form-data" id="peer-form" method="post" class="grid grid-rows gap-8 mt-8">
-        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+    {% endif %}
+    <form enctype="multipart/form-data"
+          id="peer-form"
+          method="post"
+          class="grid grid-rows gap-8 mt-8">
+      <input type="hidden"
+             name="csrfmiddlewaretoken"
+             value="{{ csrf_token }}"/>
 
-        <div class="grid grid-cols-12 gap-4 ">
-          <div class="col-span-8">
-            <label class="block text-gray-700 text-sm font-bold mb-2">
-              La tua immagine
-            </label>
-            <p class="text-sm text-gray-500">Questa immagine sarà mostrata sul form di donazione e nella pagina della campagna</p>
-          </div>
+      <div class="grid grid-cols-12 gap-4 ">
+        <div class="col-span-8">
+          <label class="block text-gray-700 text-sm font-bold mb-2">La tua immagine</label>
+          <p class="text-sm text-gray-500">Questa immagine sarà mostrata sul form di donazione e nella pagina della campagna</p>
+        </div>
 
-          <div class="col-span-4">
-            <label class="cursor-pointer w-full flex">
-              <img id="image_preview" class="bg-gray-200 border w-16 h-16 mx-4 ml-auto rounded-full object-cover object-center" src="{{ form.peer_supporter_image.value().url or '' }}" alt="{{ supporter }}" />
-              
-              <input type="file"
-                    class="hidden"
-                    id="id_peer_supporter_image"
-                    name="peer_supporter_image"
-                    accept="image/*"/>
-            </label>
-            <script>
-              const imageInput = document.getElementById('id_peer_supporter_image');
-              const imagePreview = document.getElementById('image_preview');
-              imageInput.onchange = (e) => {
-                const [file] = imageInput.files
-                if (file) {
-                  imagePreview.src = URL.createObjectURL(file)
-                }
+        <div class="col-span-4">
+          <label class="cursor-pointer w-full flex">
+            <img id="image_preview"
+                 class="bg-gray-200 border w-16 h-16 mx-4 ml-auto rounded-full object-cover object-center"
+                 src="{{ form.peer_supporter_image.value().url or '' }}"
+                 alt="{{ supporter }}"/>
+ 
+            <input type="file"
+                   class="hidden"
+                   id="id_peer_supporter_image"
+                   name="peer_supporter_image"
+                   accept="image/*"/>
+          </label>
+          <script>
+            const imageInput = document.getElementById('id_peer_supporter_image');
+            const imagePreview = document.getElementById('image_preview');
+            imageInput.onchange = (e) => {
+              const [file] = imageInput.files
+              if (file) {
+                imagePreview.src = URL.createObjectURL(file)
               }
-            </script>
-            {% if form.peer_supporter_image.errors %}
+            }
+          </script>
+          {% if form.peer_supporter_image.errors %}
             <p class="text-red-500 p-2 text-sm">{{ form.peer_supporter_image.errors.as_text() }}</p>
-            {% endif %}
-          </div>
+          {% endif %}
         </div>
+      </div>
 
-        <div class="">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_peer_supporter_name">
-              Il tuo nome
-            </label>
-            <p class="text-sm text-gray-500">Scegli il nome che comparirà sul form di donazione e nella pagina della campagna</p>
-            <input class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-                  type="text"
-                  id="id_peer_supporter_name"
-                  name="peer_supporter_name"
-                  value="{{ form.peer_supporter_name.value() or '' }}"
-                  autofocus
-                  required/>
-            {% if form.peer_supporter_name.errors %}
-            <p class="text-red-500 p-2 text-sm">{{ form.peer_supporter_name.errors.as_text() }}</p>
-            {% endif %}
-        </div>
+      <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2"
+               for="id_peer_supporter_name">Il tuo nome</label>
+        <p class="text-sm text-gray-500">Scegli il nome che comparirà sul form di donazione e nella pagina della campagna</p>
+        <input class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+               type="text"
+               id="id_peer_supporter_name"
+               name="peer_supporter_name"
+               value="{{ form.peer_supporter_name.value() or '' }}"
+               autofocus
+               required/>
+        {% if form.peer_supporter_name.errors %}
+          <p class="text-red-500 p-2 text-sm">{{ form.peer_supporter_name.errors.as_text() }}</p>
+        {% endif %}
+      </div>
 
-        <div class="">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_custom_message">
-              Il tuo messaggio
-            </label>
-            <p class="text-sm text-gray-500">Il testo che comparirà sul form di donazione e nella pagina della campagna</p>
-            <textarea class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+      <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2"
+               for="id_custom_message">Il tuo messaggio</label>
+        <p class="text-sm text-gray-500">Il testo che comparirà sul form di donazione e nella pagina della campagna</p>
+        <textarea class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
                   type="text"
                   id="id_custom_message"
                   name="custom_message"
                   required>{{ form.custom_message.value() or '' }}</textarea>
-            {% if form.custom_message.errors %}
-            <p class="text-red-500 p-2 text-sm">{{ form.custom_message.errors.as_text() }}</p>
-            {% endif %}
-        </div>
-        {% if not peer_campaign %}
-        <div>
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_peer_slug">
-              Identifica la tua campagna
-            </label>
-            <p class="text-sm text-gray-500">Questa informazione determinerà il link alla tua campagna di fundraising personale</p>
-
-            <div class="flex mt-4 bg-gray-100 text-gray-700 rounded text-sm">
-              <span class="p-2 pr-0 text-gray-400">{{ campaign.url }}/</span>
-              <input class="grow min-w-0 w-auto appearance-none bg-gray-100 w-full p-2 pl-0 focus:outline-none focus:shadow-outline"
-                  type="text"
-                  id="id_peer_slug"
-                  name="peer_slug"
-                  value="{{ form.peer_slug.value() or '' }}"
-                  required />
-            </div>
-            {% if form.peer_slug.errors %}
-            <p class="text-red-500 p-2 text-sm">{{ form.peer_slug.errors.as_text() }}</p>
-            {% endif %}
-        </div>
+        {% if form.custom_message.errors %}
+          <p class="text-red-500 p-2 text-sm">{{ form.custom_message.errors.as_text() }}</p>
         {% endif %}
+      </div>
+      {% if not peer_campaign %}
+        <div>
+          <label class="block text-gray-700 text-sm font-bold mb-2"
+                 for="id_peer_slug">Identifica la tua campagna</label>
+          <p class="text-sm text-gray-500">Questa informazione determinerà il link alla tua campagna di fundraising personale</p>
 
-        <div class="mt-4">
-          {% if peer_campaign %}
-          <button class="block btn-outline w-full mb-2" type="submit">Aggiorna</button>
-          {% else %}
-          <button class="block btn-primary w-full mb-2" type="submit">Inizia a raccogliere</button>
-          {% endif %}
+          <div class="flex mt-4 bg-gray-100 text-gray-700 rounded text-sm">
+            <span class="p-2 pr-0 text-gray-400">{{ campaign.url }}/</span>
+            <input class="grow min-w-0 w-auto appearance-none bg-gray-100 w-full p-2 pl-0 focus:outline-none focus:shadow-outline"
+                   type="text"
+                   id="id_peer_slug"
+                   name="peer_slug"
+                   value="{{ form.peer_slug.value() or '' }}"
+                   required/>
+          </div>
+          {% if form.peer_slug.errors %}<p class="text-red-500 p-2 text-sm">{{ form.peer_slug.errors.as_text() }}</p>{% endif %}
         </div>
-      </form>
+      {% endif %}
+
+      <div class="mt-4">
+        {% if peer_campaign %}
+          <button class="block btn-outline w-full mb-2"
+                  type="submit">Aggiorna</button>
+        {% else %}
+          <button class="block btn-primary w-full mb-2"
+                  type="submit">Inizia a raccogliere</button>
+        {% endif %}
+      </div>
+    </form>
   </div>
 </div>
-  
+ 
+{# djlint:off #}
 {% schema %}
-  {
+{
   "name": "Peer Campaign Form",
   "limit": 1,
   "settings": [],
   "locales": {},
   "templates": ["peer_campaign_form"]
-  }
+}
 {% endschema %}
-  

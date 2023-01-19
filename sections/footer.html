@@ -10,118 +10,126 @@
 </style>
 
 <div class="footer">
-  <div class="container pt-20 pb-2">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-        {% for key, b in section.blocks.items() %}
-          {% if b.type == "links" %}
-            <div>
-
-              <h5 class="mb-5">{{ b.settings.title }}</h5>
+  <div class="container pt-20 pb-20">
+    <div class="flex justify-between flex-col md:flex-row">
+      {% for key, b in section.blocks.items() %}
+ 
+        {% if b.type == "links" %}
+          <div class="text-center mx-auto">
+            <h5 class="mb-5">{{ b.settings.title }}</h5>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-10">
               {% for item in b.settings.menu.menu_items %}
                 <div class="my-2">
-                  <a class="text-gray-500 font-light" href="{{ item.link }}" class="hover:underline">
-                    {{ item.label}}
-                  </a>
+                  <a href="{{ item.link }}"
+                     class="hover:underline">{{ item.label }}</a>
                 </div>
               {% endfor %}
             </div>
-          {% elif b.type == "infos" %}
-            <div class="gap-4">
-              <h5>{{ b.settings.title }}<h5>
-              <p class=" font-light">
-                {{ b.settings.subtitle }}
-              </p>
-            </div>
-          {% elif b.type == "image" %}
-            <img src="{{ b.settings.image }}"/>
-          {% endif %}
-        {% endfor %}
-      </div>
+          </div>
+        {% elif b.type == "infos" %}
+          <div class="gap-4">
+            <h5>{{ b.settings.title }}</h5>
+            <p class="font-light">{{ b.settings.subtitle }}</p>
+          </div>
+        {% elif b.type == "image" %}
+          <img src="{{ b.settings.image }}"
+               alt=""/>
+        {% endif %}
+ 
+      {% endfor %}
+    </div>
   </div>
-  <div class="py-4 text-center text-sm font-light text-gray-400" style="filter: brightness(1.20);background-color: {{ section.settings.bg_color }};">
-    {{ section.settings.copyright }}
-  </div>
+  {% if section.settings.copyright %}
+    <div class="py-4 text-center text-sm font-light"
+         style="filter: brightness(0.9);
+                background-color: {{ section.settings.bg_color }}">
+      {{ section.settings.copyright }}
+    </div>
+  {% endif %}
 </div>
 
+{# djlint:off #}
 {% schema %}
 {
-  "name": "Footer",
-  "limit": 1,
-  "settings": [
-    {
-      "id":"bg_color",
-      "type":"color_picker",
-      "label":"Background Color",
-      "default": "#212529"
-    },
-    {
-      "id":"fg_color",
-      "type":"color_picker",
-      "label":"Text Color",
-      "default": "#E6DAD8"
-    },
-    {
-      "id":"show_payment_methods",
-      "type":"checkbox",
-      "label":"Show Payment Methods",
-      "default": true
-    },
-    {
-      "id":"copyright",
-      "type":"textarea",
-      "label":"Copyright"
-    }
-  ],
-  "blocks": [
-     {
-       "name": "Links",
-       "type": "links",
-       "settings": [
-          {
-            "type": "text",
-            "id": "title",
-            "label": "Title"
-          },
-          {
-            "id": "menu",
-            "type": "menu_picker",
-            "label": "Menu"
-          }
-       ]
-     },
-     {
-       "name": "Infos",
-       "type": "infos",
-       "settings": [
-          {
-            "type": "text",
-            "id": "title",
-            "label": "Title"
-            
-          },
-          {
-            "type": "textarea",
-            "id": "subtitle",
-            "label": "Text"
-            
-          }
-       ]
-     },
-     {
-       "name": "Image",
-       "type": "image",
-       "settings": [
-          {
-            "type": "image_picker",
-            "id": "image",
-            "label": "Image"
-            
-          }
-       ]
-     }
-  ],
-  "max_blocks": 4,
-  "locales": {},
-  "templates": []
-}
+   "name":"Footer",
+   "limit":1,
+   "settings":[
+      {
+         "id":"bg_color",
+         "type":"color_picker",
+         "label":"Colore di sfondo",
+         "default":"#dbdbdb"
+      },
+      {
+         "id":"fg_color",
+         "type":"color_picker",
+         "label":"Colore del testo",
+         "default":"#666"
+      },
+      {
+         "id":"show_payment_methods",
+         "type":"checkbox",
+         "label":"Mostra metodi di pagamento",
+         "default":true
+      },
+      {
+         "id":"copyright",
+         "type":"textarea",
+         "label":"Copyright"
+      }
+   ],
+   "blocks":[
+      {
+         "name":"Links",
+         "type":"links",
+         "settings":[
+            {
+               "type":"text",
+               "id":"title",
+               "label":"Titolo"
+            },
+            {
+               "id":"menu",
+               "type":"menu_picker",
+               "label":"Menu"
+            }
+         ]
+      },
+      {
+         "name":"Infos",
+         "type":"infos",
+         "settings":[
+            {
+               "type":"text",
+               "id":"title",
+               "label":"Titolo"
+            },
+            {
+               "type":"textarea",
+               "id":"subtitle",
+               "label":"Testo"
+            }
+         ]
+      },
+      {
+         "name":"Image",
+         "type":"image",
+         "settings":[
+            {
+               "type":"image_picker",
+               "id":"image",
+               "label":"Immagine"
+            }
+         ]
+      }
+   ],
+   "max_blocks":4,
+   "locales":{
+      
+   },
+   "templates":[
+      
+   ]
+}  
 {% endschema %}
+{# djlint:on #}

@@ -19,13 +19,23 @@
     },
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "menu":"main-menu"
+      }
     },
     "footer": {
       "type": "footer",
       "settings": {},
-      "blocks": {},
-      "block_order": []
+      "blocks": {
+        "main-menu":{
+          "type":"links",
+          "settings":{
+             "title":"Navigazione",
+             "menu":"main-menu"
+          }
+       }
+      },
+      "block_order": ["main-menu"]
     }
   }
 }

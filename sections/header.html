@@ -68,42 +68,43 @@
   </div>
 </div>
 
+{# djlint:off #}
 {% schema %}
   {
-  "name":"Header",
-  "settings": [
-  {
-  "id":"logo",
-  "type":"image_picker",
-  "label":"Logo image"
-  },
-  {
-  "id":"logo_width",
-  "type":"slider",
-  "label":"Logo width",
-  "min": 50,
-  "max": 250,
-  "default": 100
-  },
-  {
-  "id": "menu",
-  "type": "menu_picker",
-  "label": "Main navigation",
-  "default": "main-menu"
-  },
-  {
-  "id": "main_campaign",
-  "type": "campaign_picker",
-  "label": "Main Campaign"
-  }
-  ],
-  "locales":{
-  "en":{
-  "title":"Header"
-  },
-  "it":{
-  "title":"Header"
-  }
-  }
-  }
+   "name":"Header",
+   "settings":[
+      {
+         "id":"logo",
+         "type":"image_picker",
+         "label":"Logo"
+      },
+      {
+         "id":"logo_width",
+         "type":"slider",
+         "label":"Logo width",
+         "min":50,
+         "max":250,
+         "default":100
+      },
+      {
+         "id":"menu",
+         "type":"menu_picker",
+         "label":"Menu principale",
+         "default":"main-menu"
+      },
+      {
+         "id":"main_campaign",
+         "type":"campaign_picker",
+         "label":"Campagna principale"
+      }
+   ],
+   "locales":{
+      "en":{
+         "title":"Header"
+      },
+      "it":{
+         "title":"Header"
+      }
+   }
+}
 {% endschema %}

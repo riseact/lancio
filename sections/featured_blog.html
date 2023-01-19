@@ -18,33 +18,47 @@
   {% endif %}
 </div>
 
+{# djlint:off #}
 {% schema %}
   {
-  "name": "Featured Blog",
-  "settings": [
-  {
-  "id": "blog",
-  "type": "blog_picker",
-  "label": "Blog"
-  },
-  {
-  "id": "title",
-  "type": "text",
-  "label": "Title"
-  },
-  {
-  "id": "description",
-  "type": "textarea",
-  "label": "Description"
-  }
-  ],
-  "max_blocks": 0,
-  "blocks": [],
-  "presets": {
-  "settings": {},
-  "blocks": []
-  },
-  "locales": {},
-  "templates": ["article", "homepage", "page", "product"]
-  }
+   "name":"Articoli del blog",
+   "settings":[
+      {
+         "id":"blog",
+         "type":"blog_picker",
+         "label":"Blog"
+      },
+      {
+         "id":"title",
+         "type":"text",
+         "label":"Titolo"
+      },
+      {
+         "id":"description",
+         "type":"textarea",
+         "label":"Descrizione"
+      }
+   ],
+   "max_blocks":0,
+   "blocks":[
+      
+   ],
+   "presets":{
+      "settings":{
+         
+      },
+      "blocks":[
+         
+      ]
+   },
+   "locales":{
+      
+   },
+   "templates":[
+      "article",
+      "homepage",
+      "page",
+      "product"
+   ]
+}
 {% endschema %}

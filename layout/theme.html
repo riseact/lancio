@@ -1,37 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible"
+              content="IE=edge"/>
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0"/>
 
-    {{ content_for_header }}
+        {{ content_for_header }}
 
-    <style>
-        :root {
-            --primary-fg-color: {{ theme.primary_fg_color }};
-            --primary-bg-color: {{ theme.primary_bg_color }};
-        }
+        <style>
+            :root {
+                --hue: 207;
+                --saturation: 64%;
+                --light: 44%;
 
-        html {
-            height: 100%
-        }
-        
-        body {
-            min-height: 100%
-        }
-    </style>
+                --primary-fg-color: {{ theme.primary_fg_color }};
+                --primary-bg-color: {{ theme.primary_bg_color }};
+                --primary-bg-color-lighter: {{ theme.primary_bg_color|color_variant }};
+                --primary-bg-color-lightest: hsl(from var(--primary-bg-color) h s calc(l + 10%));
+                --primary-bg-color-darker: hsl(from var(--primary-bg-color) h s calc(l - 5%)); 
+                --primary-bg-color-darkest: hsl(from var(--primary-bg-color) h s calc(l - 10%));
+            }
 
-    {% style 'main.css' %}
-</head>
-<body class="flex flex-col">
-    {% section 'banner' %}
-    {% section 'header' %}
-    <div class="flex-1">
-    {{ content_for_layout }}
-    </div>
-    
-    {% section 'footer' %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.1/flowbite.min.js"></script>
-</body>
+            html {
+                height: 100%
+            }
+            
+            body {
+                min-height: 100%
+            }
+        </style>
+
+        {% style 'main.css' %}
+    </head>
+    <body class="flex flex-col">
+        {% section 'banner' %}
+        {% section 'header' %}
+
+        <div class="flex-1">{{ content_for_layout }}</div>
+ 
+        {% section 'footer' %}
+    </body>
 </html>
