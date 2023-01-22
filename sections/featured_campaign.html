@@ -3,10 +3,10 @@
       {% with campaign=section.settings.campaign %}
         <div class="grid grid-cols-1 md:grid-cols-2 md:gap-20 ">
           <div>
-            <img src="{{ campaign.cover.file.url }}" alt="{{ campaign.title }}" class="rounded-lg w-full object-cover"/>
+            <img src="{{ campaign.cover.file.url }}" alt="{{ campaign.title }}" class="rounded-sm w-full object-cover"/>
           </div>
           <div class="w-full md:w-3/4 py-5">
-            <h2>{{ campaign.title }}</h2>
+            <h2 class="font-light">{{ campaign.title }}</h2>
             <p class="my-8 text-gray-500 text-lg">
               {{ campaign.content|striptags|truncate(350)}}
             </p>

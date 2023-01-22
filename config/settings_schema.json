@@ -16,7 +16,7 @@
         "type": "color_picker",
         "id": "primary_bg_color",
         "label": "Primary background color",
-        "default": "#C30047"
+        "default": "#121212"
       }
     ]
   },

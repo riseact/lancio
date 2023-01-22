@@ -4,7 +4,7 @@
 
 @layer base {
     h1 {
-        @apply font-extrabold text-4xl
+        @apply font-light text-4xl
     }
 
     h2 {
@@ -12,17 +12,17 @@
     }
 
     h4 {
-        @apply font-extrabold text-2xl
+        @apply font-light text-2xl
     }
 
     h5 {
-      @apply font-extrabold text-lg
+      @apply font-light text-lg
     }
 }
 
 @layer components {
   .btn-primary {
-    @apply text-center px-8 md:px-12 py-2 md:py-3 md:text-lg font-semibold text-[var(--primary-fg-color)] bg-[color:var(--primary-bg-color)] rounded-full;
+    @apply text-center px-8 md:px-12 py-2 md:py-3 md:text-lg font-semibold text-[var(--primary-fg-color)] bg-[color:var(--primary-bg-color)] rounded-sm;
   }
 
   .btn-sm {
@@ -30,6 +30,6 @@
   }
 
   .btn-outline {
-    @apply text-center px-12 py-2 md:py-3 md:text-lg font-semibold text-[var(--primary-bg-color)] border border-[var(--primary-bg-color)] rounded-full;
+    @apply text-center px-12 py-2 md:py-3 md:text-lg font-semibold text-[var(--primary-bg-color)] border border-[var(--primary-bg-color)] rounded-sm;
   }
 }

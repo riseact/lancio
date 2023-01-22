@@ -1,14 +1,14 @@
-<div class="py-10">
+<div class="py-10 md:py-20">
     <div class="container flex flex-col md:flex-row items-center">
         {% if section.settings.image_position == "left" %}
-          <div class="w-full md:w-1/2 py-10 flex justify-center items-center">
-              <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="rounded-lg h-[28rem] object-cover"/>
+          <div class="w-full md:w-1/2  flex justify-center items-center">
+              <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="rounded-sm h-[20rem] md:h-[28rem] object-cover"/>
           </div>
         {% endif %}
 
-        <div class="w-full md:w-1/2 flex justify-center items-center ">
+        <div class="w-full md:w-1/2 flex justify-center items-center {% if section.settings.image_position == 'left' %}pt-10{% else %}pb-10{% endif %}">
             <div class="md:px-20">
-                <h1 class="text-2xl lg:text-4xl font-bold">{{ section.settings.title }}</h1>
+                <h1 class="text-2xl lg:text-4xl font-light">{{ section.settings.title }}</h1>
                 <p class="my-10 text-lg lg:text-lg text-black opacity-70">{{ section.settings.content }}</p>
 
                 {% if section.settings.button_label and section.settings.button_link %}
@@ -20,8 +20,8 @@
         </div>
 
         {% if section.settings.image_position == "right" %}
-          <div class="w-full md:w-1/2 py-10 flex justify-center items-center">
-              <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="rounded-lg h-[28rem] object-cover"/>
+          <div class="w-full md:w-1/2 flex justify-center items-center">
+              <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="rounded-sm  h-[20rem] md:h-[28rem] object-cover"/>
           </div>
         {% endif %}
     </div>

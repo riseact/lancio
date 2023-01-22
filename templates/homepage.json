@@ -6,9 +6,7 @@
       "settings": {
         "title": "Aiuta le cause a cui tieni",
         "subtitle": "Sedac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor etiam lacus eros",
-        "image": "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
-        "button_label": "Dona ora",
-        "button_link": "http://text.com"
+        "image": "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
       }
     },
     "who_we_are": {
@@ -17,7 +15,7 @@
         "title": "Who we are?",
         "content": "The legal definition of a charitable organization (and of charity) varies between countries and in some instances regions of the country. The regulation, the tax treatment, and the way in which charity lawaffects charitable organizations also vary.",
         "button_label": "Scopri di più",
-        "button_link": "http://text.com"
+        "button_link": "/"
       }
     },
     "we_serve_people": {
@@ -57,23 +55,23 @@
     "they_need_you": {
       "type": "image_banner",
       "settings": {
-        "title": "They Need Your Help",
+        "title": "Hanno bisogno del tuo aiuto",
         "subtitle": "Sedac odio aliquet, fringilla odio eget, tincidunt nunc. Duis aliquet pulvinar ante tempor etiam lacus eros",
         "image": "https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png",
         "button_label": "Dona ora",
-        "button_link": "http://text.com",
+        "button_link": "/",
         "with_background": true,
-        "text_align": "justify-end"
+        "text_align": "justify-center"
       }
     },
     "join_us": {
       "type": "image_text",
       "settings": {
-        "title": "Join Us",
+        "title": "Unisciti a noi",
         "image_position": "right",
         "content": "The legal definition of a charitable organization (and of charity) varies between countries and in some instances regions of the country. The regulation, the tax treatment, and the way in which charity lawaffects charitable organizations also vary.",
         "button_label": "Scopri di più",
-        "button_link": "http://text.com"
+        "button_link": "/"
       }
     }
   },

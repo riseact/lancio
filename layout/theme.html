@@ -17,10 +17,6 @@
 
                 --primary-fg-color: {{ theme.primary_fg_color }};
                 --primary-bg-color: {{ theme.primary_bg_color }};
-                --primary-bg-color-lighter: {{ theme.primary_bg_color|color_variant }};
-                --primary-bg-color-lightest: hsl(from var(--primary-bg-color) h s calc(l + 10%));
-                --primary-bg-color-darker: hsl(from var(--primary-bg-color) h s calc(l - 5%)); 
-                --primary-bg-color-darkest: hsl(from var(--primary-bg-color) h s calc(l - 10%));
             }
 
             html {
@@ -41,5 +37,7 @@
         <div class="flex-1">{{ content_for_layout }}</div>
  
         {% section 'footer' %}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.1/flowbite.min.js"></script>
     </body>
 </html>
