@@ -1,0 +1,85 @@
+ 
+<div class="w-full max-w-md mx-auto mt-16">
+    
+    <form enctype="multipart/form-data"
+          id="profile-form"
+          method="post"
+          class="grid grid-rows gap-8 mt-8">
+
+      <input type="hidden"
+             name="csrfmiddlewaretoken"
+             value="{{ csrf_token }}"/>
+
+      <div class="grid grid-cols-12 gap-4 ">
+        <div class="col-span-8">
+          <label class="block text-gray-700 text-sm font-bold mb-2">La tua immagine</label>
+          <p class="text-sm text-gray-500">Questa immagine sarà mostrata sul form di donazione e nella pagina della campagna</p>
+        </div>
+
+        <div class="col-span-4">
+          <label class="cursor-pointer w-full flex">
+            <img id="image_preview"
+                 class="bg-gray-200 border w-16 h-16 mx-4 ml-auto rounded-full object-cover object-center"
+                 src="{{ form.image.value().url or '' }}"
+                 alt="{{ supporter }}"/>
+ 
+            <input type="file"
+                   class="hidden"
+                   id="id_image"
+                   name="image"
+                   accept="image/*"/>
+          </label>
+          <script>
+            const imageInput = document.getElementById('id_image');
+            const imagePreview = document.getElementById('image_preview');
+            imageInput.onchange = (e) => {
+              const [file] = imageInput.files
+              if (file) {
+                imagePreview.src = URL.createObjectURL(file)
+              }
+            }
+          </script>
+          {% if form.image.errors %}
+            <p class="text-red-500 p-2 text-sm">{{ form.image.errors.as_text() }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2"
+               for="id_first_name">Nome</label>
+        <p class="text-sm text-gray-500">Scegli il nome che comparirà sul form di donazione e nella pagina della campagna</p>
+        <input class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+               type="text"
+               id="id_first_name"
+               name="first_name"
+               value="{{ form.first_name.value() or '' }}"
+               autofocus
+               required/>
+        {% if form.first_name.errors %}
+          <p class="text-red-500 p-2 text-sm">{{ form.first_name.errors.as_text() }}</p>
+        {% endif %}
+      </div>
+
+      <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2"
+               for="id_last_name">Cognome</label>
+        <p class="text-sm text-gray-500">Scegli il nome che comparirà sul form di donazione e nella pagina della campagna</p>
+        <input class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+               type="text"
+               id="id_last_name"
+               name="last_name"
+               value="{{ form.last_name.value() or '' }}"
+               autofocus
+               required/>
+        {% if form.last_name.errors %}
+          <p class="text-red-500 p-2 text-sm">{{ form.last_name.errors.as_text() }}</p>
+        {% endif %}
+      </div>
+
+      <div class="mt-4">
+          <button class="block btn-primary w-full mb-2"
+                  type="submit">Salva</button>
+      </div>
+    </form>
+</div>
