@@ -2,4 +2,4 @@
 
 ## License
 
-Copyright (c) 2023-present Riseact Inc. See [LICENSE](/LICENSE.md) for further details.
+Copyright (c) 2023-present Riseact See [LICENSE](/LICENSE.md) for further details.
