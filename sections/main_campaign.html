@@ -17,41 +17,36 @@
             <li class="mr-2" role="presentation">
                 <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Campagna</button>
             </li>
-            <li class="mr-2" role="presentation">
-                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Aggiornamenti</button>
-            </li>
-            <li class="mr-2" role="presentation">
-                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Donatori</button>
-            </li>
-            <li role="presentation">
-                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Community</button>
-            </li>
+            
+            {% if campaign.allow_peer_to_peer %}
+              <li role="presentation">
+                  <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="community-tab" data-tabs-target="#community" type="button" role="tab" aria-controls="community" aria-selected="false">Community</button>
+              </li>
+            {% endif %}
         </ul>
       </div>
       <div id="myTabContent">
         <div class="hidden" id="profile" role="tabpanel" aria-labelledby="profile-tab">
           <div class="md:mt-10 md:text-xl font-light leading-10">{{ campaign.content }}</div>
         </div>
-        <div class="hidden" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-            <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-        </div>
-        <div class="hidden" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-            <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-        </div>
-        <div class="hidden" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
-          {% for peer_campaign in campaign.peer_campaigns.all() %}
-          <a href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}" class="flex items-center mb-4 rounded items-space-between mb-4 p-4 hover:bg-gray-100">
-            <img class="w-12 h-12 mr-4 rounded-full object-cover object-center" src="{{ peer_campaign.supporter.image.file.url }}" alt="{{ peer_campaign.supporter_name }}" />
-            <div>
-              <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
-              <p class="text-gray-800 text-md">{{ peer_campaign.custom_message }}</p>
-            </div>
-            <div class="flex flex-col items-end ml-auto">
-              <h3 class="text-gray-800  text-2xl">{{ stats.amount }} €</h3>
-            </div>
-          </a>
-          {% endfor %}
-        </div>
+        
+        {% if campaign.allow_peer_to_peer %}
+          <div class="hidden" id="community" role="tabpanel" aria-labelledby="community-tab">
+            {% for peer_campaign in campaign.peer_campaigns.all() %}
+            <a href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}" class="flex items-center mb-4 rounded items-space-between mb-4 p-4 hover:bg-gray-100">
+              <img class="w-12 h-12 mr-4 rounded-full object-cover object-center" src="{{ peer_campaign.supporter.image.file.url }}" alt="{{ peer_campaign.supporter_name }}" />
+              <div>
+                <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
+                <p class="text-gray-800 text-md">{{ peer_campaign.custom_message }}</p>
+              </div>
+              <div class="flex flex-col items-end ml-auto">
+                <h3 class="text-gray-800  text-2xl">{{ stats.amount }} €</h3>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+
       </div>
     </div>
     <div class="col-span-2 hidden md:block">

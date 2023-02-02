@@ -1,18 +1,20 @@
 <div class=" border px-5 py-8 sticky top-4">
     <div class="flex items-end">
-        <h3 class="text-gray-800  text-2xl">{{ stats.amount }} €</h3>
+        <h3 class="text-gray-800  text-4xl">{{ stats.amount }} €</h3>
         <span class="text-gray-500 ml-2 font-bold text-md">raccolti</span>
-        {% if campaign.goal %}<span class="text-gray-500 ml-2 font-bold text-md">di {{ campaign.goal }} €</span>{% endif %}
+        {% if campaign.is_goal_enabled and campaign.goal %}<span class="text-gray-500 ml-2 font-bold text-md">di {{ campaign.goal }} €</span>{% endif %}
     </div>
 
-    <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 my-4">
-        <div class="bg-[color:var(--primary-bg-color)] h-1.5 rounded-full"
-             style="width: 45%"></div>
-    </div>
+    {% if campaign.is_goal_enabled and campaign.goal %}
+        <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 my-4">
+            <div class="bg-[color:var(--primary-bg-color)] h-1.5 rounded-full"
+                style="width: 45%"></div>
+        </div>
+    {% endif %}
 
-    <div class="text-sm text-gray-500">{{ stats.total_donations }} donazioni</div>
+    <div class="text-lg text-gray-500 mt-2">{{ stats.total_donations }} donazioni</div>
 
-    <div class="mt-8">
+    <div class="mt-8 gap-3 flex flex-col">
         <a class="block btn-primary"
            href="/campaigns/{{ campaign.slug }}/donate">Dona ora</a>
 
@@ -21,7 +23,9 @@
                href="/campaigns/{{ campaign.slug }}/fundraise">Raccogli donazioni</a>
         {% endif %}
 
-        <a class="block mt-2 btn-outline"
-           href="">Condividi</a>
+        {% with url=current_url %}
+        
+            {% include 'snippets/share-button.html' %}
+        {% endwith %}
     </div>
 </div>
