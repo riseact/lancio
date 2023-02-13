@@ -1,6 +1,6 @@
 <div class=" border px-5 py-8 sticky top-4">
     <div class="flex items-end">
-        <h3 class="text-gray-800  text-4xl">{{ stats.amount }} €</h3>
+        <h3 class="text-gray-800  text-4xl">{{ campaign.total_donated }} €</h3>
         <span class="text-gray-500 ml-2 font-bold text-md">raccolti</span>
         {% if campaign.is_goal_enabled and campaign.goal %}<span class="text-gray-500 ml-2 font-bold text-md">di {{ campaign.goal }} €</span>{% endif %}
     </div>
@@ -12,7 +12,7 @@
         </div>
     {% endif %}
 
-    <div class="text-lg text-gray-500 mt-2">{{ stats.total_donations }} donazioni</div>
+    <div class="text-lg text-gray-500 mt-2">{{ campaign.total_donations }} donazioni</div>
 
     <div class="mt-8 gap-3 flex flex-col">
         <a class="block btn-primary"
