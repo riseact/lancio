@@ -1,7 +1,7 @@
 {% if supporter %}
 <div id="avatarButton" type="button" class="relative bg-gray-100 rounded-full cursor-pointer" data-dropdown-toggle="userDropdown" data-dropdown-placement="bottom-start">
   {% if supporter.image %}
-  <img class="w-8 h-8 rounded-full object-cover object-center" src="{{ supporter.image.file.url }}" alt="{{ supporter }}" />
+  <img class="w-8 h-8 rounded-full object-cover object-center" src="{{ supporter.image.url }}" alt="{{ supporter }}" />
   {% else %}
   <span class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full dark:bg-gray-600 text-sm font-medium text-gray-600 dark:text-gray-300">{{supporter.initial}}</span>
   {% endif %}

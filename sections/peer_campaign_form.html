@@ -37,10 +37,11 @@
         <div class="col-span-4">
           <label class="cursor-pointer w-full flex">
             <img id="image_preview"
-                 class="bg-gray-200 border w-16 h-16 mx-4 ml-auto rounded-full object-cover object-center"
-                 src="{{ form.peer_supporter_image.value().url or '' }}"
+                 class="bg-gray-200 border w-16 h-16 mx-4 ml-auto rounded-full object-cover object-center{% if not supporter.image %} hidden{% endif %}"
+                 src="{% if supporter.image %}{{ supporter.image.url }}{% endif %}"
                  alt="{{ supporter }}"/>
- 
+            <span id="image_placeholder" class="ml-auto flex border items-center justify-center w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600 text-lg font-medium text-gray-600 dark:text-gray-300{% if supporter.image %} hidden{% endif %}">{{supporter.initial}}</span>
+            
             <input type="file"
                    class="hidden"
                    id="id_peer_supporter_image"
@@ -50,6 +51,21 @@
           <script>
             const imageInput = document.getElementById('id_peer_supporter_image');
             const imagePreview = document.getElementById('image_preview');
+
+            const imagePlaceholder = document.getElementById('image_placeholder');
+
+            const observer = new MutationObserver((changes) => {
+              changes.forEach(change => {
+                if (change.attributeName.includes('src')) {
+                  if (imagePreview.src) {
+                    imagePreview.classList.remove('hidden');
+                    imagePlaceholder.classList.add('hidden');
+                  }
+                }
+              });
+            });
+            observer.observe(imagePreview, { attributes: true });
+
             imageInput.onchange = (e) => {
               const [file] = imageInput.files
               if (file) {

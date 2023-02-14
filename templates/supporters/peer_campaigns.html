@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for peer_campaign in peer_campaigns.all() %}
+            {% for peer_campaign in peer_campaigns %}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" class="px-6 py-4 font-medium text-blue-500 whitespace-nowrap dark:text-white">
                     <a href="{{ peer_campaign.campaign.url }}/{{ peer_campaign.slug }}">{{ peer_campaign.campaign }}</a>
