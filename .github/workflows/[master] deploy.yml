@@ -1,0 +1,12 @@
+name: UPDATE THEME | (master)
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  upgrade:
+      - name: Update service
+        run: |
+          curl -X POST ${{ secrets.THEME_UPGRADER_MASTER_WEBHOOK }}
