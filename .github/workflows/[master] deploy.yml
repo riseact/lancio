@@ -7,6 +7,8 @@ on:
 
 jobs:
   upgrade:
+    runs-on: ubuntu-latest
+    steps:
       - name: Update service
         run: |
           curl -X POST ${{ secrets.THEME_UPGRADER_MASTER_WEBHOOK }}
