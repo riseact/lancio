@@ -34,7 +34,11 @@
           <div class="hidden" id="community" role="tabpanel" aria-labelledby="community-tab">
             {% for peer_campaign in campaign.peer_campaigns %}
             <a href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}" class="flex items-center mb-4 rounded items-space-between mb-4 p-4 hover:bg-gray-100">
+              {% if peer_campaign.supporter.image %}
               <img class="w-12 h-12 mr-4 rounded-full object-cover object-center" src="{{ peer_campaign.supporter.image.file.url }}" alt="{{ peer_campaign.supporter_name }}" />
+              {% else %}
+              <img class="w-12 h-12 mr-4 rounded-full object-cover object-center" src="" alt="{{ peer_campaign.supporter_name }}" />
+              {% endif %}
               <div>
                 <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
                 <p class="text-gray-800 text-md">{{ peer_campaign.custom_message }}</p>
