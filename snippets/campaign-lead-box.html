@@ -1,0 +1,78 @@
+<div class=" border px-5 py-8 sticky top-4">
+    <form method="post" class="bg-white mb-4">
+        {% if lead_form_success %}
+        <p class="block text-center text-green-600 text-md font-medium mb-2">Grazie, ti terremo aggiornato su questa
+            campagna</p>
+        {% else %}
+        <p class="block text-center text-gray-600 text-md font-medium mb-2">Lascia il tuo contatto</p>
+
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold" for="id_first_name">Nome</label>
+            <input
+                class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                type="text" id="id_first_name" name="first_name" value="{{ form.first_name.value() or '' }}" autofocus
+                required />
+            {% if form.first_name.errors %}
+            <p class="text-red-500 p-2 text-sm">{{ form.first_name.errors.as_text() }}</p>
+            {% endif %}
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold" for="id_last_name">Cognome</label>
+            <input
+                class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                type="text" id="id_last_name" name="last_name" value="{{ form.last_name.value() or '' }}" required />
+            {% if form.last_name.errors %}
+            <p class="text-red-500 p-2 text-sm">{{ form.last_name.errors.as_text() }}</p>
+            {% endif %}
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold" for="id_email">Email</label>
+            <input
+                class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                type="text" id="id_email" name="email" value="{{ form.email.value() or '' }}" required />
+            {% if form.email.errors %}
+            <p class="text-red-500 p-2 text-sm">{{ form.email.errors.as_text() }}</p>
+            {% endif %}
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold" for="id_phone">Telefono</label>
+            <input
+                class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                type="text" id="id_phone" name="phone" value="{{ form.phone.value() or '' }}" required />
+            {% if form.phone.errors %}
+            <p class="text-red-500 p-2 text-sm">{{ form.phone.errors.as_text() }}</p>
+            {% endif %}
+        </div>
+
+        <div class="mb-4">
+            {{form.privacy.value()}}
+            <div class="flex">
+                <div class="flex items-center h-5">
+                    <input id="id_privacy" name="privacy" aria-describedby="helper-checkbox-text" type="checkbox"
+                        required
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                </div>
+                <div class="ml-2 text-sm">
+                    <label for="id_privacy" class="font-medium text-gray-900 dark:text-gray-300">Accetto privacy e
+                        condizioni d'uso</label>
+                    <p id="helper-checkbox-text" class="text-xs font-normal text-gray-500 dark:text-gray-300">Puoi
+                        leggerle <a href="#" class="text-blue-400">qua</a></p>
+                </div>
+                {% if form.privacy.errors %}
+                <p class="text-red-500 p-2 text-sm">{{ form.privacy.errors.as_text() }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+
+        <div class="flex items-center justify-between">
+            <button class="btn-primary w-full" type="submit">Iscrivimi</button>
+        </div>
+        {% endif %}
+    </form>
+</div>

@@ -50,7 +50,11 @@
       </div>
     </div>
     <div class="col-span-2 hidden md:block">
+      {% if campaign.is_lead %}
+      {% include "snippets/campaign-lead-box.html" %}
+      {% else %}
       {% include "snippets/campaign-donate-box.html" %}
+      {% endif %}
       
     </div>
   </div>
