@@ -11,7 +11,7 @@
 
 <div class="footer">
   <div class="container py-12 md:py-20">
-    <div class="flex justify-between flex-col md:flex-row">
+    <div class="flex justify-center items-center flex-col gap-3">
       {% for key, b in section.blocks.items() %}
  
         {% if b.type == "links" %}
@@ -27,12 +27,13 @@
             </div>
           </div>
         {% elif b.type == "infos" %}
-          <div class="gap-4">
+          <div class="gap-2 text-center flex flex-col">
             <h5>{{ b.settings.title }}</h5>
             <p class="font-light">{{ b.settings.subtitle }}</p>
           </div>
         {% elif b.type == "image" %}
           <img src="{{ b.settings.image }}"
+               class="w-auto mx-auto"
                alt=""/>
         {% endif %}
  

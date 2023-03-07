@@ -1,3 +1,13 @@
+<style>
+  .header-bg {
+    background-color: {{ section.settings.bg_color}};
+  }
+
+  .header-fg {
+    color: {{ section.settings.fg_color}};
+  }
+</style>
+
 
 <script>
   function headerToggleMenu() {
@@ -10,7 +20,7 @@
   }
 </script>
 
-<div class="border">
+<div class="header-bg">
   <div class="py-5 px-8	lg:container flex justify-between items-center">
     <div class="flex items-center">
       <svg class="w-6 h-6 md:hidden mr-3"
@@ -28,7 +38,7 @@
                alt="{{ organization.name }}"
                style="width: {{ section.settings.logo_width }}px"/>
         {% else %}
-          {{ organization.name }}
+          <span class="header-fg">{{ organization.name }}</span>
         {% endif %}
       </a>
     </div>
@@ -37,18 +47,18 @@
         {% if section.settings.menu %}
           <nav class="hidden md:block">
             {% for item in section.settings.menu.menu_items %}
-              <a class="ml-8 hover:underline"
+              <a class="ml-8 hover:underline header-fg"
                  href="{{ item.link }}">{{ item.label }}</a>
             {% endfor %}
           </nav>
         {% endif %}
         {% if section.settings.main_campaign %}
-          <a class="inline-block btn-primary btn-sm ml-8"
+          <a class="inline-block btn-primary btn-sm ml-8 header-fg"
              href="/campaigns/{{ section.settings.main_campaign.slug }}/donate">
             <span class="text-white">Dona ora</span>
           </a>
         {% endif %}
-        <div class="ml-8">
+        <div class="ml-8 header-fg">
           {% include "snippets/user-menu.html" %}
         </div>
       </div>
@@ -96,6 +106,18 @@
          "id":"main_campaign",
          "type":"campaign_picker",
          "label":"Campagna principale"
+      },
+      {
+         "id":"bg_color",
+         "type":"color_picker",
+         "label":"Colore di sfondo",
+         "default":"#FFFFFF"
+      },
+      {
+         "id":"fg_color",
+         "type":"color_picker",
+         "label":"Colore del testo",
+         "default":"#000000"
       }
    ],
    "locales":{
