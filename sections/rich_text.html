@@ -1,12 +1,30 @@
-<div class="lg:container " >
-    rich text
+<style lang="scss">
+.ql-align-right {
+	text-align: right;
+}
+.ql-align-center {
+	text-align: center;
+}
+.ql-align-left {
+	text-align: left;
+}
+</style>
+
+<div class="md:container py-8 md:py-12 lg:py-16">
+    {{ section.settings.body | safe }}
 </div>
 
 {# djlint:off #}
 {% schema %}
 {
-  "name": "Rich Text",
-  "settings": [],
+  "name": "Rich text",
+  "settings": [
+    {
+      "id": "body",
+      "type": "richtext",
+      "label": "Un contenuto"
+    }
+  ],
   "max_blocks": 0,
   "blocks": [],
   "presets": {

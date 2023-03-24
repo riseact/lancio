@@ -443,6 +443,16 @@ h5 {
   font-weight: 300;
 }
 
+ol {
+  list-style-position: inside;
+  list-style-type: decimal;
+}
+
+ul {
+  list-style-position: inside;
+  list-style-type: disc;
+}
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -942,6 +952,10 @@ h5 {
   width: 100%;
 }
 
+.w-auto {
+  width: auto;
+}
+
 .w-6 {
   width: 1.5rem;
 }
@@ -956,10 +970,6 @@ h5 {
 
 .w-16 {
   width: 4rem;
-}
-
-.w-auto {
-  width: auto;
 }
 
 .w-4 {
@@ -1080,12 +1090,12 @@ h5 {
   gap: 0px;
 }
 
-.gap-5 {
-  gap: 1.25rem;
-}
-
 .gap-2 {
   gap: 0.5rem;
+}
+
+.gap-5 {
+  gap: 1.25rem;
 }
 
 .gap-8 {
@@ -1900,6 +1910,11 @@ h5 {
     padding-right: 12rem;
   }
 
+  .md\:py-12 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
   .md\:pb-0 {
     padding-bottom: 0px;
   }
@@ -1979,6 +1994,11 @@ h5 {
   .lg\:px-0 {
     padding-left: 0px;
     padding-right: 0px;
+  }
+
+  .lg\:py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
   }
 
   .lg\:text-left {
