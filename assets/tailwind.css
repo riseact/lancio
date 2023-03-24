@@ -71,6 +71,14 @@
     @apply text-lg lg:text-xl my-6 !important;
   }
 
+  .richtext ol {
+    @apply text-lg lg:text-xl my-6 !important;
+  }
+
+  .richtext ul {
+    @apply text-lg lg:text-xl my-6 !important;
+  }
+
   .richtext h1 {
     @apply font-light text-4xl !important;
   }
