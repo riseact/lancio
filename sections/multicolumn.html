@@ -11,7 +11,7 @@
           </div>
           {% endif %}
           <h2 class="text-2xl font-light my-5">{{ b.settings.title }}</h2>
-          <p class="text-gray-500">{{ b.settings.content }}</p>
+          <div class="richtext text-black opacity-70">{{ b.settings.content }}</div>
         </div>
       {% endwith %}
     {% endfor %}
@@ -53,7 +53,7 @@
             "default": "Example Title"
           },
           {
-            "type": "textarea",
+            "type": "richtext",
             "id": "content",
             "label": "Content",
             "default": "Some content"

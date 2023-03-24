@@ -41,3 +41,10 @@
     @apply text-center px-12 py-2 md:py-3 md:text-lg font-semibold text-[var(--primary-bg-color)] border border-[var(--primary-bg-color)] rounded-sm;
   }
 }
+
+
+@layer utilities {
+  .richtext p {
+    @apply text-lg lg:text-lg my-6
+  }
+}

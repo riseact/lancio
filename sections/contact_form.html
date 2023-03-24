@@ -6,7 +6,26 @@
 {% schema %}
 {
   "name": "Contact Form",
-  "settings": [],
+  "settings": [
+    {
+      "id":"show_email",
+      "type":"checkbox",
+      "label":"Mostra campo email",
+      "default": true
+    },
+    {
+      "id":"show_phone",
+      "type":"checkbox",
+      "label":"Mostra campo telefono",
+      "default": false
+    },
+    {
+      "id":"show_address",
+      "type":"checkbox",
+      "label":"Mostra campo indirizzo",
+      "default": false
+    }
+  ],
   "max_blocks": 0,
   "blocks": [],
   "presets": {
