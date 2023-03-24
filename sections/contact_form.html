@@ -1,5 +1,132 @@
-<div class="lg:container " >
-    Contact Form
+<script type="text/javascript">
+
+function handleContactForm() {
+  var formElement = document.getElementById("contact_form");
+  document.getElementById("contact_form_errors").innerHTML = "";
+  document.getElementById("contact_form_response").innerHTML = "";
+
+  formElement.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const data = new URLSearchParams();
+    for (const pair of new FormData(formElement)) {
+        data.append(pair[0], pair[1]);
+    }
+
+    console.log(data)
+
+    fetch(formElement.action, {
+        method: formElement.method,
+        body: data,
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+      if (data.error) {
+          document.getElementById("contact_form_errors").innerHTML = "Compila correctemente tutti i campi";
+      } else {
+          document.getElementById("contact_form_response").innerHTML = "Grazie per averci contattato. Ti risponderemo il prima possibile.";
+          formElement.reset();
+      }
+    })
+
+
+    
+  });
+}
+
+window.addEventListener("load", handleContactForm);
+
+</script>
+
+
+
+<div class="py-8 md:py-16 {% if not section.settings.full_witdh %}max-w-screen-sm mx-auto{% endif %}">
+    {% if section.settings.content %}
+      <div class="richtext text-black opacity-70">{{ section.settings.content }}</div>
+    {% endif %}
+
+    {% for b in section.block_order %}
+      {% with b=section.blocks[b] %}
+        {% if b.type == 'contact_form' %}
+            <form method="post" action="/contact/" id="contact_form">
+              <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+
+              <div class="flex gap-2 w-full">
+                <div class="my-2 flex-1">
+                  <label class="block" for="id_first_name">Nome</label>
+                  <input class="input"
+                        type="text"
+                        id="id_first_name"
+                        name="first_name"
+                        value=""
+                        required/>
+                </div>
+
+                <div class="my-2 flex-1">
+                  <label class="block" for="id_last_name">Cognome</label>
+                  <input class="input"
+                        type="text"
+                        id="id_last_name"
+                        name="last_name"
+                        value=""
+                        required/>
+                </div>
+              </div>
+
+              <div class="my-2">
+                <label class="block {% if not b.settings.show_email %}hidden{% endif %}" for="id_name">Il tuo indirizzo email</label>
+                <input class="input"
+                      type="{% if not b.settings.show_email %}hidden{% else %}email{% endif %}"
+                      id="id_email"
+                      name="email"
+                      value=""
+                      {% if not b.settings.show_email %}required{% endif %}/>
+              </div>
+
+              <div class="my-2">
+                <label class="block {% if not b.settings.show_phone %}hidden{% endif %}" for="id_name">Il tuo telefono</label>
+                <input class="input "
+                      type="{% if not b.settings.show_phone %}hidden{% else %}text{% endif %}"
+                      id="id_email"
+                      name="email"
+                      value=""
+                      {% if not b.settings.show_phone %}required{% endif %}/>
+              </div>
+
+              <div class="my-2">
+                <label class="block" for="id_name">Il tuo messaggio</label>
+                <textarea class="input"
+                      id="id_message"
+                      name="message"
+                      value=""
+                      required></textarea>
+              </div>
+
+              <div class="my-2 ">
+                <input type="checkbox" id="id_privacy" name="privacy" required/>
+                <label for="id_privacy">
+                  Ho letto e accetto la <a class="link" href="/policies/privacy-policy/" target="_blank">Privacy Policy</a> 
+                  e i <a class="link"  href="/policies/terms-and-conditions/" target="_blank">termini di servizio</a>
+                </label>
+              </div>
+
+              <div class="my-8">
+                <button class="btn btn-primary" type="submit">Invia</button>
+              </div>
+
+              <div id="contact_form_response" class="text-lg"></div>
+              <div id="contact_form_errors" class="text-red-500"></div>
+            </form>
+        {% endif %}
+        {% if b.type == 'paragraph' %}
+          {% if b.settings.content %}
+            <div class="richtext text-black opacity-70">{{ b.settings.content }}</div>
+          {% endif %}
+        {% endif %}
+      {% endwith %}
+    {% endfor %}
 </div>
 
 {# djlint:off #}
@@ -8,26 +135,52 @@
   "name": "Contact Form",
   "settings": [
     {
-      "id":"show_email",
-      "type":"checkbox",
-      "label":"Mostra campo email",
-      "default": true
+      "id": "content",
+      "type": "richtext",
+      "label": "Contenuto",
+      "default": "Usa questo modulo per contattarci. Ti risponderemo il prima possibile."
     },
     {
-      "id":"show_phone",
-      "type":"checkbox",
-      "label":"Mostra campo telefono",
-      "default": false
-    },
-    {
-      "id":"show_address",
-      "type":"checkbox",
-      "label":"Mostra campo indirizzo",
-      "default": false
+      "id": "full_width",
+      "type": "checkbox",
+      "default": false,
+      "label": "Larghezza intera"
     }
   ],
-  "max_blocks": 0,
-  "blocks": [],
+  "max_blocks": 4,
+  "blocks": [
+    {
+       "name": "Form di contatto",
+       "type": "contact_form",
+       "settings": [
+          
+          {
+            "id":"show_email",
+            "type":"checkbox",
+            "label":"Mostra campo email",
+            "default": true
+          },
+          {
+            "id":"show_phone",
+            "type":"checkbox",
+            "label":"Mostra campo telefono",
+            "default": false
+          }
+       ]
+     },
+     {
+       "name": "Paragrafo",
+       "type": "paragraph",
+       "settings": [
+          {
+            "id":"content",
+            "type":"richtext",
+            "label":"Contenuto",
+            "default": ""
+          }
+       ]
+     }
+  ],
   "presets": {
     "settings": {},
     "blocks": []

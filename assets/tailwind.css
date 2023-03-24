@@ -3,29 +3,53 @@
 @tailwind utilities;
 
 @layer base {
-    h1 {
-        @apply font-light text-4xl
-    }
+  h1 {
+    @apply font-light text-4xl;
+  }
 
-    h2 {
-      @apply font-normal text-4xl
-    }
+  h2 {
+    @apply font-normal text-4xl;
+  }
 
-    h4 {
-        @apply font-light text-2xl
-    }
+  h4 {
+    @apply font-light text-2xl;
+  }
 
-    h5 {
-      @apply font-light text-lg
-    }
+  h5 {
+    @apply font-light text-lg;
+  }
 
-    ol {
-      @apply list-decimal list-inside
-    }
+  ol {
+    @apply list-decimal list-inside;
+  }
 
-    ul {
-      @apply list-disc list-inside
-    }
+  ul {
+    @apply list-disc list-inside;
+  }
+
+  .ql-align-right {
+    text-align: right;
+  }
+
+  .ql-align-center {
+    text-align: center;
+  }
+
+  .ql-align-left {
+    text-align: left;
+  }
+
+  a {
+    @apply text-blue-500
+  }
+
+  .input {
+    @apply border rounded w-full text-sm p-2 text-gray-700 focus:outline-none;
+  }
+
+  textarea.input {
+    @apply min-h-[300px]
+  }
 }
 
 @layer components {
@@ -34,7 +58,7 @@
   }
 
   .btn-sm {
-    @apply px-4 md:px-8 py-1 md:py-2 md:text-sm
+    @apply px-4 md:px-8 py-1 md:py-2 md:text-sm;
   }
 
   .btn-outline {
@@ -42,29 +66,28 @@
   }
 }
 
-
 @layer utilities {
   .richtext p {
-    @apply text-lg lg:text-xl my-6 !important
+    @apply text-lg lg:text-xl my-6 !important;
   }
 
   .richtext h1 {
-    @apply font-light text-4xl !important
+    @apply font-light text-4xl !important;
   }
 
   .richtext h2 {
-    @apply font-light text-3xl !important
+    @apply font-light text-3xl !important;
   }
 
   .richtext h3 {
-    @apply font-light text-2xl !important
+    @apply font-light text-2xl !important;
   }
 
   .richtext h4 {
-      @apply font-light text-xl !important
+    @apply font-light text-xl !important;
   }
 
   .richtext h5 {
-    @apply font-light text-lg !important
+    @apply font-light text-lg !important;
   }
 }

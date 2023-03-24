@@ -1,19 +1,19 @@
 
-<div class="md:container py-4 md:py-8 px-5 md:px-0 richtext">
-  {% if section.settings.body %}
-    {{ section.settings.body | safe }}
+<div class="md:container">
+  {% if section.settings.html %}
+    {{ section.settings.html | safe }}
   {% endif %}
 </div>
 
 {# djlint:off #}
 {% schema %}
 {
-  "name": "Rich text",
+  "name": "Embed HTML",
   "settings": [
     {
-      "id": "body",
-      "type": "richtext",
-      "label": "Un contenuto"
+      "id": "html",
+      "type": "textarea",
+      "label": "Contenuto"
     }
   ],
   "max_blocks": 0,
