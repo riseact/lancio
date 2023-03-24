@@ -1620,17 +1620,47 @@ ul {
 }
 
 .richtext p {
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 1.125rem;
-  line-height: 1.75rem;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
 }
 
 @media (min-width: 1024px) {
   .richtext p {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
   }
+}
+
+.richtext h1 {
+  font-size: 2.25rem !important;
+  line-height: 2.5rem !important;
+  font-weight: 300 !important;
+}
+
+.richtext h2 {
+  font-size: 1.875rem !important;
+  line-height: 2.25rem !important;
+  font-weight: 300 !important;
+}
+
+.richtext h3 {
+  font-size: 1.5rem !important;
+  line-height: 2rem !important;
+  font-weight: 300 !important;
+}
+
+.richtext h4 {
+  font-size: 1.25rem !important;
+  line-height: 1.75rem !important;
+  font-weight: 300 !important;
+}
+
+.richtext h5 {
+  font-size: 1.125rem !important;
+  line-height: 1.75rem !important;
+  font-weight: 300 !important;
 }
 
 .hover\:border-gray-300:hover {
@@ -1924,9 +1954,9 @@ ul {
     padding-right: 12rem;
   }
 
-  .md\:py-12 {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
+  .md\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
 
   .md\:pb-0 {
@@ -2008,11 +2038,6 @@ ul {
   .lg\:px-0 {
     padding-left: 0px;
     padding-right: 0px;
-  }
-
-  .lg\:py-16 {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
   }
 
   .lg\:text-left {

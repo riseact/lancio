@@ -45,6 +45,26 @@
 
 @layer utilities {
   .richtext p {
-    @apply text-lg lg:text-lg my-6
+    @apply text-lg lg:text-xl my-6 !important
+  }
+
+  .richtext h1 {
+    @apply font-light text-4xl !important
+  }
+
+  .richtext h2 {
+    @apply font-light text-3xl !important
+  }
+
+  .richtext h3 {
+    @apply font-light text-2xl !important
+  }
+
+  .richtext h4 {
+      @apply font-light text-xl !important
+  }
+
+  .richtext h5 {
+    @apply font-light text-lg !important
   }
 }
