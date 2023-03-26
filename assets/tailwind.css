@@ -27,17 +27,7 @@
     @apply list-disc list-inside;
   }
 
-  .ql-align-right {
-    text-align: right;
-  }
-
-  .ql-align-center {
-    text-align: center;
-  }
-
-  .ql-align-left {
-    text-align: left;
-  }
+  
 
   a {
     @apply text-blue-500
@@ -63,6 +53,25 @@
 
   .btn-outline {
     @apply text-center px-12 py-2 md:py-3 md:text-lg font-semibold text-[var(--primary-bg-color)] border border-[var(--primary-bg-color)] rounded-sm;
+  }
+
+  .ql-align-right {
+    text-align: right;
+  }
+
+  .ql-align-center {
+    text-align: center;
+  }
+
+  .ql-align-left {
+    text-align: left;
+  }
+
+  .ql-video {
+    width: 100%;
+    height: 56.25vw;
+    max-height: calc(800px / 16 * 9);
+    
   }
 }
 

@@ -673,6 +673,24 @@ textarea.input {
   }
 }
 
+.ql-align-right {
+  text-align: right;
+}
+
+.ql-align-center {
+  text-align: center;
+}
+
+.ql-align-left {
+  text-align: left;
+}
+
+.ql-video {
+  width: 100%;
+  height: 56.25vw;
+  max-height: calc(800px / 16 * 9);
+}
+
 .visible {
   visibility: visible;
 }
