@@ -1,4 +1,4 @@
-<div class=" border px-5 py-8 sticky top-4">
+<div class="border px-5 py-8 {% if campaign.cost_examples|count == 0 %}sticky{% endif %} top-4 bg-white">
     <div class="flex items-end">
         <h3 class="text-gray-800  text-4xl">{{ campaign.total_donated }} €</h3>
         <span class="text-gray-500 ml-2 font-bold text-md">raccolti</span>
@@ -24,7 +24,6 @@
         {% endif %}
 
         {% with url=current_url %}
-        
             {% include 'snippets/share-button.html' %}
         {% endwith %}
     </div>

@@ -11,6 +11,10 @@
     @apply font-normal text-4xl;
   }
 
+  h3 {
+    @apply font-light text-3xl;
+  }
+
   h4 {
     @apply font-light text-2xl;
   }
@@ -106,5 +110,9 @@
 
   .richtext h5 {
     @apply font-light text-lg !important;
+  }
+
+  ul.campaign-tabs {
+    @apply list-none !important;
   }
 }

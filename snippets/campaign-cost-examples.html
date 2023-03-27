@@ -1,0 +1,9 @@
+
+<div class="flex flex-col gap-5 my-5">
+    {% for cost_example in campaign.cost_examples %}
+        <div class="border px-5 py-8">
+            <div class="text-3xl font-bold text-primary">{{cost_example.amount}} €</div>
+            <div class="my-2">{{cost_example.description}}</div>
+        </div>
+    {% endfor %}
+</div>

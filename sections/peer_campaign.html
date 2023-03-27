@@ -7,7 +7,7 @@
            alt="{{ campaign.title }}"
            class="object-cover h-96 w-full rounded-lg"/>
       <div class="mt-8 mb-4 border-b border-gray-200 dark:border-gray-700">
-        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center"
+        <ul class="list-none flex flex-wrap -mb-px text-sm font-medium text-center"
             id="myTab"
             data-tabs-toggle="#myTabContent"
             role="tablist">
@@ -21,18 +21,6 @@
                     aria-controls="profile"
                     aria-selected="false">
               Campagna
-            </button>
-          </li>
-          <li class="mr-2"
-              role="presentation">
-            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                    id="dashboard-tab"
-                    data-tabs-target="#dashboard"
-                    type="button"
-                    role="tab"
-                    aria-controls="dashboard"
-                    aria-selected="false">
-              Aggiornamenti
             </button>
           </li>
           <li class="mr-2"
@@ -75,7 +63,7 @@
              role="tabpanel"
              aria-labelledby="dashboard-tab">
           <p class="text-sm text-gray-500 dark:text-gray-400">
-            This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.
+            
           </p>
         </div>
         <div class="hidden"
@@ -83,7 +71,7 @@
              role="tabpanel"
              aria-labelledby="settings-tab">
           <p class="text-sm text-gray-500 dark:text-gray-400">
-            This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.
+
           </p>
         </div>
       </div>
@@ -94,7 +82,7 @@
           <div class="flex items-end items-space-between mb-4">
             <div>
               <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
-              <h3 class="text-gray-800 text-md">sta raccogliendo per</h3>
+              <p class="text-gray-800 text-md">sta raccogliendo per</p>
             </div>
             {% if peer_campaign.supporter.image %}
               <img class="w-12 h-12 ml-auto rounded-full object-cover object-center"
@@ -113,10 +101,6 @@
           {% if campaign.goal %}<span class="text-gray-500 ml-2 font-bold text-md">di {{ campaign.goal }} €</span>{% endif %}
         </div>
 
-        <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 my-4">
-          <div class="bg-[color:var(--primary-bg-color)] h-1.5 rounded-full"
-               style="width: 45%"></div>
-        </div>
  
         <div class="text-sm text-gray-500">{{ stats.total_donations }} donazioni</div>
 

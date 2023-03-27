@@ -431,6 +431,12 @@ h2 {
   font-weight: 400;
 }
 
+h3 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 300;
+}
+
 h4 {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -673,24 +679,6 @@ textarea.input {
   }
 }
 
-.ql-align-right {
-  text-align: right;
-}
-
-.ql-align-center {
-  text-align: center;
-}
-
-.ql-align-left {
-  text-align: left;
-}
-
-.ql-video {
-  width: 100%;
-  height: 56.25vw;
-  max-height: calc(800px / 16 * 9);
-}
-
 .visible {
   visibility: visible;
 }
@@ -895,6 +883,10 @@ textarea.input {
   margin-right: 0.25rem;
 }
 
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
 .block {
   display: block;
 }
@@ -1065,6 +1057,10 @@ textarea.input {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.list-none {
+  list-style-type: none;
 }
 
 .appearance-none {
@@ -1511,6 +1507,11 @@ textarea.input {
   line-height: 1.75rem;
 }
 
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -1736,6 +1737,10 @@ textarea.input {
   font-size: 1.125rem !important;
   line-height: 1.75rem !important;
   font-weight: 300 !important;
+}
+
+ul.campaign-tabs {
+  list-style-type: none !important;
 }
 
 .hover\:border-gray-300:hover {

@@ -1,0 +1,10 @@
+{
+    "name": "thankyou",
+    "sections": {
+        "main_thankyou": {
+            "type": "main_thankyou",
+            "settings": {}
+        }
+    },
+    "order": ["main_thankyou"]
+}

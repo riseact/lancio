@@ -1,0 +1,96 @@
+
+<div class="max-w-screen-sm mx-auto mb-10 mt-5">
+  
+      {% if checkout_campaign.cover %}
+        <img src="{{ checkout_campaign.cover.full }}"
+            alt="{{ checkout_campaign.title }}"
+            class="object-cover h-72 md:h-96 w-full mb-5"/>
+      {% endif %}
+
+      {% if checkout_supporter.first_name %}
+        <h2>Grazie, {{ checkout_supporter.first_name }}! La tua generosità fa la differenza!</h2>
+
+        <p class="text-lg mt-5">
+          La tua donazione di {{ checkout_donation.amount }} € è stata ricevuta.
+        </p>
+
+        <p class="text-lg mt-5">
+          {{ checkout_supporter.first_name }}, siamo profondamente grati per il tuo contributo. Grazie a te, siamo un passo più vicini a raggiungere i nostri obiettivi e a fare la differenza nel mondo. 
+        </p>
+
+        <p class="text-lg mt-5">
+          Grazie di cuore!
+        </p>
+      {% else %}
+        <h2>Grazie! La tua generosità fa la differenza!</h2>
+
+        <p class="text-lg mt-5">
+          La tua donazione di {{ checkout_donation.amount }} € è stata ricevuta.
+        </p>
+
+        <p class="text-lg mt-5">
+          Siamo profondamente grati per il tuo contributo. Grazie a te, siamo un passo più vicini a raggiungere i nostri obiettivi e a fare la differenza nel mondo. 
+        </p>
+
+        <p class="text-lg mt-5">
+          Grazie di cuore!
+        </p>
+      {% endif %}
+
+
+      <h3 class="mt-8">Vogliamo sentire la tua voce!</h3>
+
+
+      {% if not message_published %}
+        <p class="my-5">
+          {{checkout_supporter.first_name}} saremmo felici di sentire il tuo pensiero sulla causa che hai scelto di sostenere. Se lo desideri, possiamo anche pubblicare il tuo messaggio sulla pagina della campagna per ispirare e motivare altri a unirsi a noi!
+        </p>
+
+        <form method="post">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}"/>
+            <label for="id_message" class="block text-sm font-medium text-gray-700">Il tuo messaggio</label>
+            <textarea class="input"
+                    type="text"
+                    id="id_message"
+                    name="message"
+                    required></textarea>
+            
+            <div class="mt-5">
+              <input type="checkbox" id="id_accept_publication" name="accept_publication">
+              <label for="id_accept_publication">Pubblica il mio messaggio sulla pagina della campagna</label>
+            </div>
+
+            <div class="mt-5">
+              <button type="submit" class="btn btn-primary">Invia</button>
+            </div>
+
+            <div class="my-10">
+              <a href="{{ checkout_campaign_url }}">Torna alla pagina della campagna</a>
+            </div>
+        </form>
+      {% else %}
+          <p class="my-5">
+            Grazie {{ checkout_supporter.first_name}}, per aver condiviso il tuo pensiero con noi! Lo apprezziamo molto e, se hai scelto di renderlo pubblico, il tuo messaggio apparirà presto sulla pagina della campagna.
+          </p>
+
+          <div class="my-10">
+            <a class="btn btn-primary  inlineblock" href="{{ checkout_campaign_url }}">Torna alla pagina della campagna</a>
+          </div>
+
+          {% with url=campaign_url %}
+            {% include 'snippets/share-button.html' %}
+        {% endwith %}
+      {% endif %}
+  </div>
+</div>
+
+{# djlint:off #}
+{% schema %}
+  {
+  "name": "Thank You Page Details",
+  "limit": 1,
+  "settings": [],
+  "locales": {},
+  "templates": ["thankyou"]
+  }
+{% endschema %}

@@ -8,45 +8,74 @@
             alt="{{ campaign.title }}"
             class="object-cover h-72 md:h-96 w-full "/>
       {% endif %}
+
       <div class="md:hidden mt-5">
         {% include "snippets/campaign-donate-box.html" %}
       </div>
 
       <div class="mt-8 mb-4 border-b border-gray-200 dark:border-gray-700">
-        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
+        <ul class="campaign-tabs flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#campaignTabContent" role="tablist">
+          <li class="mr-2" role="presentation">
+              <button class="inline-block p-4 border-b-2 rounded-t-lg" id="campaign-tab" data-tabs-target="#campaign" type="button" role="tab" aria-controls="campaign" aria-selected="false">Campagna</button>
+          </li>
+
+          {% if campaign.public_donations_count > 0 %}
             <li class="mr-2" role="presentation">
-                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Campagna</button>
+                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="donations-tab" data-tabs-target="#donations" type="button" role="tab" aria-controls="donations" aria-selected="false">Donazioni</button>
             </li>
+          {% endif %}
             
-            {% if campaign.allow_peer_to_peer %}
-              <li role="presentation">
-                  <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="community-tab" data-tabs-target="#community" type="button" role="tab" aria-controls="community" aria-selected="false">Community</button>
-              </li>
-            {% endif %}
+          {% if campaign.allow_peer_to_peer %}
+            <li role="presentation">
+                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="community-tab" data-tabs-target="#community" type="button" role="tab" aria-controls="community" aria-selected="false">Community</button>
+            </li>
+          {% endif %}
         </ul>
       </div>
-      <div id="myTabContent">
-        <div class="hidden" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+      <div id="campaignTabContent">
+        <div class="hidden" id="campaign" role="tabpanel" aria-labelledby="campaign-tab">
           <div class="md:mt-10 md:text-xl font-light leading-10">{{ campaign.content }}</div>
         </div>
-        
+
+        {% if campaign.public_donations_count > 0 %}
+          <div class="hidden" id="donations" role="tabpanel" aria-labelledby="donations-tab">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for donation in campaign.public_donations %}
+              <div class="border py-4 px-8">
+                <h5 class="font-bold">{{ donation.supporter.full_name}}</h5>
+                {{ donation.amount }} €
+
+                <p class="text-gray-600 text-sm mt-3">{{ donation.message }}</p>
+              </div>
+            {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+
         {% if campaign.allow_peer_to_peer %}
           <div class="hidden" id="community" role="tabpanel" aria-labelledby="community-tab">
             {% for peer_campaign in campaign.peer_campaigns %}
-            <a href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}" class="flex items-center mb-4 rounded items-space-between mb-4 p-4 hover:bg-gray-100">
-              {% if peer_campaign.supporter.image %}
-              <img class="w-12 h-12 mr-4 rounded-full object-cover object-center" src="{{ peer_campaign.supporter.image.file.url }}" alt="{{ peer_campaign.supporter_name }}" />
-              {% else %}
-              <img class="w-12 h-12 mr-4 rounded-full object-cover object-center" src="" alt="{{ peer_campaign.supporter_name }}" />
-              {% endif %}
-              <div>
-                <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
-                <p class="text-gray-800 text-md">{{ peer_campaign.custom_message }}</p>
+              <a href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}" class="flex items-center mb-4 rounded items-space-between mb-4 p-4 hover:bg-gray-100">
+                {% if peer_campaign.supporter.image %}
+                <img class="w-12 h-12 mr-4 rounded-full object-cover object-center" src="{{ peer_campaign.supporter.image.file.url }}" alt="{{ peer_campaign.supporter_name }}" />
+                {% else %}
+                <img class="w-12 h-12 mr-4 rounded-full object-cover object-center" src="" alt="{{ peer_campaign.supporter_name }}" />
+                {% endif %}
+                <div>
+                  <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
+                  <p class="text-gray-800 text-md">{{ peer_campaign.custom_message }}</p>
+                </div>
+                <div class="flex flex-col items-end ml-auto">
+                  <h3 class="text-gray-800  text-2xl">{{ campaign.total_donated }} €</h3>
+                </div>
+              </a>
+            {% else %}
+              <div class="text-center my-5">
+                <p class="text-gray-800 text-md mb-10">Non è ancora stata avviata nessuna campagna di raccolta fondi personale</p>
+                <a class="btn-primary mt-2"
+                  href="/campaigns/{{ campaign.slug }}/fundraise">Inzia una campagna di raccolti fondi per questa causa</a>
               </div>
-              <div class="flex flex-col items-end ml-auto">
-                <h3 class="text-gray-800  text-2xl">{{ campaign.total_donated }} €</h3>
-              </div>
-            </a>
             {% endfor %}
           </div>
         {% endif %}
@@ -55,11 +84,11 @@
     </div>
     <div class="col-span-2 hidden md:block">
       {% if campaign.is_lead %}
-      {% include "snippets/campaign-lead-box.html" %}
+        {% include "snippets/campaign-lead-box.html" %}
       {% else %}
-      {% include "snippets/campaign-donate-box.html" %}
+        {% include "snippets/campaign-donate-box.html" %}
+        {% include "snippets/campaign-cost-examples.html" %}
       {% endif %}
-      
     </div>
   </div>
 </div>
