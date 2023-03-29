@@ -3,6 +3,11 @@ module.exports = {
   content: [
     "./**/*.html"
   ],
+  safelist: [
+    {
+      pattern: /ql-.*/,
+    },
+  ],
   theme: {
     extend: {
       container: {
