@@ -43,7 +43,7 @@
             <label class="block text-gray-700 text-sm font-bold" for="id_phone">Telefono</label>
             <input
                 class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-                type="text" id="id_phone" name="phone" value="{{ form.phone.value() or '' }}" required />
+                type="text" id="id_phone" name="phone" value="{{ form.phone.value() or '' }}" />
             {% if form.phone.errors %}
             <p class="text-red-500 p-2 text-sm">{{ form.phone.errors.as_text() }}</p>
             {% endif %}
@@ -57,8 +57,10 @@
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                 </div>
                 <div class="ml-2 text-sm">
-                    <label for="id_privacy" class="font-medium text-gray-900 dark:text-gray-300">Accetto privacy e
-                        condizioni d'uso</label>
+                    <label for="id_privacy" class="font-medium text-gray-900 dark:text-gray-300">Ho letto e accetto 
+                        <a href="/policies/privacy-policy/" target="_blank">la privacy policy</a> e
+                        <a href="/policies/terms-of-service/" target="_blank">le codizioni d'uso</a>
+                    </label>
                     <p id="helper-checkbox-text" class="text-xs font-normal text-gray-500 dark:text-gray-300">Puoi
                         leggerle <a href="#" class="text-blue-400">qua</a></p>
                 </div>
