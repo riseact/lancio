@@ -15,7 +15,10 @@
 
             <div class="mt-10">
               <a class="btn-outline w-full block mb-4 md:w-auto md:inline-block" href="{{ campaign.url }}">Sopri di più</a>
-              <a class="btn-primary w-full block md:w-auto md:inline-block" href="{{ campaign.url }}/donate">Dona ora</a>
+
+              {% if not campaign.is_lead %}
+                <a class="btn-primary w-full block md:w-auto md:inline-block" href="{{ campaign.url }}/donate">Dona ora</a>
+              {% endif %}
             </div>  
           </div>
           
