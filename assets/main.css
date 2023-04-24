@@ -1630,11 +1630,6 @@ textarea.input {
   color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 
-.text-blue-400 {
-  --tw-text-opacity: 1;
-  color: rgb(96 165 250 / var(--tw-text-opacity));
-}
-
 .text-\[color\:var\(--primary-bg-color\)\] {
   color: var(--primary-bg-color);
 }

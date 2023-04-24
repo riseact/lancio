@@ -1,9 +1,13 @@
 
-<div class="flex flex-col gap-5 my-5">
-    {% for cost_example in campaign.cost_examples %}
-        <div class="border px-5 py-8">
-            <div class="text-3xl font-bold text-primary">{{cost_example.amount}} €</div>
-            <div class="my-2">{{cost_example.description}}</div>
-        </div>
-    {% endfor %}
-</div>
+{% if campaign.cost_examples %}
+    <div class="flex flex-col gap-5 my-5 px-5">
+        <h4>Ecco come puoi aiutare</h4>
+        {% for cost_example in campaign.cost_examples %}
+            <div class=" py-4">
+                <div class="text-xm text-primary">con</div>
+                <div class="text-3xl font-bold text-primary">{{cost_example.amount}} €</div>
+                <div class="my-2">{{cost_example.description}}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

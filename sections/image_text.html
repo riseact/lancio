@@ -1,4 +1,4 @@
-<div class="py-10 md:py-20">
+<div class="py-10 md:py-20" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.fg_color }}">
     <div class="container flex flex-col md:flex-row items-center">
         {% if section.settings.image_position == "left" %}
           <div class="w-full md:w-1/2  flex justify-center items-center">
@@ -9,7 +9,7 @@
         <div class="w-full md:w-1/2 flex justify-center items-center {% if section.settings.image_position == 'left' %}pt-10{% else %}pb-10{% endif %}">
             <div class="md:px-20">
                 <h1 class="text-2xl lg:text-4xl font-light">{{ section.settings.title }}</h1>
-                <div class="richtext text-black opacity-70">{{ section.settings.content }}</div>
+                <div class="richtext opacity-70" >{{ section.settings.content }}</div>
 
                 {% if section.settings.button_label and section.settings.button_link %}
                     <a class="inline-block btn-primary" href="{{ section.settings.button_link }}">
@@ -74,6 +74,18 @@
       "id": "button_link",
       "type": "text",
       "label": "Button Link"
+    },
+    {
+        "id":"bg_color",
+        "type":"color_picker",
+        "label":"Colore di sfondo",
+        "default":"#FFFFFF"
+    },
+    {
+        "id":"fg_color",
+        "type":"color_picker",
+        "label":"Colore del testo",
+        "default":"#666"
     }
 
   ],
