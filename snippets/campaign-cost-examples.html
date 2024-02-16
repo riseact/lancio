@@ -5,7 +5,11 @@
         <div class="mt-5 flex flex-col gap-5">
             {% for cost_example in campaign.cost_examples %}
                 <div>
-                    <img src="{{cost_example.image}}" alt="{{cost_example.description}}" class="w-max object-cover">
+                    {% if cost_example.image %}
+                        <div class="w-full aspect-video h-[180px] bg-red-100 relative">
+                            <img src="{{cost_example.image}}" alt="{{cost_example.description}}" class="object-cover w-full h-full absolute">
+                        </div>
+                    {% endif %}
                     <div class="text-xm text-primary">con</div>
                     <div class="text-3xl font-bold text-primary">{{cost_example.amount}} €</div>
                     <div class="my-2">{{cost_example.description}}</div>

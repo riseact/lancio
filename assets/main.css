@@ -933,6 +933,10 @@ textarea.input {
   display: none;
 }
 
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
 .h-6 {
   height: 1.5rem;
 }
@@ -1008,6 +1012,26 @@ textarea.input {
 .h-max {
   height: -moz-max-content;
   height: max-content;
+}
+
+.h-\[180px\] {
+  height: 180px;
+}
+
+.h-\[120px\] {
+  height: 120px;
+}
+
+.max-h-\[200px\] {
+  max-height: 200px;
+}
+
+.max-h-\[120px\] {
+  max-height: 120px;
+}
+
+.max-h-\[180px\] {
+  max-height: 180px;
 }
 
 .w-full {
@@ -1333,6 +1357,16 @@ textarea.input {
 .bg-gray-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+}
+
+.bg-red-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 202 202 / var(--tw-bg-opacity));
+}
+
+.bg-red-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 226 226 / var(--tw-bg-opacity));
 }
 
 .bg-cover {
