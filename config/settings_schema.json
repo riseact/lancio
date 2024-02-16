@@ -1,5 +1,16 @@
 [
   {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "default": ""
+      }
+    ]
+  },
+  {
     "name": "Colors",
     "settings": [
       {
@@ -90,5 +101,4 @@
       }
     ]
   }
-
 ]
