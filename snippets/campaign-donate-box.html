@@ -1,20 +1,30 @@
-<div class="px-5 py-8 {% if campaign.cost_examples|count == 0 %}sticky{% endif %} top-4 bg-white">
-    <div class="flex items-end">
-        <h3 class="text-gray-800  text-4xl">{{ campaign.total_donated }} €</h3>
-        <span class="text-gray-500 ml-2 font-bold text-md">raccolti</span>
-        {% if campaign.is_goal_enabled and campaign.goal %}<span class="text-gray-500 ml-2 font-bold text-md">di {{ campaign.goal }} €</span>{% endif %}
-    </div>
+<div class="px-5 {% if campaign.cost_examples|count == 0 %}sticky{% endif %} top-4 bg-white">
+    
 
     {% if campaign.is_goal_enabled and campaign.goal %}
-        <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 my-4">
-            <div class="bg-[color:var(--primary-bg-color)] h-1.5 rounded-full"
-                style="width: 45%"></div>
+        <div class="mb-10">
+            {% if section.settings.hide_total_donated %}
+                <div class="flex gap-2 items-end">
+                    <div class="text-3xl font-bold">{{ campaign.goal|int }}€ </div>
+                    <div class="pb-1 text-sm text-gray-500 ">obiettivo di raccolta</div>
+                </div>
+            {% else %}
+                <div class="flex gap-2 items-end">
+                    <div class="text-3xl font-bold">{{ campaign.total_donated|int }}€ </div>
+                    <div class="pb-1 text-sm text-gray-500 ">raccolti su un obiettivo di {{ campaign.goal|int }}€</div>
+                </div>
+            {% endif %}
+            <div class="w-full bg-gray-200 rounded-full h-1.5 my-4">
+                <div class="bg-[color:var(--primary-bg-color)] h-1.5 rounded-full"
+                    style="width: {{ campaign.goal_percentage }}%"></div>
+            </div>
+            {% if not section.settings.hide_total_donations %}
+                <div class="pb-1 text-md text-gray-500 dark:text-gray-400">{{campaign.total_donations}} donazioni</div>
+            {% endif %}
         </div>
     {% endif %}
 
-    <div class="text-lg text-gray-500 mt-2">{{ campaign.total_donations }} donazioni</div>
-
-    <div class="mt-8 gap-3 flex flex-col">
+    <div class="gap-3 flex flex-col">
         <a class="block btn-primary"
            href="/campaigns/{{ campaign.slug }}/donate">Dona ora</a>
 
