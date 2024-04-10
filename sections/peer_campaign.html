@@ -1,123 +1,86 @@
+<div class="container mx-auto mb-20">
+  <h1 class="my-5 font-bold md:my-10">{{ campaign.title }}</h1>
+  <div class="grid grid-cols-9 gap-8">
+    <div class="col-span-9 lg:col-span-6">
+      {% if campaign.cover %}
+        <img src="{{ campaign.cover.large }}"
+             alt="{{ campaign.title }}"
+             class="object-cover h-72 md:h-96 w-full rounded-xl" />
+      {% endif %}
 
-<div class="container mx-aut mb-20">
-  <h1 class="mt-10 mb-10">{{ campaign.title }}</h1>
-  <div class="grid grid-cols-7 gap-4">
-    <div class="col-span-5">
-      <img src="{{ campaign.cover.full }}"
-           alt="{{ campaign.title }}"
-           class="object-cover h-96 w-full rounded-lg"/>
-      <div class="mt-8 mb-4 border-b border-gray-200 dark:border-gray-700">
-        <ul class="list-none flex flex-wrap -mb-px text-sm font-medium text-center"
-            id="myTab"
-            data-tabs-toggle="#myTabContent"
-            role="tablist">
-          <li class="mr-2"
-              role="presentation">
-            <button class="inline-block p-4 border-b-2 rounded-t-lg"
-                    id="profile-tab"
-                    data-tabs-target="#profile"
-                    type="button"
-                    role="tab"
-                    aria-controls="profile"
-                    aria-selected="false">
-              Campagna
-            </button>
-          </li>
-          <li class="mr-2"
-              role="presentation">
-            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                    id="settings-tab"
-                    data-tabs-target="#settings"
-                    type="button"
-                    role="tab"
-                    aria-controls="settings"
-                    aria-selected="false">
-              Donatori
-            </button>
-          </li>
-        </ul>
-      </div>
-      <div id="myTabContent">
-        <div class="hidden"
-             id="profile"
-             role="tabpanel"
-             aria-labelledby="profile-tab">
-          <figure class="max-w-screen-md mx-auto text-center mt-10">
-            <blockquote>
-              <p class="text-2xl font-medium text-gray-900 dark:text-white">{{ peer_campaign.custom_message }}</p>
-            </blockquote>
-            <figcaption class="flex items-center justify-center mt-6 space-x-3">
-              <img class="w-6 h-6 rounded-full"
-                   src="{{ peer_campaign.supporter_image.url }}"
-                   alt="{{ peer_campaign.supporter_name }}"/>
-              <div class="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
-                <cite class="pr-3 font-medium text-gray-900 dark:text-white">{{ peer_campaign.supporter_name }}</cite>
-                <cite class="pl-3 text-sm font-light text-gray-500 dark:text-gray-400">Fundraiser</cite>
-              </div>
-            </figcaption>
-          </figure>
-          <div class="mt-10 text-xl font-light leading-10">{{ campaign.content }}</div>
-        </div>
-        <div class="hidden"
-             id="dashboard"
-             role="tabpanel"
-             aria-labelledby="dashboard-tab">
-          <p class="text-sm text-gray-500 dark:text-gray-400">
-            
-          </p>
-        </div>
-        <div class="hidden"
-             id="settings"
-             role="tabpanel"
-             aria-labelledby="settings-tab">
-          <p class="text-sm text-gray-500 dark:text-gray-400">
 
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="col-span-2">
-      <div class="shadow-md border rounded-lg px-5 py-8 sticky top-4">
-        {% if peer_campaign %}
-          <div class="flex items-end items-space-between mb-4">
-            <div>
-              <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
-              <p class="text-gray-800 text-md">sta raccogliendo per</p>
-            </div>
-            {% if peer_campaign.supporter.image %}
-              <img class="w-12 h-12 ml-auto rounded-full object-cover object-center"
-                   src="{{ peer_campaign.supporter_image.url }}"
-                   alt="{{ peer_campaign.supporter_name }}"/>
-            {% endif %}
-          </div>
-          <div class="mb-4">
-            <h3 class="text-gray-800 text-2xl">{{ campaign.title }}</h3>
-          </div>
+      <div class="flex gap-5 mt-10">
+        {% if peer_campaign.supporter_image %}
+          <img class="w-12 h-12 rounded-full object-cover object-center"
+                src="{{ peer_campaign.supporter_image }}"
+                alt="{{ peer_campaign.supporter_name }}"/>
         {% endif %}
-
-        <div class="flex items-end">
-          <h3 class="text-gray-800  text-2xl">{{ stats.amount }} €</h3>
-          <span class="text-gray-500 ml-2 font-bold text-md">raccolti</span>
-          {% if campaign.goal %}<span class="text-gray-500 ml-2 font-bold text-md">di {{ campaign.goal }} €</span>{% endif %}
-        </div>
-
- 
-        <div class="text-sm text-gray-500">{{ stats.total_donations }} donazioni</div>
-
-        <div class="mt-8">
-          <a class="block btn-primary mb-2"
-             href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/donate">Dona ora</a>
-          {% if supporter == peer_campaign.supporter %}
-            <a class="block btn-outline w-full mb-2"
-               href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/update">Aggiorna</a>
-          {% endif %}
-          <a class="block btn-outline"
-             href="">Condividi</a>
+        <div>
+          <h3 class="uppercase text-gray-500 text-sm">Informazioni Fundraiser</h3>
+          <h2 class="text-gray-800 text-3xl font-bold">{{ peer_campaign.supporter_name }}</h2>
         </div>
       </div>
+
+      <div class="my-5">
+        <h3 class="text-base uppercase">Perché sto raccogliendo fondi?</h3>
+        <p class="text-lg mt-2">
+          {{ peer_campaign.custom_message }}
+        </p>
+      </div>
+
+      <hr class="mt-5"/>
+
+      <div class="lg:hidden my-5">
+        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
+          {% include "snippets/campaign-donate-box.html" %}
+        {% endwith %}
+      </div>
+
+      
+      {% if campaign.content|length > 2500 %}
+        <div class="md:mt-10 relative max-h-[1000px] overflow-hidden"
+             id="description-container">
+          {{ campaign.content }}
+          <div class="bg-gradient-to-t from-white to-transparent h-40 w-full absolute bottom-0 left-0"></div>
+        </div>
+        <button class="mt-4 text-blue-500 py-2 rounded underline"
+                onclick="toggleDescription()"
+                id="show-all-btn">Mostra tutto</button>
+        <a class="my-10 block btn-primary"
+           href="/campaigns/{{ campaign.slug }}/donate">Dona ora</a>
+      {% else %}
+        <div class="md:mt-10 relative max-h-[1000px] overflow-hidden"
+             id="description-container">{{ campaign.content }}</div>
+      {% endif %}
+
+      {% if campaign.public_donations_count > 0 %}
+        <div class="hidden" id="donations">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for donation in campaign.public_donations %}
+              <div class="border py-4 px-8">
+                <h5 class="font-bold">{{ donation.supporter.full_name }}</h5>
+                {{ donation.amount }} €
+                <p class="text-gray-600 text-sm mt-3 richtext">{{ donation.message }}</p>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="col-span-3 hidden lg:block">
+      {% if campaign.is_lead %}
+        {% include "snippets/campaign-lead-box.html" %}
+      {% else %}
+        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
+          {% include "snippets/campaign-donate-box.html" %}
+        {% endwith %}
+
+        {% include "snippets/campaign-cost-examples.html" %}
+      {% endif %}
     </div>
   </div>
 </div>
+
 
 {# djlint:off #}
 {% schema %}

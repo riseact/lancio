@@ -1,0 +1,73 @@
+
+<div class="w-full max-w-xl mx-auto px-5 pb-10">
+    <h1 class="mb-10">Le mia bacheca</h1>
+
+    <div>
+        <div class="flex justify-between">
+            <h2 class="text-xl">Il mio profilo</h2>
+            <a href="{{ supporter_urls.profile }}"
+               class="text-blue-500">Modifica</a>
+        </div>
+
+        <div>
+            <div class="flex my-5 items-center justify-between">
+                <div>
+                    <h3 class="text-lg">{{ profile.full_name }}</h3>
+                    {% if profile.email %}<p class="text-sm">{{ profile.email }}</p>{% endif %}
+
+                    {% if profile.phone %}<p class="text-sm">{{ profile.phone }}</p>{% endif %}
+                </div>
+                {% if profile.image %}
+                    <img src="{{ profile.image }}"
+                         class="w-16 h-16 rounded-full mr-5"
+                         alt="{{ profile.name }}">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-5" />
+
+    <div>
+        <div class="flex justify-between mb-5">
+            <h2 class="text-xl">Le mie ultime donazioni</h2>
+            <a href="{{ supporter_urls.donations }}"
+               class="text-blue-500">Mostra tutto</a>
+        </div>
+
+        {% if donation|length == 0 %}
+            <p class="text-base mb-5">Non hai effettuato nessuna donazione</p>
+            <a href="/projects/all-campaign" class="btn-primary">Esplora le nostre campagne</a>`
+        {% else %}
+        {% endif %}
+    </div>
+
+    <hr class="my-5" />
+
+    <div>
+        <div class="flex justify-between mb-5">
+            <h2 class="text-xl">Le mie ultime campagne</h2>
+            <a href="{{ supporter_urls.campaigns }}"
+               class="text-blue-500">Mostra tutto</a>
+        </div>
+
+        {% if peer_campaigns|length == 0 %}
+            <p class="text-base mb-5">Non hai ancora organizzato nessuna campagna di raccolta fondi personale</p>
+            <a href="/projects/all-campaign" class="btn-primary">Esplora le nostre campagne</a>
+        {% else %}
+            {% for peer_campaign in peer_campaigns %}
+                <a href="{{ peer_campaign.url }}">
+                    <div class="flex items-center justify-between mb-5 hover:bg-gray-100 p-5 border rounded-xl">
+                        <div class="text-gray-800 flex gap-4">
+                            <img src="{{peer_campaign.campaign.cover.file.url}}" class="w-[100px] rounded-xl"/>
+                            <div>
+                                <h3 class="text-lg">{{ peer_campaign.campaign.title }}</h3>
+                                <p class="text-sm">Totale raccolto: {{ peer_campaign.stats.amount }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>

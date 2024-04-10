@@ -9,6 +9,10 @@ module.exports = {
     },
   ],
   theme: {
+    fontFamily: {
+      'sans': ['Quicksand', 'sans-serif'],
+      'serif': ['Merriweather', 'serif'],
+    },
     extend: {
       container: {
         // you can configure the container to be centered
@@ -17,13 +21,11 @@ module.exports = {
         // or have default horizontal padding
         padding: '1rem',
   
-        // default breakpoints but with 40px removed
         screens: {
           sm: '600px',
-          md: '728px',
-          lg: '984px',
-          xl: '1280px',
-          '2xl': '1320px',
+          md: '984px',
+          lg: '1180px',
+          xl: '1180px',
         }
       }
     }

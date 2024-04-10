@@ -20,8 +20,8 @@
   }
 </script>
 
-<div class="header-bg">
-  <div class="py-5 px-4 md:px-8	lg:container flex justify-between items-center">
+<div class="header-bg font-sans">
+  <div class="py-5 px-4 	lg:container flex justify-between items-center">
 
     <div class="flex items-center">
       <svg class="w-6 h-6 md:hidden mr-3"
@@ -48,21 +48,24 @@
         {% if section.settings.menu %}
           <nav class="hidden md:block">
             {% for item in section.settings.menu.menu_items %}
-              <a class="ml-8 hover:underline header-fg"
+              <a class="ml-5 hover:underline header-fg"
                  href="{{ item.link }}">{{ item.label }}</a>
             {% endfor %}
           </nav>
         {% endif %}
+
+        {% if not section.settings.hide_account %}
+          <div class="header-fg hidden md:block">
+            {% include "snippets/user-menu.html" %}
+          </div>
+        {% endif %}
+
         {% if section.settings.main_campaign %}
-          <a class="inline-block btn-primary btn-sm ml-8 header-fg"
+          <a class="inline-block btn-primary btn-sm ml-5 header-fg"
              href="/campaigns/{{ section.settings.main_campaign.slug }}/donate">
             <span class="text-white">Dona ora</span>
           </a>
         {% endif %}
-
-        <div class="ml-8 header-fg hidden md:block">
-          {% include "snippets/user-menu.html" %}
-        </div>
 
       </div>
         
@@ -120,6 +123,12 @@
          "type":"color_picker",
          "label":"Colore del testo",
          "default":"#000000"
+      },
+      {
+        "id":"hide_account",
+        "type":"checkbox",
+        "label":"Nascondi account utenti",
+        "default": false
       }
    ],
    "locales":{

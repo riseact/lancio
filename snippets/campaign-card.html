@@ -9,13 +9,13 @@
     {% endif %}
     <div class="p-4  h-60 relative">
         <a href="{{ campaign.url }}"
-           class="block hover:text-[var(--primary-bg-color)]">
+           class="block text-[var(--primary-bg-color)]">
             <h3 class="font-bold text-lg">{{ campaign.title }}</h3>
         </a>
         {% if campaign.content %}
             <p class="text-gray-500 text-sm mt-4">{{ campaign.content|striptags|truncate(150)}}</p>
         {% endif %}
-        <div class="grid grid-cols-3 items-center gap-4 items-center mt-10 absolute bottom-5 left-5 right-5">
+        <div class="grid grid-cols-3 items-center gap-4 mt-10 absolute bottom-5 left-5 right-5">
             <a href="/campaigns/{{ campaign.slug }}/donate"
                class="btn-primary btn-sm block md:inline-block col-span-3 md:col-span-1">Dona</a>
             {% if campaign.goal %}

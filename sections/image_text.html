@@ -2,7 +2,7 @@
     <div class="container flex flex-col md:flex-row items-center">
         {% if section.settings.image_position == "left" %}
           <div class="w-full md:w-1/2  flex justify-center items-center">
-              <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="rounded-sm h-[20rem] md:h-[28rem] object-cover"/>
+              <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="rounded-xl h-[20rem] md:h-[28rem] object-cover"/>
           </div>
         {% endif %}
 
@@ -21,7 +21,7 @@
 
         {% if section.settings.image_position == "right" %}
           <div class="w-full md:w-1/2 flex justify-center items-center">
-              <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="rounded-sm  h-[20rem] md:h-[28rem] object-cover"/>
+              <img src="{{ section.settings.image }}" alt="{{ section.settings.title }}" class="rounded-xl  h-[20rem] md:h-[28rem] object-cover"/>
           </div>
         {% endif %}
     </div>

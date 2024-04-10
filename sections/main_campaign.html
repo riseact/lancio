@@ -1,97 +1,140 @@
-
-<div class="container mx-aut mb-20">
-  <h1 class="mt-10 mb-10">{{ campaign.title }}</h1>
-  <div class="grid grid-cols-7 gap-4">
-    <div class="col-span-7 md:col-span-5">
+<div class="container mx-auto mb-20">
+  <h1 class="my-5 font-bold md:my-10">{{ campaign.title }}</h1>
+  <div class="grid grid-cols-9 gap-8">
+    <div class="col-span-10 lg:col-span-6">
       {% if campaign.cover %}
         <img src="{{ campaign.cover.large }}"
-            alt="{{ campaign.title }}"
-            class="object-cover h-72 md:h-96 w-full "/>
+             alt="{{ campaign.title }}"
+             class="object-cover h-72 md:h-96 w-full rounded-xl" />
       {% endif %}
 
-      <div class="md:hidden mt-5">
-        {% include "snippets/campaign-donate-box.html" %}
+      <div class="lg:hidden my-5">
+        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
+          {% include "snippets/campaign-donate-box.html" %}
+        {% endwith %}
       </div>
 
-      <div class="mt-8 mb-4 border-b border-gray-200 dark:border-gray-700">
-        <ul class="campaign-tabs flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#campaignTabContent" role="tablist">
-          <li class="mr-2" role="presentation">
-              <button class="inline-block p-4 border-b-2 rounded-t-lg" id="campaign-tab" data-tabs-target="#campaign" type="button" role="tab" aria-controls="campaign" aria-selected="false">Campagna</button>
-          </li>
-
-          {% if campaign.public_donations_count > 0 %}
-            <li class="mr-2" role="presentation">
-                <button class="inline-block p-4 border-b-2 rounded-t-lg" id="donations-tab" data-tabs-target="#donations" type="button" role="tab" aria-controls="donations" aria-selected="false">Donazioni</button>
-            </li>
-          {% endif %}
-            
-          {% if campaign.allow_peer_to_peer and not campaign.is_lead %}
-            <li role="presentation">
-                <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="community-tab" data-tabs-target="#community" type="button" role="tab" aria-controls="community" aria-selected="false">Community</button>
-            </li>
-          {% endif %}
-        </ul>
-      </div>
-
-      <div id="campaignTabContent">
-        <div class="hidden" id="campaign" role="tabpanel" aria-labelledby="campaign-tab">
-          <div class="md:mt-10 md:text-xl font-light leading-10">{{ campaign.content }}</div>
+      {% if campaign.content|length > 2500 %}
+        <div class="md:mt-10 relative max-h-[1000px] overflow-hidden"
+             id="description-container">
+          {{ campaign.content }}
+          <div class="bg-gradient-to-t from-white to-transparent h-40 w-full absolute bottom-0 left-0"></div>
         </div>
+        <button class="mt-4 text-blue-500 py-2 rounded underline"
+                onclick="toggleDescription()"
+                id="show-all-btn">Mostra tutto</button>
+        <a class="my-10 block btn-primary"
+           href="/campaigns/{{ campaign.slug }}/donate">Dona ora</a>
+      {% else %}
+        <div class="md:mt-10 relative max-h-[1000px] overflow-hidden"
+             id="description-container">{{ campaign.content }}</div>
+      {% endif %}
 
-        {% if campaign.public_donations_count > 0 %}
-          <div class="hidden" id="donations" role="tabpanel" aria-labelledby="donations-tab">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {% if campaign.public_donations_count > 0 %}
+        <div class="hidden"
+             id="donations">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             {% for donation in campaign.public_donations %}
               <div class="border py-4 px-8">
-                <h5 class="font-bold">{{ donation.supporter.full_name}}</h5>
+                <h5 class="font-bold">{{ donation.supporter.full_name }}</h5>
                 {{ donation.amount }} €
-
-                <p class="text-gray-600 text-sm mt-3">{{ donation.message }}</p>
+                <p class="text-gray-600 text-sm mt-3 richtext">{{ donation.message }}</p>
               </div>
             {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if campaign.allow_peer_to_peer %}
+        <hr class="my-5" />
+        <div id="community">
+          <h2 class="text-2xl font-bold  mb-5">Campagne di raccolta fondi personali</h2>
+          {% for peer_campaign in campaign.peer_campaigns %}
+            <a href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}"
+               class="flex items-center rounded items-space-between mb-4 p-4 hover:bg-gray-100">
+              {% if peer_campaign.supporter_image %}
+                <img class="w-12 h-12 mr-4 rounded-full object-cover object-center"
+                     src="{{ peer_campaign.supporter_image }}"
+                     alt="{{ peer_campaign.supporter_name }}" />
+              {% else %}
+                <div class="w-12 h-12 rounded-full bg-[color:var(--primary-color)]">
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                       viewBox="0 0 24 24"
+                       class="w-6 h-6">
+                    <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                  </svg>
+                </div>
+              {% endif %}
+              <div>
+                <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
+                <p class="text-gray-800 text-md">{{ peer_campaign.custom_message }}</p>
+              </div>
+              <div class="flex flex-col items-end ml-auto">
+                <h3 class="text-gray-800  text-lg">{{ peer_campaign.stats.amount|int }}€</h3>
+              </div>
+            </a>
+          {% else %}
+            <div class="my-5">
+              <p class="text-gray-800 text-md mb-10">
+                Non è ancora stata avviata nessuna campagna di raccolta fondi personale
+                <br />
+                Inzia tu, aiuta questa causa!
+              </p>
+              <a class="btn-primary mt-2"
+                 href="/campaigns/{{ campaign.slug }}/fundraise">Inzia una campagna di raccolti fondi per questa causa</a>
             </div>
-          </div>
-        {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
 
-        {% if campaign.allow_peer_to_peer %}
-          <div class="hidden" id="community" role="tabpanel" aria-labelledby="community-tab">
-            {% for peer_campaign in campaign.peer_campaigns %}
-              <a href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}" class="flex items-center mb-4 rounded items-space-between mb-4 p-4 hover:bg-gray-100">
-                {% if peer_campaign.supporter.image %}
-                <img class="w-12 h-12 mr-4 rounded-full object-cover object-center" src="{{ peer_campaign.supporter.image.file.url }}" alt="{{ peer_campaign.supporter_name }}" />
-                {% else %}
-                <img class="w-12 h-12 mr-4 rounded-full object-cover object-center" src="" alt="{{ peer_campaign.supporter_name }}" />
-                {% endif %}
-                <div>
-                  <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
-                  <p class="text-gray-800 text-md">{{ peer_campaign.custom_message }}</p>
-                </div>
-                <div class="flex flex-col items-end ml-auto">
-                  <h3 class="text-gray-800  text-2xl">{{ campaign.total_donated }} €</h3>
-                </div>
-              </a>
-            {% else %}
-              <div class="text-center my-5">
-                <p class="text-gray-800 text-md mb-10">Non è ancora stata avviata nessuna campagna di raccolta fondi personale</p>
-                <a class="btn-primary mt-2"
-                  href="/campaigns/{{ campaign.slug }}/fundraise">Inzia una campagna di raccolti fondi per questa causa</a>
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
-
-      </div>
     </div>
-    <div class="col-span-2 hidden md:block">
+    <div class="col-span-3 hidden lg:block">
       {% if campaign.is_lead %}
         {% include "snippets/campaign-lead-box.html" %}
       {% else %}
-        {% include "snippets/campaign-donate-box.html" %}
+        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
+          {% include "snippets/campaign-donate-box.html" %}
+        {% endwith %}
+
         {% include "snippets/campaign-cost-examples.html" %}
       {% endif %}
     </div>
   </div>
 </div>
+
+<script>
+  function toggleDescription() {
+    var container = document.getElementById('description-container');
+    if (container.classList.contains('max-h-[1000px]')) {
+      container.classList.remove('max-h-[1000px]');
+      container.classList.add('max-h-none');
+      document.getElementById('show-all-btn').innerText = 'Mostra meno';
+    } else {
+      container.classList.add('max-h-[1000px]');
+      container.classList.remove('max-h-none');
+      document.getElementById('show-all-btn').innerText = 'Mostra tutto';
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    console.log('DOMContentLoaded')
+    const container = document.getElementById('description-container');
+    const button = document.getElementById('show-all-btn');
+    const maxHeight = 1000;
+
+    if (container.scrollHeight < maxHeight) {
+      button.classList.remove('hidden');
+    }
+  });
+</script>
+
+<style>
+    #description-container {
+        transition: max-height 0.5s ease-in-out;
+    }
+</style>
+
+
 
 {# djlint:off #}
 {% schema %}

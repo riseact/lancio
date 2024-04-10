@@ -1,33 +1,40 @@
  
 <div class="w-full max-w-md mx-auto mt-16">
     {% if email_sent %}
-    <div method="post" class="bg-white px-8 pt-6 pb-8 mb-4">
-        <h2 class="text-4xl text-center font-extrabold dark:text-white mb-8">Controlla la tua email</h2>
-        <p class="block text-center text-gray-600 text-xl font-medium mb-2">Abbiamo mandato una email a</p>
-        <p class="block text-center text-gray-600 text-xl font-medium mb-2"><span class="p-1 bg-blue-200 rounded">{{ email_sent_to }}</span></p>
-        <p class="block text-center text-gray-600 text-xl font-medium mb-2">Contiene un link per effettuare il login</p>
-    </div>
+        <div method="post"
+             class="bg-white px-8 pt-6 pb-8 mb-4">
+            <h2 class="text-4xl text-center font-extrabold mb-8">Controlla la tua email</h2>
+            <p class="block text-center text-gray-600 text-xl font-medium mb-2">Abbiamo mandato una email a</p>
+            <p class="block text-center text-gray-600 text-xl font-medium mb-2">
+                <span class="p-1 bg-blue-200 rounded">{{ email_sent_to }}</span>
+            </p>
+            <p class="block text-center text-gray-600 text-xl font-medium mb-2">Contiene un link per effettuare il login</p>
+        </div>
     {% else %}
-    <form method="post" class="bg-white px-8 pt-6 pb-8 mb-4">
-        <h2 class="text-4xl text-center font-extrabold dark:text-white mb-8">Accedi</h2>
-        <p class="block text-center text-gray-600 text-md font-medium mb-2">Inserisci la tua email</p>
+        <form method="post"
+              class="bg-white px-8 pt-6 pb-8 mb-4">
+            <h2 class="text-4xl text-center font-extrabold mb-4">Accedi</h2>
+            <p class="text-center text-gray-600 mb-4">
+                Per attivare una campagna di raccolta fondi personale o per accedere alla tua area riservata, inserisci la tua email.
+            </p>
 
-        <input type="hidden"
-               name="csrfmiddlewaretoken"
-               value="{{ csrf_token }}"/>
-    
-        <div class="mb-4">
-            <input class="shadow appearance-none border rounded w-full text-base px-6 py-3.5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                   type="email"
-                   id="id_email"
-                   name="email"
-                   placeholder="Email"
-                   autofocus/>
-        </div>
-        <div class="flex items-center justify-between">
-            <button class="btn-primary w-full"
-                    type="submit">Login</button>
-        </div>
-    </form>
+            <input type="hidden"
+                   name="csrfmiddlewaretoken"
+                   value="{{ csrf_token }}" />
+ 
+            <div class="mb-4">
+                <input type="hidden" name="next" value="{{ form.next.value()|default('') }}" />
+                <input class="shadow appearance-none border rounded w-full text-base px-6 py-3.5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                       type="email"
+                       id="id_email"
+                       name="email"
+                       placeholder="Email"
+                       autofocus />
+            </div>
+            <div class="flex items-center justify-between">
+                <button class="btn-primary w-full"
+                        type="submit">Login</button>
+            </div>
+        </form>
     {% endif %}
 </div>

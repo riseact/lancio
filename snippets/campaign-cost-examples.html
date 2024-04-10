@@ -1,18 +1,19 @@
 
 {% if campaign.cost_examples %}
-    <div class="mt-10 px-5">
-        <h4>Ecco come puoi aiutare</h4>
-        <div class="mt-5 flex flex-col gap-5">
+    <div class="mt-5">
+        <h4 class="text-base font-bold">Ecco come puoi aiutare</h4>
+        <div class="mt-5 flex flex-col gap-6">
             {% for cost_example in campaign.cost_examples %}
-                <div>
+                <div class="border shadow-xl rounded-xl">
                     {% if cost_example.image %}
-                        <div class="w-full aspect-video h-[180px] bg-red-100 relative">
-                            <img src="{{cost_example.image}}" alt="{{cost_example.description}}" class="object-cover w-full h-full absolute">
+                        <div class="w-full aspect-video h-[180px] bg-red-100 relative rounded-t-xl">
+                            <img src="{{cost_example.image}}" alt="{{cost_example.description}}" class="object-cover w-full h-full absolute rounded-t-xl">
                         </div>
                     {% endif %}
-                    <div class="text-xm text-primary">con</div>
-                    <div class="text-3xl font-bold text-primary">{{cost_example.amount}} €</div>
-                    <div class="my-2">{{cost_example.description}}</div>
+                    <div class="px-8 bg-gray-50 py-5 rounded-b-xl">
+                        <div class="text-xl font-bold py-2">{{cost_example.amount}}€</div>
+                        <div class="my-2 text-sm text-gray-800 rounded-b-xl">{{cost_example.description}}</div>
+                    </div>
                 </div>
             {% endfor %}
         </div>

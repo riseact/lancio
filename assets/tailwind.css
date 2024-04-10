@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  html { 
+    @apply text-gray-800; 
+  } 
+
   h1 {
-    @apply font-light text-4xl;
+    @apply text-4xl;
   }
 
   h2 {
@@ -12,15 +16,15 @@
   }
 
   h3 {
-    @apply font-light text-3xl;
+    @apply text-3xl;
   }
 
   h4 {
-    @apply font-light text-2xl;
+    @apply text-2xl;
   }
 
   h5 {
-    @apply font-light text-lg;
+    @apply text-lg;
   }
 
   ol {
@@ -48,15 +52,15 @@
 
 @layer components {
   .btn-primary {
-    @apply text-center px-8 md:px-12 py-2 md:py-3 md:text-lg font-semibold text-[var(--primary-fg-color)] bg-[color:var(--primary-bg-color)] rounded-sm;
+    @apply rounded text-center px-8 md:px-12 py-2 font-semibold text-[var(--primary-fg-color)] bg-[color:var(--primary-bg-color)] ;
   }
 
   .btn-sm {
-    @apply px-4 md:px-8 py-1 md:py-2 md:text-sm;
+    @apply px-4 md:px-8 py-1 md:text-sm rounded;
   }
 
   .btn-outline {
-    @apply text-center px-12 py-2 md:py-3 md:text-lg font-semibold text-[var(--primary-bg-color)] border border-[var(--primary-bg-color)] rounded-sm;
+    @apply text-center px-12 py-2  font-semibold text-[var(--primary-bg-color)] border border-[var(--primary-bg-color)] rounded;
   }
 
   .ql-align-right {
@@ -75,11 +79,14 @@
     width: 100%;
     height: 56.25vw;
     max-height: calc(800px / 16 * 9);
-    
   }
 }
 
 @layer utilities {
+  .text-primary {
+    @apply text-[var(--primary-fg-color)];
+  }
+
   .richtext p {
     @apply text-lg lg:text-xl my-6 !important;
   }
@@ -93,26 +100,27 @@
   }
 
   .richtext h1 {
-    @apply font-light text-4xl !important;
+    @apply text-4xl !important;
   }
 
   .richtext h2 {
-    @apply font-light text-3xl !important;
+    @apply text-3xl !important;
   }
 
   .richtext h3 {
-    @apply font-light text-2xl !important;
+    @apply text-2xl !important;
   }
 
   .richtext h4 {
-    @apply font-light text-xl !important;
+    @apply text-xl !important;
   }
 
   .richtext h5 {
-    @apply font-light text-lg !important;
+    @apply text-lg !important;
   }
 
-  ul.campaign-tabs {
-    @apply list-none !important;
+  .richtext a {
+    @apply text-blue-500 !important;
   }
+
 }

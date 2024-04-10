@@ -1,40 +1,63 @@
-<div class="px-5 {% if campaign.cost_examples|count == 0 %}sticky{% endif %} top-4 bg-white">
+<div class="{% if campaign.cost_examples|count == 0 %}sticky{% endif %} top-4 bg-white">
     
+    <div class="border shadow-xl rounded-xl px-8 py-10">
 
-    {% if campaign.is_goal_enabled and campaign.goal %}
-        <div class="mb-10">
-            {% if section.settings.hide_total_donated %}
-                <div class="flex gap-2 items-end">
-                    <div class="text-3xl font-bold">{{ campaign.goal|int }}€ </div>
-                    <div class="pb-1 text-sm text-gray-500 ">obiettivo di raccolta</div>
-                </div>
-            {% else %}
-                <div class="flex gap-2 items-end">
-                    <div class="text-3xl font-bold">{{ campaign.total_donated|int }}€ </div>
-                    <div class="pb-1 text-sm text-gray-500 ">raccolti su un obiettivo di {{ campaign.goal|int }}€</div>
-                </div>
-            {% endif %}
-            <div class="w-full bg-gray-200 rounded-full h-1.5 my-4">
-                <div class="bg-[color:var(--primary-bg-color)] h-1.5 rounded-full"
-                    style="width: {{ campaign.goal_percentage }}%"></div>
+        {% if campaign.is_goal_enabled and campaign.goal %}
+            <div class="mb-5">
+                {% if hide_total_donated %}
+                    <div class="text-center">
+                        <div class="text-4xl font-bold">{{ campaign.goal|int }} € </div>
+                        <div class="pb-1 text-sm text-gray-500 ">obiettivo di raccolta</div>
+                    </div>
+                {% else %}
+                    <div class="text-center flex flex-col gap-4">
+                        <div class="text-5xl font-bold">
+                            {% if peer_campaign %}
+                                {{ peer_campaign.stats.amount|int }} € 
+                            {% else %}
+                                {{ campaign.total_donated|int }} € 
+                            {% endif %}
+                        </div>
+                        <div class="pb-1 text-base text-gray-500 ">Obiettivo <b>{{ campaign.goal|int }}€</b></div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-1.5 my-4">
+                        <div class="bg-[color:var(--primary-bg-color)] h-1.5 rounded-full"
+                            style="width: {{ [campaign.goal_percentage, 100]|min }}%"></div>
+                    </div>
+                {% endif %}
             </div>
-            {% if not section.settings.hide_total_donations %}
-                <div class="pb-1 text-md text-gray-500 dark:text-gray-400">{{campaign.total_donations}} donazioni</div>
+        {% else %}
+            {% if not hide_total_donated %}
+                <div class="text-center flex flex-col mb-5">
+                    <div class="text-5xl font-bold">
+                        {% if peer_campaign %}
+                            {{ peer_campaign.stats.amount|int }} € 
+                        {% else %}
+                            {{ campaign.total_donated|int }} € 
+                        {% endif %}
+                    </div>
+                    <div class="text-base text-gray-500 ">Raccolti </div>
+                </div>
             {% endif %}
-        </div>
-    {% endif %}
-
-    <div class="gap-3 flex flex-col">
-        <a class="block btn-primary"
-           href="/campaigns/{{ campaign.slug }}/donate">Dona ora</a>
-
-        {% if campaign.allow_peer_to_peer %}
-            <a class="block btn-outline mt-2"
-               href="/campaigns/{{ campaign.slug }}/fundraise">Raccogli donazioni</a>
         {% endif %}
 
-        {% with url=current_url %}
-            {% include 'snippets/share-button.html' %}
-        {% endwith %}
+        <div class="gap-2 flex flex-col">
+            <a class="block btn-primary" href="/campaigns/{{ campaign.slug }}/donate">Dona ora</a>
+
+            {% if campaign.allow_peer_to_peer and not peer_campaign%}
+                <a class="block btn-outline mt-2"
+                href="/campaigns/{{ campaign.slug }}/fundraise">Raccogli donazioni</a>
+            {% endif %}
+
+            {% with url=current_url %}
+                {% include 'snippets/share-button.html' %}
+            {% endwith %}
+        </div>
+        
+        {% if not hide_total_donations and false%}
+            <div class="pb-1 text-md text-gray-500 dark:text-gray-400">{{campaign.total_donations}} donazioni</div>
+        {% endif %}
+
     </div>
+
 </div>
