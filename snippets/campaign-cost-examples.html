@@ -4,17 +4,38 @@
         <h4 class="text-base font-bold">Ecco come puoi aiutare</h4>
         <div class="mt-5 flex flex-col gap-6">
             {% for cost_example in campaign.cost_examples %}
-                <div class="border shadow-xl rounded-xl">
-                    {% if cost_example.image %}
-                        <div class="w-full aspect-video h-[180px] bg-red-100 relative rounded-t-xl">
-                            <img src="{{cost_example.image}}" alt="{{cost_example.description}}" class="object-cover w-full h-full absolute rounded-t-xl">
-                        </div>
+                {% with is_enabled=not cost_example.monitor_quantity or cost_example.available_quantity > 0 %}
+                    {% if is_enabled %}
+                        <a href="/campaigns/{{ campaign.slug }}/donate/?cost_example={{ cost_example.uuid }}">
                     {% endif %}
-                    <div class="px-8 bg-gray-50 py-5 rounded-b-xl">
-                        <div class="text-xl font-bold py-2">{{cost_example.amount}}€</div>
-                        <div class="my-2 text-sm text-gray-800 rounded-b-xl">{{cost_example.description}}</div>
-                    </div>
-                </div>
+                        <div class="border shadow-xl rounded-xl {% if not is_enabled %}opacity-60{% endif %}">
+                            {% if cost_example.image %}
+                                <div class="w-full aspect-video h-[180px] bg-red-100 relative rounded-t-xl">
+                                    <img src="{{cost_example.image}}" alt="{{cost_example.description}}" class="object-cover w-full h-full absolute rounded-t-xl">
+                                </div>
+                            {% endif %}
+                            <div class="px-8 bg-gray-50 py-5 rounded-b-xl text-gray-800">
+                                <div class="py-2 text-xl font-bold">
+                                    {% if cost_example.name %}
+                                        <div>{{cost_example.name}}</div>
+                                    {% endif %}
+                                    <div class="text-2xl">{{cost_example.amount}}€</div>
+                                </div>
+                                <div class="my-2 text-sm text-gray-800 rounded-b-xl">{{cost_example.description}}</div>
+                                {% if cost_example.monitor_quantity %}
+                                    <div class="mt-5 text-sm text-gray-400 font-bold">
+                                        {{cost_example.available_quantity}} / {{cost_example.quantity}} Disponibili
+                                    </div>
+                                        
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    {% if is_enabled %}
+                        </a>
+                    {% endif %}
+                {% endwith %}
+
             {% endfor %}
         </div>
     </div>

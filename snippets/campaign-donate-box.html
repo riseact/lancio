@@ -42,11 +42,11 @@
         {% endif %}
 
         <div class="gap-2 flex flex-col">
-            <a class="block btn-primary" href="/campaigns/{{ campaign.slug }}/donate">Dona ora</a>
+            <a class="block btn-primary" href="/campaigns/{{ campaign.slug }}/donate/">Dona ora</a>
 
             {% if campaign.allow_peer_to_peer and not peer_campaign%}
                 <a class="block btn-outline mt-2"
-                href="/campaigns/{{ campaign.slug }}/fundraise">Raccogli donazioni</a>
+                href="/campaigns/{{ campaign.slug }}/fundraise/">Raccogli donazioni</a>
             {% endif %}
 
             {% with url=current_url %}
@@ -58,6 +58,54 @@
             <div class="pb-1 text-md text-gray-500 dark:text-gray-400">{{campaign.total_donations}} donazioni</div>
         {% endif %}
 
-    </div>
+        {% if campaign.total_donations > 0 %}
+            <div class="mt-5 ">
+                <div class="font-bold mb-3">Ultime donazioni</div>
+                {% for donation in campaign.public_donations[:3] %}
+                    {% include 'snippets/donation-list-item.html' %}
+                {% endfor %}
 
+                <button onclick="openModal('donation-modal')" class="block btn-outline text-sm w-full">Mostra tutte le donazioni</button>
+            </div>
+        {% endif %}
+    </div>
 </div>
+
+
+<script>
+  function toggleDescription() {
+    var container = document.getElementById('description-container');
+    if (container.classList.contains('max-h-[1000px]')) {
+      container.classList.remove('max-h-[1000px]');
+      container.classList.add('max-h-none');
+      document.getElementById('show-all-btn').innerText = 'Mostra meno';
+    } else {
+      container.classList.add('max-h-[1000px]');
+      container.classList.remove('max-h-none');
+      document.getElementById('show-all-btn').innerText = 'Mostra tutto';
+    }
+  }
+
+  function openModal(modalId) {
+    document.getElementById(modalId).classList.remove('hidden')
+    document.getElementsByTagName('body')[0].classList.add('overflow-y-hidden')
+  }
+
+  function closeModal(modalId) {
+    document.getElementById(modalId).classList.add('hidden')
+    document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
+  }
+
+  // Close all modals when press ESC
+  document.onkeydown = function(event) {
+      event = event || window.event;
+      if (event.keyCode === 27) {
+          document.getElementsByTagName('body')[0].classList.remove('overflow-y-hidden')
+          let modals = document.getElementsByClassName('modal');
+          Array.prototype.slice.call(modals).forEach(i => {
+              i.classList.add('hidden')
+          })
+      }
+  };
+
+</script>

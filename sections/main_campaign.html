@@ -12,6 +12,7 @@
         {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
           {% include "snippets/campaign-donate-box.html" %}
         {% endwith %}
+        {% include "snippets/campaign-cost-examples.html" %}
       </div>
 
       {% if campaign.content|length > 2500 %}
@@ -30,28 +31,13 @@
              id="description-container">{{ campaign.content }}</div>
       {% endif %}
 
-      {% if campaign.public_donations_count > 0 %}
-        <div class="hidden"
-             id="donations">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {% for donation in campaign.public_donations %}
-              <div class="border py-4 px-8">
-                <h5 class="font-bold">{{ donation.supporter.full_name }}</h5>
-                {{ donation.amount }} €
-                <p class="text-gray-600 text-sm mt-3 richtext">{{ donation.message }}</p>
-              </div>
-            {% endfor %}
-          </div>
-        </div>
-      {% endif %}
-
       {% if campaign.allow_peer_to_peer %}
         <hr class="my-5" />
         <div id="community">
           <h2 class="text-2xl font-bold  mb-5">Campagne di raccolta fondi personali</h2>
           {% for peer_campaign in campaign.peer_campaigns %}
             <a href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}"
-               class="flex items-center rounded items-space-between mb-4 p-4 hover:bg-gray-100">
+               class="flex items-start rounded items-space-between mb-4 p-4 hover:bg-gray-100">
               {% if peer_campaign.supporter_image %}
                 <img class="w-12 h-12 mr-4 rounded-full object-cover object-center"
                      src="{{ peer_campaign.supporter_image }}"
@@ -66,10 +52,10 @@
                 </div>
               {% endif %}
               <div>
-                <h3 class="text-gray-800 text-md font-bold">{{ peer_campaign.supporter_name }}</h3>
+                <h3 class="text-gray-800 text-xl font-bold">{{ peer_campaign.supporter_name }}</h3>
                 <p class="text-gray-800 text-md">{{ peer_campaign.custom_message }}</p>
               </div>
-              <div class="flex flex-col items-end ml-auto">
+              <div class="flex flex-col items-end ml-4">
                 <h3 class="text-gray-800  text-lg">{{ peer_campaign.stats.amount|int }}€</h3>
               </div>
             </a>
@@ -87,7 +73,50 @@
         </div>
       {% endif %}
 
+      <hr class="my-5" />
+      <div id="comments">
+        <h2 class="text-2xl font-bold  mb-5">Messaggi dai sostenitori</h2>
+        {% for comment in campaign.comments %}
+          <div class="flex items-start rounded items-space-between mb-4 p-4 ">
+            {% if comment.supporter_image and not comment.anonymous %}
+              <img class="w-12 h-12 mr-4 rounded-full object-cover object-center"
+                    src="{{ comment.supporter_image }}"
+                    alt="{{ comment.supporter_name }}" />
+            {% else %}
+              <div class="w-12 h-12 mr-4 flex justify-center items-center rounded-full bg-[color:var(--primary-color)]">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      class="w-6 h-6">
+                  <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                </svg>
+              </div>
+            {% endif %}
+            <div>
+              <h3 class="text-gray-800 text-lg font-bold">
+                {% if comment.anonymous %}
+                  Anonimo
+                {% else %}
+                  {{ comment.supporter_name }}
+                {% endif %}
+                {% if comment.donation_amount %}
+                  <span class="font-normal">ha donato</span> {{ comment.donation_amount }}€
+                {% endif %}
+              </h3>
+
+              <p class="text-gray-800 text-base mt-1">{{ comment.message }}</p>
+              
+              <div class="text-sm text-gray-500 mt-2">
+                {{ comment.create_date.strftime('%d/%m/%Y') }}
+              </div>
+            </div>
+          </div>
+
+        {% else %}
+          Non ci sono ancora messaggi da parte dei sostenitori di questa campagna
+        {% endfor %}
+      </div>
     </div>
+
     <div class="col-span-3 hidden lg:block">
       {% if campaign.is_lead %}
         {% include "snippets/campaign-lead-box.html" %}
@@ -101,6 +130,50 @@
     </div>
   </div>
 </div>
+
+<div id="donation-modal" class="hidden fixed z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4 ">
+    <div class="relative top-5 md:top-20  mx-auto shadow-xl rounded-md bg-white max-w-xl">
+        <div class="flex justify-end p-2">
+            <button onclick="closeModal('donation-modal')" type="button"
+                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <h3 class="font-bold text-center mb-10">Donazioni</h3>
+        <div class="p-6 pt-0  m-5 md:m-15">
+            <div class="max-h-[500px] overflow-auto">
+            {% for donation in campaign.public_donations  %}
+                <div class="flex items-start mb-4 md:px-10 border-b py-3">
+                    <div>
+                        <h3 class="text-gray-800 text-lg font-bold">
+                            {% if not donation.public %}
+                                Anonimo
+                            {% else %}
+                                {{ donation.supporter.full_name }}
+                            {% endif %}
+                            <span class="font-normal">ha donato</span> {{ donation.amount }}€
+                        </h3>
+
+                        <div class="text-sm text-gray-500">
+                            {{ donation.create_date.strftime('%d/%m/%Y') }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+
+            <a class="mb-5 mt-10 block btn-primary" href="/campaigns/{{ campaign.slug }}/donate/">Dona anche tu</a>
+            
+        </div>
+
+    </div>
+</div>
+
 
 <script>
   function toggleDescription() {
@@ -117,12 +190,11 @@
   }
 
   document.addEventListener("DOMContentLoaded", function() {
-    console.log('DOMContentLoaded')
     const container = document.getElementById('description-container');
     const button = document.getElementById('show-all-btn');
     const maxHeight = 1000;
 
-    if (container.scrollHeight < maxHeight) {
+    if (button && container.scrollHeight < maxHeight) {
       button.classList.remove('hidden');
     }
   });
