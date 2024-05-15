@@ -57,8 +57,8 @@
         {% if not hide_total_donations and false%}
             <div class="pb-1 text-md text-gray-500 dark:text-gray-400">{{campaign.total_donations}} donazioni</div>
         {% endif %}
-
-        {% if campaign.total_donations > 0 %}
+        
+        {% if campaign.total_donations > 0 and not hide_donations%}
             <div class="mt-5 ">
                 <div class="font-bold mb-3">Ultime donazioni</div>
                 {% for donation in campaign.public_donations[:3] %}

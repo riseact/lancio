@@ -121,7 +121,7 @@
       {% if campaign.is_lead %}
         {% include "snippets/campaign-lead-box.html" %}
       {% else %}
-        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
+        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations, hide_donations=section.settings.hide_donations%}
           {% include "snippets/campaign-donate-box.html" %}
         {% endwith %}
 
@@ -214,6 +214,11 @@
   "name": "Campaign Details",
   "limit": 1,
   "settings": [
+    {
+      "id": "hide_donations",
+      "type": "checkbox",
+      "label": "Hide donations"
+    },
     {
       "id": "hide_total_donated",
       "type": "checkbox",
