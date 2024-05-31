@@ -7,47 +7,132 @@
         <p class="block text-center text-gray-600 text-md font-medium mb-2">Lascia il tuo contatto</p>
 
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+        {% if "business_name" in campaign.shown_fields %}
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold" for="id_business_name">
+                    Ragione sociale
+                    {% if "business_name" in campaign.required_fields %}
+                    *
+                    {% endif %}
+                </label>
+                <input
+                    class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                    type="text" id="id_business_name" name="business_name" value="{{ form.business_name.value() or '' }}" autofocus
+                    {% if "business_name" in campaign.required_fields %}required{% endif %} />
+                {% if form.errors.business_name %}
+                <p class="text-red-500 p-2 text-sm">{{ form.errors.business_name.as_text() }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
 
+        {% if "first_name" in campaign.shown_fields %}
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold" for="id_first_name">
+                    Nome
+                    {% if "first_name" in campaign.required_fields %}
+                    *
+                    {% endif %}
+                </label>
+                <input
+                    class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                    type="text" id="id_first_name" name="first_name" value="{{ form.first_name.value() or '' }}" autofocus
+                    {% if "first_name" in campaign.required_fields %}required{% endif %} />
+                {% if form.errors.first_name %}
+                <p class="text-red-500 p-2 text-sm">{{ form.errors.first_name.as_text() }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if "last_name" in campaign.shown_fields %}
         <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold" for="id_first_name">Nome</label>
+            <label class="block text-gray-700 text-sm font-bold" for="id_last_name">
+                Cognome
+                {% if "last_name" in campaign.required_fields %}
+                *
+                {% endif %}
+            </label>
             <input
                 class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-                type="text" id="id_first_name" name="first_name" value="{{ form.first_name.value() or '' }}" autofocus
-                required />
-            {% if form.first_name.errors %}
-            <p class="text-red-500 p-2 text-sm">{{ form.first_name.errors.as_text() }}</p>
+                type="text" id="id_last_name" name="last_name" value="{{ form.last_name.value() or '' }}"
+                {% if "last_name" in campaign.required_fields %}required{% endif %} />
+            {% if form.errors.last_name %}
+            <p class="text-red-500 p-2 text-sm">{{ form.errors.last_name.as_text() }}</p>
             {% endif %}
         </div>
+        {% endif %}
 
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold" for="id_last_name">Cognome</label>
-            <input
-                class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-                type="text" id="id_last_name" name="last_name" value="{{ form.last_name.value() or '' }}" required />
-            {% if form.last_name.errors %}
-            <p class="text-red-500 p-2 text-sm">{{ form.last_name.errors.as_text() }}</p>
-            {% endif %}
-        </div>
+        {% if "email" in campaign.shown_fields %}
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold" for="id_email">
+                    Email
+                    {% if "email" in campaign.required_fields %}
+                    *
+                    {% endif %}
+                </label>
+                <input
+                    class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                    type="text" id="id_email" name="email" value="{{ form.email.value() or '' }}" 
+                    {% if "email" in campaign.required_fields %}required{% endif %} />
+                {% if form.errors.email %}
+                <p class="text-red-500 p-2 text-sm">{{ form.errors.email.as_text() }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
 
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold" for="id_email">Email</label>
-            <input
-                class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-                type="text" id="id_email" name="email" value="{{ form.email.value() or '' }}" required />
-            {% if form.email.errors %}
-            <p class="text-red-500 p-2 text-sm">{{ form.email.errors.as_text() }}</p>
-            {% endif %}
-        </div>
+        {% if "phone" in campaign.shown_fields %}
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold" for="id_phone">
+                    Telefono
+                    {% if "phone" in campaign.required_fields %}
+                    *
+                    {% endif %}
+                </label>
+                <input
+                    class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                    type="text" id="id_phone" name="phone" value="{{ form.phone.value() or '' }}" 
+                    {% if "phone" in campaign.required_fields %}required{% endif %}/>
+                {% if form.errors.phone %}
+                <p class="text-red-500 p-2 text-sm">{{ form.errors.phone.as_text() }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
 
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold" for="id_phone">Telefono</label>
-            <input
-                class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-                type="text" id="id_phone" name="phone" value="{{ form.phone.value() or '' }}" />
-            {% if form.phone.errors %}
-            <p class="text-red-500 p-2 text-sm">{{ form.phone.errors.as_text() }}</p>
-            {% endif %}
-        </div>
+        {% if "ssn" in campaign.shown_fields %}
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold" for="id_ssn">
+                    Codice Fiscale
+                    {% if "ssn" in campaign.required_fields %}
+                    *
+                    {% endif %}
+                </label>
+                <input
+                    class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                    type="text" id="id_ssn" name="ssn" value="{{ form.ssn.value() or '' }}" 
+                    {% if "ssn" in campaign.required_fields %}required{% endif %}/>
+                {% if form.errors.ssn %}
+                <p class="text-red-500 p-2 text-sm">{{ form.errors.ssn.as_text() }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if "vat" in campaign.shown_fields %}
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold" for="id_vat">
+                    Partita IVA
+                    {% if "vat" in campaign.required_fields %}
+                    *
+                    {% endif %}
+                </label>
+                <input
+                    class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                    type="text" id="id_vat" name="vat" value="{{ form.vat.value() or '' }}" 
+                    {% if "vat" in campaign.required_fields %}required{% endif %}/>
+                {% if form.errors.vat %}
+                <p class="text-red-500 p-2 text-sm">{{ form.errors.vat.as_text() }}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
 
         <div class="mb-4">
             <div class="flex">
@@ -62,12 +147,11 @@
                         <a href="/policies/terms-of-service/" target="_blank">le codizioni d'uso</a>
                     </label>
                 </div>
-                {% if form.privacy.errors %}
-                <p class="text-red-500 p-2 text-sm">{{ form.privacy.errors.as_text() }}</p>
+                {% if form.errors.privacy %}
+                <p class="text-red-500 p-2 text-sm">{{ form.errors.privacy.as_text() }}</p>
                 {% endif %}
             </div>
         </div>
-
 
         <div class="flex items-center justify-between">
             <button class="btn-primary w-full" type="submit">Iscrivimi</button>
