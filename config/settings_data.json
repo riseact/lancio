@@ -20,22 +20,28 @@
     "header": {
       "type": "header",
       "settings": {
-        "menu":"main-menu"
+        "menu": "main-menu"
       }
+    },
+    "cookie": {
+      "type": "cookie",
+      "settings": {}
     },
     "footer": {
       "type": "footer",
       "settings": {},
       "blocks": {
-        "main-menu":{
-          "type":"links",
-          "settings":{
-             "title":"Navigazione",
-             "menu":"main-menu"
+        "main-menu": {
+          "type": "links",
+          "settings": {
+            "title": "Navigazione",
+            "menu": "main-menu"
           }
-       }
+        }
       },
-      "block_order": ["main-menu"]
+      "block_order": [
+        "main-menu"
+      ]
     }
   }
 }

@@ -1,54 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8"/>
 
-        <meta http-equiv="X-UA-Compatible"
-              content="IE=edge"/>
+<head>
+    <meta charset="UTF-8" />
 
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-        {{ content_for_header }}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        {% if theme.favicon %}
-            <link rel="icon" href="{{ theme.favicon }}"/>
-        {% endif %}
+    {{ content_for_header }}
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    {% if theme.favicon %}
+    <link rel="icon" href="{{ theme.favicon }}" />
+    {% endif %}
 
-        <style>
-            :root {
-                --hue: 207;
-                --saturation: 64%;
-                --light: 44%;
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 
-                --primary-fg-color: {{ theme.primary_fg_color }};
-                --primary-bg-color: {{ theme.primary_bg_color }};
+    <style>
+        :root {
+            --hue: 207;
+            --saturation: 64%;
+            --light: 44%;
+
+            --primary-fg-color: {
+                    {
+                    theme.primary_fg_color
+                }
             }
 
-            html {
-                height: 100%
+            ;
+
+            --primary-bg-color: {
+                    {
+                    theme.primary_bg_color
+                }
             }
-            
-            body {
-                min-height: 100%
-            }
 
-        </style>
+            ;
+        }
+
+        html {
+            height: 100%
+        }
+
+        body {
+            min-height: 100%
+        }
+    </style>
 
 
-        {% style 'main.css' %}
-    </head>
-    <body class="flex flex-col">
-        {% section 'banner' %}
-        {% section 'header' %}
+    {% style 'main.css' %}
+</head>
 
-        <div class="flex-1">{{ content_for_layout }}</div>
- 
-        {% section 'footer' %}
+<body class="flex flex-col">
+    {% section 'banner' %}
+    {% section 'header' %}
 
-    </body>
+    <div class="flex-1">{{ content_for_layout }}</div>
+
+    {% section 'footer' %}
+    {% section 'cookie' %}
+</body>
+
 </html>

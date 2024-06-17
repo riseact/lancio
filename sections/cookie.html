@@ -1,0 +1,361 @@
+<style>
+    @media (min-width: 405px) {
+        .cookie-banner {
+            width: 90%;  
+        }
+        p{
+            font-size: 0.9rem;
+        }
+
+        .cookie-banner a {
+            font-size: 0.9rem;
+        }
+        .cookie-buttons button {
+            font-size: 0.9rem;
+            width: 20vw;
+            height: 6vh;
+        }
+
+        h2{
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .modal-buttons button{
+            font-size: 0.8rem;
+        }
+    }
+    @media (min-width: 1024px){
+        .cookie-banner{
+            width: 50%;
+        }
+        p{
+            font-size: 1.2rem;
+        }
+        .cookie-banner a {
+            font-size: 1.2rem;
+        }
+        .cookie-buttons button {
+            font-size: 1rem;
+            width: 10vw;
+            height: 5vh;
+        }
+
+        .modal-buttons button{
+            font-size: 1rem;
+        }
+        h2{
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    }
+
+    .cookie{
+        display: flex;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: {{section.settings.fg_color}};
+    }
+
+    .cookie-banner {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 2rem;
+        box-shadow: 0 -2px 10px #888;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        z-index: 1000;
+        border-radius: 0.25rem;
+        background-color: {{section.settings.bg_color}};
+    }
+    
+    .cookie-banner p {
+        margin: 0;
+        flex: 1;
+    }
+
+    .cookie-banner b{
+        text-align: left;
+        margin-bottom: 1rem;
+    }
+    
+    .cookie-banner a {
+        text-decoration: underline;
+        cursor: pointer;
+        
+        color: {{section.settings.fg_color}};
+    }
+    
+    .cookie-buttons {
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: row;
+        gap: 2rem;
+    }
+    
+    .cookie-buttons button {
+        background-color: transparent;
+        border: none;
+        align-items: center;
+        justify-content: center;
+        padding-left: 0.8rem auto;
+        cursor: pointer;
+        border: solid 1px;
+        border-radius: 0.25rem;
+    }
+    
+    .cookie-preferences-modal {
+        display: none;
+        position: fixed;
+        z-index: 1001;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+        
+    }
+
+    label{
+        display: ;
+    }
+    
+    .modal-content {
+        background-color: {{section.settings.bg_color}};
+        color: {{section.settings.fg_color}};
+        margin: 15% auto;
+        padding: 2rem;
+        width: 80%;
+        max-width: 600px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        position: relative;
+        border-radius: 0.25rem;
+    }
+
+    hr{
+        border-color: {{section.settings.fg_color}};
+        margin: 1rem auto;
+    }
+    
+    .close {
+        color: {{section.settings.fg_color}};
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    
+    .close:hover,
+    .close:focus {
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+    .modal-buttons {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 20px;
+    }
+    
+    .modal-buttons button {
+        background-color: transparent;
+        border: none;
+        color: {{section.settings.fg_color}};
+        border: solid 1px;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 0.25rem;
+    }
+    
+    form label {
+        display: block;
+        margin-bottom: 15px;
+    }
+    
+    form input {
+        margin-right: 10px;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (!getCookie("__ckprf")) {
+            document.getElementById("cookieBanner").style.display = "flex";
+        } else {
+            document.getElementById("cookieBanner").style.display = "none";
+        }
+    });
+
+    function getCookie(name) {
+      const nameEQ = name + "=";
+      const ca = document.cookie.split(';');
+      for(let i=0; i<ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    function setCookie() {
+        document.getElementById("cookieBanner").style.display = "none";
+        document.getElementById("cookiePreferencesModal").style.display = "none";
+    }
+
+    function showPreferences() {
+        document.getElementById("cookiePreferencesModal").style.display = "block";
+    }
+
+    function closePreferences() {
+        document.getElementById("cookiePreferencesModal").style.display = "none";
+    }
+
+    function acceptAll() {
+        const form = document.getElementById("cookiePreferencesForm");
+        for (let i = 0; i < form.elements.length; i++) {
+            if (form.elements[i].type === "checkbox") {
+                form.elements[i].checked = true;
+            }
+        }
+        savePreferences();
+    }
+
+    function declineAll() {
+        const form = document.getElementById("cookiePreferencesForm");
+        for (let i = 0; i < form.elements.length; i++) {
+            if (form.elements[i].type === "checkbox" && !form.elements[i].name === "technical") {
+                form.elements[i].checked = false;
+            }
+        }
+        savePreferences();
+    }
+
+    function savePreferences() {
+        const form = document.getElementById("cookiePreferencesForm");
+        const preferences = {};
+        for (let i = 0; i < form.elements.length; i++) {
+            if (form.elements[i].type === "checkbox") {
+                preferences[form.elements[i].name] = form.elements[i].checked;
+            }
+        }
+        setCookie();
+        form.submit();
+    }
+</script>
+
+<div class="cookie">
+    <div class="cookie-banner" id="cookieBanner">
+        <b>{{ section.settings.title }}</b>
+        <p>{{ section.settings.content }}</p>
+        <p>Scopri di più nella nostra <a href="#">Politica sulla riservatezza</a>.</p>
+        <div class="cookie-buttons">
+            <a onclick="showPreferences()">Gestisci le preferenze</a>
+            <button onclick="acceptAll()">Accetta</button>
+            <button onclick="declineAll()">Declina</button>
+        </div>
+    </div>
+</div> 
+
+<div class="cookie-preferences-modal" id="cookiePreferencesModal">
+    <div class="modal-content">
+        <span class="close" onclick="closePreferences()">&times;</span>
+        <h2>Preferenze sui cookie</h2>
+        <hr>
+        <b>Sei tu a controllare i tuoi dati</b>
+        <p>Scopri di più sui cookie che utilizziamo e scegli quali cookie consentire.</p>
+        <hr>
+        <form id="cookiePreferencesForm" method="POST" action="/cookies/set/">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" >
+            <input type="hidden" name="nexturl" value="/" >
+            <label>
+                <input type="checkbox" name="technical" checked onclick="return false"> <b>Necessario</b><br>
+                <small>Questi cookie sono necessari per il corretto funzionamento del sito funzioni, comprese funzionalità come l'accesso e l'aggiunta di articoli al carrello.</small>
+            </label>
+            {% if section.settings.profilation %}
+                <label>
+                    <input type="checkbox" name="profilation"> <b>Profilazioni</b><br>
+                    <small>Questi cookie memorizzano dettagli sulle tue azioni per personalizzare la tua prossima visita al sito Web.</small>
+                </label>
+            {% endif %}
+            {% if section.settings.marketing %}
+                <label>
+                    <input type="checkbox" name="marketing"> <b>Marketing</b><br>
+                    <small>Questi cookie vengono utilizzati per ottimizzare le comunicazioni di marketing e mostrarti annunci su altri siti.</small>
+                </label>
+            {% endif %}
+            {% if section.settings.analysis %}
+                <label>
+                    <input type="checkbox" name="analysis"> <b>Analisi</b><br>
+                    <small>Questi cookie ci aiutano a capire come interagisci con il sito. Utilizziamo questi dati per identificare le aree da migliorare.</small>
+                </label>
+            {% endif %}
+        </form>
+        <div class="modal-buttons">
+            <button onclick="acceptAll()">Accetta tutti</button>
+            <button onclick="declineAll()">Rifiuta tutto</button>
+            <button onclick="savePreferences()" style="color: {{section.settings.bg_color}}; background-color: {{section.settings.fg_color}};">Salva le mie scelte</button>
+        </div>
+    </div>
+</div>
+
+{# djlint:off #}
+{% schema %}
+  {
+  "name": "Cookie Banner",
+  "limit": 1,
+  "settings":[
+        {
+        "id": "title",
+        "type": "text",
+        "label": "Title",
+        "default": "Apprezziamo la tua privacy"
+        },
+        {
+        "id": "content",
+        "type": "richtext",
+        "label": "Content",
+        "default": "Utilizziamo cookie e altre tecnologie per personalizzare la tua esperienza, eseguire attività di marketing e raccogliere analisi."
+        },
+        {
+            "id":"bg_color",
+            "type":"color_picker",
+            "label":"Colore di sfondo",
+            "default":"#FFFFFF"
+        },
+        {
+            "id":"fg_color",
+            "type":"color_picker",
+            "label":"Colore del testo",
+            "default":"#666"
+        },
+
+        {
+            "id":"profilation",
+            "type":"checkbox",
+            "label":"Profilation",
+            "default": true
+        },
+        {
+            "id":"marketing",
+            "type":"checkbox",
+            "label":"Marketing",
+            "default": true
+        },
+        {
+            "id":"analysis",
+            "type":"checkbox",
+            "label":"Analysis",
+            "default": true
+        }
+
+    ],
+  "locales": {},
+  "templates": [""]
+  }
+{% endschema %}
