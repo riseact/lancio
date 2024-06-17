@@ -9,10 +9,14 @@
       {% endif %}
 
       <div class="lg:hidden my-5">
-        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
+       {% if campaign.is_lead %}
+        {% include "snippets/campaign-lead-box.html" %}
+      {% else %}
+        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations, hide_donations=section.settings.hide_donations%}
           {% include "snippets/campaign-donate-box.html" %}
         {% endwith %}
         {% include "snippets/campaign-cost-examples.html" %}
+        {% endif %}
       </div>
 
       {% if campaign.content|length > 2500 %}
@@ -98,7 +102,7 @@
                 {% else %}
                   {{ comment.supporter_name }}
                 {% endif %}
-                {% if comment.donation_amount %}
+                {% if comment.donation_amount and not section.settings.hide_donations %}
                   <span class="font-normal">ha donato</span> {{ comment.donation_amount }}€
                 {% endif %}
               </h3>
@@ -156,7 +160,10 @@
                             {% else %}
                                 {{ donation.supporter.full_name }}
                             {% endif %}
-                            <span class="font-normal">ha donato</span> {{ donation.amount }}€
+
+                            {% if not section.settings.hide_donations %}
+                              <span class="font-normal">ha donato</span> {{ donation.amount }}€
+                            {% endif %}
                         </h3>
 
                         <div class="text-sm text-gray-500">
