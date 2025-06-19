@@ -19,21 +19,7 @@
         {% endif %}
       </div>
 
-      {% if campaign.content|length > 2500 %}
-        <div class="md:mt-10 relative max-h-[1000px] overflow-hidden"
-             id="description-container">
-          {{ campaign.content }}
-          <div class="bg-gradient-to-t from-white to-transparent h-40 w-full absolute bottom-0 left-0"></div>
-        </div>
-        <button class="mt-4 text-blue-500 py-2 rounded underline"
-                onclick="toggleDescription()"
-                id="show-all-btn">Mostra tutto</button>
-        <a class="my-10 block btn-primary"
-           href="/campaigns/{{ campaign.slug }}/donate">Dona ora</a>
-      {% else %}
-        <div class="md:mt-10 relative max-h-[1000px] overflow-hidden"
-             id="description-container">{{ campaign.content }}</div>
-      {% endif %}
+      <div class="md:mt-10 relative" id="description-container">{{ campaign.content }}</div>
 
       {% if campaign.allow_peer_to_peer %}
         <hr class="my-5" />
@@ -57,7 +43,11 @@
               {% endif %}
               <div>
                 <h3 class="text-gray-800 text-xl font-bold">{{ peer_campaign.supporter_name }}</h3>
-                <p class="text-gray-800 text-md">{{ peer_campaign.custom_message }}</p>
+                { % if peer_campaign.custom_message %}
+                  <p class="text-gray-800 text-md mb-2">“{{ peer_campaign.custom_message }}”</p>
+                {% else %}
+                  <p class="text-gray-800 text-md mb-2">“Aiuta {{ campaign.title }}”</p>
+                {% endif %}
               </div>
               <div class="flex flex-col items-end ml-4">
                 <h3 class="text-gray-800  text-lg">{{ peer_campaign.stats.amount|int }}€</h3>
@@ -78,6 +68,8 @@
       {% endif %}
 
       <hr class="my-5" />
+      
+      {% if not section.settings.hide_comments %}
       <div id="comments">
         <h2 class="text-2xl font-bold  mb-5">Messaggi dai sostenitori</h2>
         {% for comment in campaign.comments %}
@@ -96,7 +88,7 @@
               </div>
             {% endif %}
             <div>
-              <h3 class="text-gray-800 text-lg font-bold">
+              <h3 class="text-gray-800 text-lg font-bold"> 
                 {% if comment.anonymous %}
                   Anonimo
                 {% else %}
@@ -107,7 +99,7 @@
                 {% endif %}
               </h3>
 
-              <p class="text-gray-800 text-base mt-1">{{ comment.message }}</p>
+              <p class="text-gray-800 text-base mt-1">“{{ comment.message }}”</p>              
               
               <div class="text-sm text-gray-500 mt-2">
                 {{ comment.create_date.strftime('%d/%m/%Y') }}
@@ -115,10 +107,9 @@
             </div>
           </div>
 
-        {% else %}
-          Non ci sono ancora messaggi da parte dei sostenitori di questa campagna
         {% endfor %}
       </div>
+      {% endif %}
     </div>
 
     <div class="col-span-3 hidden lg:block">
@@ -235,7 +226,12 @@
       "id": "hide_total_donations",
       "type": "checkbox",
       "label": "Hide Total Donations"
-    }
+    },
+    {
+      "id": "hide_comments",
+      "type": "checkbox",
+      "label": "Hide comments"
+    },
   ],
   "locales": {},
   "templates": ["campaign"]
