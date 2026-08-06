@@ -1,8 +1,6 @@
 {
-  "name": "Launch",
+  "name": "Lancio",
   "slug": "launch",
-  "version": "0.3.9",
-  "author": "Riseact",
-  "documentation_url": "",
-  "support_url": ""
+  "version": "0.4.0",
+  "author": "Riseact"
 }

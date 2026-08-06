@@ -1,2 +1,22 @@
+# Files that must never be uploaded as theme assets.
+# gitignore syntax, applied by the Riseact CLI relative to the theme root.
+
 .git*
 .github
+node_modules
+
+# CLI credentials: this file holds an access token.
+riseact.yml
+
+# Build tooling. assets/main.css is the compiled output and IS uploaded;
+# everything needed to produce it is not.
+package.json
+package-lock.json
+yarn.lock
+tailwind.config.js
+.djlintrc
+.python-version
+
+# Repository documentation, not part of the theme.
+LICENSE.md
+README.md

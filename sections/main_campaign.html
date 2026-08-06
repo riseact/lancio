@@ -43,7 +43,7 @@
               {% endif %}
               <div>
                 <h3 class="text-gray-800 text-xl font-bold">{{ peer_campaign.supporter_name }}</h3>
-                { % if peer_campaign.custom_message %}
+                {% if peer_campaign.custom_message %}
                   <p class="text-gray-800 text-md mb-2">“{{ peer_campaign.custom_message }}”</p>
                 {% else %}
                   <p class="text-gray-800 text-md mb-2">“Aiuta {{ campaign.title }}”</p>
@@ -231,7 +231,7 @@
       "id": "hide_comments",
       "type": "checkbox",
       "label": "Hide comments"
-    },
+    }
   ],
   "locales": {},
   "templates": ["campaign"]

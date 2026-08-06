@@ -1,1 +1,8 @@
 node_modules
+
+# CLI credentials, written by `riseact auth login`
+riseact.yml
+
+# local scratch checkouts
+/master/
+/lancio-prova/
