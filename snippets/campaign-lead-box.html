@@ -165,6 +165,11 @@
         </div>
         {% endif %}
     </form>
+
+    {# Same sharing block as the donate box, shown before and after signing up. #}
+    {% with url=current_url %}
+        {% include 'snippets/share-button.html' %}
+    {% endwith %}
 </div>
 
 {# The snippet is included twice (mobile + desktop): bind once, on every form. #}
