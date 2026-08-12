@@ -42,7 +42,12 @@
         {% endif %}
 
         <div class="gap-2 flex flex-col">
-            <a class="block btn-primary" href="/campaigns/{{ campaign.slug }}/donate/">Dona ora</a>
+            {% if peer_campaign %}
+                <a class="block btn-primary"
+                href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/donate/">Dona ora</a>
+            {% else %}
+                <a class="block btn-primary" href="/campaigns/{{ campaign.slug }}/donate/">Dona ora</a>
+            {% endif %}
 
             {% if campaign.allow_peer_to_peer and not peer_campaign%}
                 <a class="block btn-outline mt-2"

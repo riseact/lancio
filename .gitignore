@@ -1,7 +1,11 @@
 node_modules
 
+# end-to-end suite, run manually against the devteam preview
+/test/
+
 # CLI credentials, written by `riseact auth login`
 riseact.yml
+.riseact
 
 # local scratch checkouts
 /master/

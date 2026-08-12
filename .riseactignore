@@ -5,8 +5,12 @@
 .github
 node_modules
 
+# end-to-end suite, not part of the theme
+test
+
 # CLI credentials: this file holds an access token.
 riseact.yml
+.riseact
 
 # Build tooling. assets/main.css is the compiled output and IS uploaded;
 # everything needed to produce it is not.

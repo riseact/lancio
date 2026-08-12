@@ -5,7 +5,7 @@
       class="border duration-200 ease inline-flex items-center mb-1 mr-1 transition p-3 rounded-lg text-[color:var(--primary-bg-color)] border-[color:var(--primary-bg-color)]"
       target="_blank"
       rel="noopener"
-      href="https://facebook.com/sharer/sharer.php?u={{ url }}"
+      href="https://facebook.com/sharer/sharer.php?u={{ url|urlencode }}"
       aria-label="Share on Facebook"
     >
       <svg
@@ -25,7 +25,7 @@
       class="border duration-200 ease inline-flex items-center mb-1 mr-1 transition p-3 rounded-lg text-[color:var(--primary-bg-color)] border-[color:var(--primary-bg-color)]"
       target="_blank"
       rel="noopener"
-      href="https://twitter.com/intent/tweet?url={{ url }}&amp;text="
+      href="https://twitter.com/intent/tweet?url={{ url|urlencode }}&amp;text="
       aria-label="Share on Twitter"
     >
       <svg
@@ -43,7 +43,7 @@
       class="border duration-200 ease inline-flex items-center mb-1 mr-1 transition p-3 rounded-lg text-[color:var(--primary-bg-color)] border-[color:var(--primary-bg-color)]"
       target="_blank"
       rel="noopener"
-      href="https://wa.me/?text=%20{{ url }}"
+      href="https://wa.me/?text=%20{{ url|urlencode }}"
       aria-label="Share on Whatsapp"
       draggable="false"
       style=""
@@ -65,7 +65,7 @@
       class="border duration-200 ease inline-flex items-center mb-1 mr-1 transition p-3 rounded-lg text-[color:var(--primary-bg-color)] border-[color:var(--primary-bg-color)]"
       target="_blank"
       rel="noopener"
-      href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{ url }}&amp;title=&amp;summary=&amp;source={{ url }}"
+      href="https://www.linkedin.com/shareArticle?mini=true&amp;url={{ url|urlencode }}&amp;title=&amp;summary=&amp;source={{ url|urlencode }}"
       aria-label="Share on Linkedin"
       draggable="false"
     >
@@ -86,7 +86,7 @@
       class="border duration-200 ease inline-flex items-center mb-1 mr-1 transition p-3 rounded-lg text-[color:var(--primary-bg-color)] border-[color:var(--primary-bg-color)]"
       target="_blank"
       rel="noopener"
-      href="mailto:?subject=&amp;body={{ url }}"
+      href="mailto:?subject=&amp;body={{ url|urlencode }}"
       aria-label="Share by Email"
       draggable="false"
       style=""

@@ -173,7 +173,9 @@
         border-radius: 0.25rem;
     }
     
-    form label {
+    /* Scoped to this form: as a bare "form label" it added 15px under the label
+       of every field of every form on the page, lead box included. */
+    #cookiePreferencesForm label {
         display: block;
         margin-bottom: 15px;
     }

@@ -82,7 +82,7 @@
             <a class="btn btn-primary  inlineblock" href="{{ checkout_campaign_url }}">Torna alla pagina della campagna</a>
           </div>
 
-          {% with url=campaign_url %}
+          {% with url=checkout_campaign_url %}
             {% include 'snippets/share-button.html' %}
         {% endwith %}
       {% endif %}

@@ -1,12 +1,23 @@
 <div class="w-full border rounded-lg shadow">
-    {% if campaign.cover and campaign.cover.file %}
-        <a href="{{ campaign.url }}"
-        class="block">
+    <a href="{{ campaign.url }}" class="block">
+        {% if campaign.cover and campaign.cover.file %}
             <img src="{{ campaign.cover.file.url }}"
                 class="w-full h-60 object-cover rounded-t-lg"
                 alt="{{ campaign.title }}"/>
-        </a>
-    {% endif %}
+        {% else %}
+            {# Same height as a cover: without it the card is 240px shorter and
+               breaks the alignment of the grid it sits in. #}
+            <div class="w-full h-60 rounded-t-lg bg-gray-100 flex items-center justify-center"
+                 aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 24 24"
+                     fill="currentColor"
+                     class="w-16 h-16 text-gray-300">
+                    <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                </svg>
+            </div>
+        {% endif %}
+    </a>
     <div class="p-4  h-60 relative">
         <a href="{{ campaign.url }}"
            class="block text-[var(--primary-bg-color)]">

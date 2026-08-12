@@ -31,9 +31,13 @@
       <hr class="mt-5"/>
 
       <div class="lg:hidden my-5">
-        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
-          {% include "snippets/campaign-donate-box.html" %}
-        {% endwith %}
+        {% if campaign.is_lead %}
+          {% include "snippets/campaign-lead-box.html" %}
+        {% else %}
+          {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
+            {% include "snippets/campaign-donate-box.html" %}
+          {% endwith %}
+        {% endif %}
       </div>
 
       
@@ -46,8 +50,10 @@
         <button class="mt-4 text-blue-500 py-2 rounded underline"
                 onclick="toggleDescription()"
                 id="show-all-btn">Mostra tutto</button>
-        <a class="my-10 block btn-primary"
-           href="/campaigns/{{ campaign.slug }}/donate">Dona ora</a>
+        {% if not campaign.is_lead %}
+          <a class="my-10 block btn-primary"
+             href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/donate/">Dona ora</a>
+        {% endif %}
       {% else %}
         <div class="md:mt-10 relative max-h-[1000px] overflow-hidden"
              id="description-container">{{ campaign.content }}</div>

@@ -1,6 +1,11 @@
-{% macro render_input(field_name, label_text) %}
+{# supporter_group: "INDIVIDUAL" / "COMPANY" for fields belonging to one flow only,
+   empty for fields shown to everybody. active_group is the currently selected flow:
+   fields of the other flow are hidden and disabled, so they are not submitted. #}
+{% macro render_input(field_name, label_text, supporter_group="", active_group="") %}
     {% if field_name in campaign.shown_fields %}
-        <div class="mb-4">
+        {% set inactive = supporter_group and supporter_group != active_group %}
+        <div class="mb-4{% if inactive %} hidden{% endif %}"
+            {% if supporter_group %}data-supporter-group="{{ supporter_group }}"{% endif %}>
             <label class="block text-gray-700 text-sm font-bold" for="id_{{ field_name }}">
                 {{ label_text }}
                 {% if field_name in campaign.required_fields %}
@@ -8,9 +13,10 @@
                 {% endif %}
             </label>
             <input
-                class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-                type="text" id="id_{{ field_name }}" name="{{ field_name }}" value="{{ form[field_name].value() or '' }}" 
-                {% if field_name in campaign.required_fields %}required{% endif %}/>
+                class="mt-1 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                type="text" id="id_{{ field_name }}" name="{{ field_name }}" value="{{ form[field_name].value() or '' }}"
+                {% if field_name in campaign.required_fields %}required{% endif %}
+                {% if inactive %}disabled{% endif %}/>
             {% if form.errors[field_name] %}
             <p class="text-red-500 p-2 text-sm">{{ form.errors[field_name].as_text() }}</p>
             {% endif %}
@@ -28,14 +34,38 @@
 
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
 
-        {{ render_input("first_name", "Nome") }}
-        {{ render_input("last_name", "Cognome") }}
-        {{ render_input("business_name", "Ragione Sociale") }}
+        {# Individuals and companies fill different fields: without this split a required
+           business name would block every individual signing up to the campaign. #}
+        {% set has_supporter_type_choice = "business_name" in campaign.shown_fields
+            and ("first_name" in campaign.shown_fields or "last_name" in campaign.shown_fields) %}
+        {% set is_company = form and form["supporter_type"].value() == "COMPANY" %}
+        {% set active_group = "COMPANY" if is_company else "INDIVIDUAL" %}
+        {% set individual_group = "INDIVIDUAL" if has_supporter_type_choice else "" %}
+        {% set company_group = "COMPANY" if has_supporter_type_choice else "" %}
+
+        {% if has_supporter_type_choice %}
+        <div class="mb-4 flex justify-center gap-6" data-supporter-type-toggle>
+            <label class="flex items-center text-sm text-gray-700">
+                <input type="radio" name="supporter_type" value="INDIVIDUAL" class="w-4 h-4 mr-2"
+                    {% if not is_company %}checked{% endif %} />
+                Privato
+            </label>
+            <label class="flex items-center text-sm text-gray-700">
+                <input type="radio" name="supporter_type" value="COMPANY" class="w-4 h-4 mr-2"
+                    {% if is_company %}checked{% endif %} />
+                Azienda
+            </label>
+        </div>
+        {% endif %}
+
+        {{ render_input("first_name", "Nome", individual_group, active_group) }}
+        {{ render_input("last_name", "Cognome", individual_group, active_group) }}
+        {{ render_input("business_name", "Ragione Sociale", company_group, active_group) }}
         {{ render_input("email", "Email") }}
         {{ render_input("phone", "Telefono") }}
         {{ render_input("mobile", "Cellulare") }}
-        {{ render_input("ssn", "Codice Fiscale") }}
-        {{ render_input("vat", "Partita IVA") }}
+        {{ render_input("ssn", "Codice Fiscale", individual_group, active_group) }}
+        {{ render_input("vat", "Partita IVA", company_group, active_group) }}
         {{ render_input("country", "Paese") }}
         {{ render_input("city", "Città") }}
         {{ render_input("locality", "Provincia") }}
@@ -43,49 +73,70 @@
         {{ render_input("address", "Indirizzo") }}
 
         {% for definition in custom_field_definitions %}
+        {% set cf_key = "cf_" ~ definition.key %}
+        {% set cf_required = definition.key in campaign.required_fields %}
         <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold" for="id_cf_{{ definition.key }}">
-                {{ definition.name }}
-                {% if definition.key in campaign.required_fields %}*{% endif %}
-            </label>
+            {# A boolean carries its label beside the checkbox, like the privacy row. #}
+            {% if definition.type != "boolean" %}
+                <label class="block text-gray-700 text-sm font-bold" for="id_{{ cf_key }}">
+                    {{ definition.name }}
+                    {% if cf_required %}*{% endif %}
+                </label>
+            {% endif %}
             {% if definition.type == "select" %}
-                {% set cf_key = "cf_" ~ definition.key %}
                 {% set cf_current = form[cf_key].value() or "" %}
-                <div class="relative mt-2" data-custom-select>
+                <div class="relative mt-1" data-custom-select>
                     <input type="hidden" name="{{ cf_key }}" id="id_{{ cf_key }}" value="{{ cf_current }}"
-                        {% if definition.key in campaign.required_fields %}required{% endif %} />
+                        {% if cf_required %}required{% endif %} />
                     <button type="button"
                         class="bg-gray-100 rounded w-full text-sm p-2 text-left text-gray-700 focus:outline-none flex justify-between items-center"
                         onclick="this.nextElementSibling.classList.toggle('hidden')">
                         <span data-custom-select-label>{{ cf_current if cf_current else "---------" }}</span>
                         <svg class="w-4 h-4 ml-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </button>
-                    <ul class="hidden absolute z-50 mt-1 left-0 bg-white border border-gray-200 rounded shadow-lg max-h-60 overflow-y-auto"
+                    {# list-none: the theme gives every ul a disc marker. #}
+                    <ul class="hidden absolute z-50 mt-1 left-0 list-none bg-white border border-gray-200 rounded shadow-lg max-h-60 overflow-y-auto"
                         style="min-width: 100%; width: max-content; max-width: 90vw;">
-                        <li class="px-3 py-2 text-sm text-gray-500 cursor-pointer hover:bg-gray-100 whitespace-normal"
+                        <li class="p-2 text-sm text-gray-500 cursor-pointer hover:bg-gray-100 whitespace-normal"
                             onclick="selectCustomOption(this, '', '---------')">---------</li>
                         {% for option in definition.options %}
-                        <li class="px-3 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 whitespace-normal {% if cf_current == option %}bg-gray-100 font-medium{% endif %}"
+                        <li class="p-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 whitespace-normal {% if cf_current == option %}bg-gray-100 font-medium{% endif %}"
                             onclick="selectCustomOption(this, '{{ option|e }}', '{{ option|e }}')">{{ option }}</li>
                         {% endfor %}
                     </ul>
                 </div>
             {% elif definition.type == "boolean" %}
-                <div class="flex items-center mt-2">
-                    <input type="checkbox" id="id_cf_{{ definition.key }}" name="cf_{{ definition.key }}"
-                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
-                        {% if form["cf_" ~ definition.key].value() %}checked{% endif %}
-                        {% if definition.key in campaign.required_fields %}required{% endif %} />
+                <div class="flex">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" id="id_{{ cf_key }}" name="{{ cf_key }}"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                            {% if form[cf_key].value() %}checked{% endif %}
+                            {% if cf_required %}required{% endif %} />
+                    </div>
+                    <div class="ml-2 text-sm">
+                        <label for="id_{{ cf_key }}" class="text-gray-900">
+                            {{ definition.name }}
+                            {% if cf_required %}*{% endif %}
+                        </label>
+                    </div>
                 </div>
+            {% elif definition.type == "date" %}
+                {# Native picker: it submits YYYY-MM-DD, the format the backend
+                   stores, so there is nothing to parse or reformat. #}
+                <input
+                    class="mt-1 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                    type="date" id="id_{{ cf_key }}" name="{{ cf_key }}"
+                    value="{{ form[cf_key].value() or '' }}"
+                    {% if cf_required %}required{% endif %} />
             {% else %}
                 <input
-                    class="mt-2 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-                    type="text" id="id_cf_{{ definition.key }}" name="cf_{{ definition.key }}"
-                    value="{{ form['cf_' ~ definition.key].value() or '' }}"
-                    {% if definition.key in campaign.required_fields %}required{% endif %} />
+                    class="mt-1 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+                    type="text" id="id_{{ cf_key }}" name="{{ cf_key }}"
+                    value="{{ form[cf_key].value() or '' }}"
+                    {% if cf_required %}required{% endif %} />
             {% endif %}
-            {% if form.errors["cf_" ~ definition.key] %}
-                <p class="text-red-500 p-2 text-sm">{{ form.errors["cf_" ~ definition.key].as_text() }}</p>
+            {% if form.errors[cf_key] %}
+                <p class="text-red-500 p-2 text-sm">{{ form.errors[cf_key].as_text() }}</p>
             {% endif %}
         </div>
         {% endfor %}
@@ -115,3 +166,58 @@
         {% endif %}
     </form>
 </div>
+
+{# The snippet is included twice (mobile + desktop): bind once, on every form. #}
+<script>
+    if (!window.leadSupporterTypeReady) {
+        window.leadSupporterTypeReady = true;
+
+        // Called from the inline onclick of every option of a "select" custom field.
+        window.selectCustomOption = function (option, value, label) {
+            var wrapper = option.closest('[data-custom-select]');
+            if (!wrapper) return;
+
+            wrapper.querySelector('input[type=hidden]').value = value;
+            wrapper.querySelector('[data-custom-select-label]').textContent = label;
+            wrapper.querySelector('ul').classList.add('hidden');
+        };
+
+        // Clicking anywhere else closes the open option lists.
+        document.addEventListener('click', function (event) {
+            if (event.target.closest('[data-custom-select]')) return;
+
+            document.querySelectorAll('[data-custom-select] ul').forEach(function (list) {
+                list.classList.add('hidden');
+            });
+        });
+
+        function applyLeadSupporterType(form) {
+            var checked = form.querySelector('[data-supporter-type-toggle] input:checked');
+            var selected = checked ? checked.value : 'INDIVIDUAL';
+
+            form.querySelectorAll('[data-supporter-group]').forEach(function (group) {
+                var active = group.getAttribute('data-supporter-group') === selected;
+                group.classList.toggle('hidden', !active);
+                // disabled inputs are not submitted, so the hidden flow never reaches the server
+                group.querySelectorAll('input, select, textarea').forEach(function (input) {
+                    input.disabled = !active;
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('[data-supporter-type-toggle]').forEach(function (toggle) {
+                var form = toggle.closest('form');
+                if (!form) return;
+
+                toggle.querySelectorAll('input[type=radio]').forEach(function (radio) {
+                    radio.addEventListener('change', function () {
+                        applyLeadSupporterType(form);
+                    });
+                });
+
+                applyLeadSupporterType(form);
+            });
+        });
+    }
+</script> 
