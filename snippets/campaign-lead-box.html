@@ -32,7 +32,20 @@
         {% else %}
         <p class="block text-center text-gray-600 text-md font-medium mb-2">Lascia il tuo contatto</p>
 
+        {% if form.non_field_errors() %}
+        <p class="text-red-500 p-2 text-sm">{{ form.non_field_errors().as_text() }}</p>
+        {% endif %}
+
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+        {% if captcha.honeypot_field %}
+        <div aria-hidden="true"
+            style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">
+            <label for="id_{{ captcha.honeypot_field }}">Campo libero</label>
+            <input type="text" id="id_{{ captcha.honeypot_field }}" name="{{ captcha.honeypot_field }}" value=""
+                autocomplete="off" tabindex="-1" />
+        </div>
+        {% endif %}
 
         {# Individuals and companies fill different fields: without this split a required
            business name would block every individual signing up to the campaign. #}
@@ -101,7 +114,7 @@
                             onclick="selectCustomOption(this, '', '---------')">---------</li>
                         {% for option in definition.options %}
                         <li class="p-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 whitespace-normal {% if cf_current == option %}bg-gray-100 font-medium{% endif %}"
-                            onclick="selectCustomOption(this, '{{ option|e }}', '{{ option|e }}')">{{ option }}</li>
+                            onclick="selectCustomOption(this, '{{ option|escape }}', '{{ option|escape }}')">{{ option }}</li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -160,8 +173,43 @@
             </div>
         </div>
 
+        {# Antibot: il core decide se serve, quale endpoint usare e dove stanno gli
+           asset, cosi' il tema non sa nulla di come funziona la verifica. #}
+        {% if captcha.enabled %}
+        <div class="mb-4">
+            {# Niente async: i moduli sono gia' differiti e girano prima di
+               DOMContentLoaded. Con async potrebbero girare dopo, e il codice in
+               fondo troverebbe un <altcha-widget> non ancora inizializzato. #}
+            <script type="module" src="{{ captcha.script_url }}"></script>
+            {% if captcha.i18n_url %}
+            <script type="module" src="{{ captcha.i18n_url }}"></script>
+            {% endif %}
+            {% if captcha.worker_url %}
+            {# L'algoritmo non e' incluso nel widget e va registrato prima che risolva.
+               L'import ripete lo stesso URL dello script sopra: il browser lo esegue
+               una volta sola e ci garantisce l'ordine, che con async non e' scontato. #}
+            <script type="module">
+                import "{{ captcha.script_url }}";
+                window.$altcha.algorithms.set("{{ captcha.algorithm }}",
+                    () => new Worker("{{ captcha.worker_url }}"));
+            </script>
+            {% endif %}
+            {# auto="onfocus": il calcolo parte mentre si compila il form, cosi'
+               nessuno aspetta dopo aver premuto il bottone. #}
+            <altcha-widget challenge="{{ captcha.challenge_url }}"
+                name="{{ captcha.field_name }}"
+                language="{{ captcha.language }}"
+                auto="onfocus"></altcha-widget>
+            {% if form.errors[captcha.field_name] %}
+            <p class="text-red-500 p-2 text-sm">{{ form.errors[captcha.field_name].as_text() }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
         <div class="flex items-center justify-between">
-            <button class="btn-primary w-full" type="submit">Iscrivimi</button>
+            <button class="btn-primary w-full" type="submit" data-lead-submit>
+                <span data-lead-submit-label>Iscrivimi</span>
+            </button>
         </div>
         {% endif %}
     </form>
@@ -187,7 +235,6 @@
             wrapper.querySelector('ul').classList.add('hidden');
         };
 
-        // Clicking anywhere else closes the open option lists.
         document.addEventListener('click', function (event) {
             if (event.target.closest('[data-custom-select]')) return;
 
@@ -210,6 +257,89 @@
             });
         }
 
+        // Il bottone deve dire sempre cosa sta succedendo. Senza questo, quando il
+        // proof of work non ha ancora finito il browser rifiuta l'invio in silenzio
+        // (il widget usa setCustomValidity e il messaggio nativo non si vede), e chi
+        // compila clicca due o tre volte credendo che il form sia rotto.
+        function setupLeadSubmit(form) {
+            var button = form.querySelector('[data-lead-submit]');
+            if (!button) return;
+
+            var label = button.querySelector('[data-lead-submit-label]');
+            var widget = form.querySelector('altcha-widget');
+            var initialLabel = label ? label.textContent : '';
+            var waitingForCaptcha = false;
+            var submitted = false;
+
+            function busy(text) {
+                if (label) label.textContent = text;
+                button.disabled = true;
+            }
+
+            function idle() {
+                if (label) label.textContent = initialLabel;
+                button.disabled = false;
+            }
+
+            function verified() {
+                if (!widget || typeof widget.getState !== 'function') return true;
+                return widget.getState() === 'verified';
+            }
+
+            button.addEventListener('click', function (event) {
+                if (submitted || waitingForCaptcha) {
+                    event.preventDefault();
+                    return;
+                }
+
+                if (verified()) return;
+
+                // Niente invio finche' il calcolo non finisce: lo facciamo noi appena
+                // il widget e' pronto, cosi' chi ha gia' cliccato non deve ricliccare.
+                event.preventDefault();
+                waitingForCaptcha = true;
+                busy('Verifica in corso...');
+
+                // auto="onfocus" parte al primo campo toccato. Chi arriva con il form
+                // gia' compilato dal browser puo' non aver mai dato focus a niente:
+                // senza questa spinta resterebbe su uno spinner che non finisce.
+                if (typeof widget.getState === 'function' && widget.getState() === 'unverified') {
+                    widget.verify();
+                }
+            });
+
+            form.addEventListener('submit', function (event) {
+                if (submitted) {
+                    event.preventDefault();
+                    return;
+                }
+
+                submitted = true;
+                busy('Invio in corso...');
+            });
+
+            if (!widget) return;
+
+            widget.addEventListener('verified', function () {
+                if (!waitingForCaptcha) return;
+
+                waitingForCaptcha = false;
+                idle();
+                // requestSubmit, non submit: fa passare la validazione dei campi, cosi'
+                // un campo obbligatorio vuoto viene segnalato invece di essere inviato.
+                form.requestSubmit ? form.requestSubmit(button) : form.submit();
+            });
+
+            // Scaduto o in errore: il widget riparte da solo, ma il bottone deve
+            // tornare cliccabile o la persona resta bloccata su uno spinner infinito.
+            ['error', 'expired'].forEach(function (name) {
+                widget.addEventListener(name, function () {
+                    waitingForCaptcha = false;
+                    idle();
+                });
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('[data-supporter-type-toggle]').forEach(function (toggle) {
                 var form = toggle.closest('form');
@@ -223,6 +353,11 @@
 
                 applyLeadSupporterType(form);
             });
+
+            document.querySelectorAll('[data-lead-submit]').forEach(function (button) {
+                var form = button.closest('form');
+                if (form) setupLeadSubmit(form);
+            });
         });
     }
-</script> 
+</script>
