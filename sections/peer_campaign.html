@@ -34,7 +34,7 @@
         {% if campaign.is_lead %}
           {% include "snippets/campaign-lead-box.html" %}
         {% else %}
-          {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
+          {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations, hide_donations=section.settings.hide_donations %}
             {% include "snippets/campaign-donate-box.html" %}
           {% endwith %}
         {% endif %}
@@ -77,7 +77,7 @@
       {% if campaign.is_lead %}
         {% include "snippets/campaign-lead-box.html" %}
       {% else %}
-        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations %}
+        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations, hide_donations=section.settings.hide_donations %}
           {% include "snippets/campaign-donate-box.html" %}
         {% endwith %}
 
@@ -87,13 +87,33 @@
   </div>
 </div>
 
+{% with hide_donations=section.settings.hide_donations %}
+  {% include "snippets/donations-modal.html" %}
+{% endwith %}
+
 
 {# djlint:off #}
 {% schema %}
 {
 "name": "Peer Campaign Details",
 "limit": 1,
-"settings": [],
+"settings": [
+  {
+    "id": "hide_donations",
+    "type": "checkbox",
+    "label": "Hide donations"
+  },
+  {
+    "id": "hide_total_donated",
+    "type": "checkbox",
+    "label": "Hide Total Donated"
+  },
+  {
+    "id": "hide_total_donations",
+    "type": "checkbox",
+    "label": "Hide Total Donations"
+  }
+],
 "locales": {},
 "templates": ["peer_campaign"]
 }

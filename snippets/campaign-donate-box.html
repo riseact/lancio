@@ -70,7 +70,10 @@
                     {% include 'snippets/donation-list-item.html' %}
                 {% endfor %}
 
-                <button onclick="openModal('donation-modal')" class="block btn-outline text-sm w-full">Mostra tutte le donazioni</button>
+                {# la lista sopra ne mostra 3: il pulsante serve solo se ce n'è una quarta #}
+                {% if campaign.total_donations > 3 %}
+                    <button onclick="openModal('donation-modal')" class="block btn-outline text-sm w-full">Mostra tutte le donazioni</button>
+                {% endif %}
             </div>
         {% endif %}
     </div>
