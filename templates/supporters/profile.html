@@ -1,101 +1,87 @@
- <div class="w-full max-w-xl mx-auto px-5 pb-10">
-    <a href="{{supporter_urls.dashboard}}">Torna alla dashboard</a>
-    <h1>Il mio profilo</h1>
-    <form enctype="multipart/form-data"
-          id="profile-form"
-          method="post"
-          class="grid grid-rows gap-8 mt-8">
 
-      <input type="hidden"
-             name="csrfmiddlewaretoken"
-             value="{{ csrf_token }}"/>
+<div class="w-full max-w-xl mx-auto px-5 py-12">
+  <a href="{{ supporter_urls.dashboard }}" class="text-blue-500 text-sm hover:underline">Torna alla bacheca</a>
+  <h1 class="mt-4 mb-8">Il mio profilo</h1>
 
-      <div class="grid grid-cols-12 gap-4 ">
-        <div class="col-span-8">
-          <label class="block text-gray-700 text-sm font-bold mb-2">La tua immagine</label>
-          <p class="text-sm text-gray-500">Questa immagine sarà mostrata sul form di donazione e nella pagina della campagna</p>
-        </div>
+  {% if saved %}
+    <p class="mt-4 p-3 rounded bg-green-100 text-green-800 text-sm">Profilo aggiornato.</p>
+  {% endif %}
 
-        <div class="col-span-4">
-          <label class="cursor-pointer w-full flex">
-            <img id="image_preview"
-                 class="bg-gray-200 border w-16 h-16 ml-auto rounded-full object-cover object-center{% if not supporter.image %} hidden{% endif %}"
-                 src="{% if supporter.image %}{{ supporter.image.url }}{% endif %}"
-                 alt="{{ supporter }}"/>
-            <span id="image_placeholder" class="ml-auto flex border items-center justify-center w-16 h-16 bg-gray-100 rounded-full dark:bg-gray-600 text-lg font-medium text-gray-600 dark:text-gray-300{% if supporter.image %} hidden{% endif %}">{{supporter.initial}}</span>
-            
- 
-            <input type="file"
-                   class="hidden"
-                   id="id_image"
-                   name="image"
-                   accept="image/*"/>
-          </label>
-          <script>
-            const imageInput = document.getElementById('id_image');
-            const imagePreview = document.getElementById('image_preview');
-            const imagePlaceholder = document.getElementById('image_placeholder');
+  {% if form.non_field_errors() %}
+    <p class="mt-4 p-3 rounded bg-red-100 text-red-700 text-sm">{{ form.non_field_errors().as_text()|escape }}</p>
+  {% endif %}
 
-            const observer = new MutationObserver((changes) => {
-              changes.forEach(change => {
-                if (change.attributeName.includes('src')) {
-                  if (imagePreview.src) {
-                    imagePreview.classList.remove('hidden');
-                    imagePlaceholder.classList.add('hidden');
-                  }
-                }
-              });
-            });
-            observer.observe(imagePreview, { attributes: true });
+  <form enctype="multipart/form-data"
+        id="profile-form"
+        method="post"
+        class="grid grid-rows gap-8 mt-8">
 
-            imageInput.onchange = (e) => {
-              const [file] = imageInput.files
-              if (file) {
-                imagePreview.src = URL.createObjectURL(file)
-              }
-            }
-          </script>
-          {% if form.image.errors %}
-            <p class="text-red-500 p-2 text-sm">{{ form.image.errors.as_text() }}</p>
-          {% endif %}
-        </div>
-      </div>
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+    <input type="hidden" name="next" value="{{ (form.next.value() or '')|escape }}" />
 
-      <div>
-        <label class="block text-gray-700 text-sm font-bold mb-2"
-               for="id_first_name">Nome</label>
-        <p class="text-sm text-gray-500">Scegli il nome che comparirà sul form di donazione e nella pagina della campagna</p>
-        <input class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-               type="text"
-               id="id_first_name"
-               name="first_name"
-               value="{{ form.first_name.value() or '' }}"
-               autofocus
-               required/>
-        {% if form.first_name.errors %}
-          <p class="text-red-500 p-2 text-sm">{{ form.first_name.errors.as_text() }}</p>
-        {% endif %}
-      </div>
+    {# L'immagine profilo e' disattivata lato server: il form non ha piu' il campo `image`. #}
 
-      <div>
-        <label class="block text-gray-700 text-sm font-bold mb-2"
-               for="id_last_name">Cognome</label>
-        <p class="text-sm text-gray-500">Scegli il nome che comparirà sul form di donazione e nella pagina della campagna</p>
-        <input class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-               type="text"
-               id="id_last_name"
-               name="last_name"
-               value="{{ form.last_name.value() or '' }}"
-               autofocus
-               required/>
-        {% if form.last_name.errors %}
-          <p class="text-red-500 p-2 text-sm">{{ form.last_name.errors.as_text() }}</p>
-        {% endif %}
-      </div>
+    <div>
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="id_first_name">Nome</label>
+      <input class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+             type="text"
+             id="id_first_name"
+             name="first_name"
+             value="{{ (form.first_name.value() or '')|escape }}"
+             required
+             autofocus />
+      {% if form.first_name.errors %}
+        <p class="text-red-500 p-2 text-sm">{{ form.first_name.errors.as_text()|escape }}</p>
+      {% endif %}
+    </div>
 
-      <div class="mt-4">
-          <button class="block btn-primary w-full mb-2"
-                  type="submit">Salva</button>
-      </div>
-    </form>
+    <div>
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="id_last_name">Cognome</label>
+      <input class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+             type="text"
+             id="id_last_name"
+             name="last_name"
+             value="{{ (form.last_name.value() or '')|escape }}"
+             required />
+      {% if form.last_name.errors %}
+        <p class="text-red-500 p-2 text-sm">{{ form.last_name.errors.as_text()|escape }}</p>
+      {% endif %}
+    </div>
+
+    <div class="mt-4">
+      <button class="block btn-primary w-full mb-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              type="submit"
+              data-submit>
+        <span data-submit-idle>Salva</span>
+        <span data-submit-pending class="hidden">Salvataggio...</span>
+      </button>
+    </div>
+  </form>
+
+<script>
+  (function () {
+    const form = document.getElementById('profile-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function (event) {
+      if (form.dataset.submitted === 'true') {
+        event.preventDefault();
+        return;
+      }
+
+      form.dataset.submitted = 'true';
+
+      const button = form.querySelector('[data-submit]');
+      if (!button) return;
+
+      button.disabled = true;
+      button.setAttribute('aria-busy', 'true');
+
+      const idle = button.querySelector('[data-submit-idle]');
+      const pending = button.querySelector('[data-submit-pending]');
+      if (idle) idle.classList.add('hidden');
+      if (pending) pending.classList.remove('hidden');
+    });
+  })();
+</script>
 </div>
