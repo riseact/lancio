@@ -1,40 +1,114 @@
- 
-<div class="w-full max-w-md mx-auto mt-16">
-    {% if email_sent %}
-        <div method="post"
-             class="bg-white px-8 pt-6 pb-8 mb-4">
-            <h2 class="text-4xl text-center font-extrabold mb-8">Controlla la tua email</h2>
-            <p class="block text-center text-gray-600 text-xl font-medium mb-2">Abbiamo mandato una email a</p>
-            <p class="block text-center text-gray-600 text-xl font-medium mb-2">
-                <span class="p-1 bg-blue-200 rounded">{{ email_sent_to }}</span>
-            </p>
-            <p class="block text-center text-gray-600 text-xl font-medium mb-2">Contiene un link per effettuare il login</p>
-        </div>
-    {% else %}
-        <form method="post"
-              class="bg-white px-8 pt-6 pb-8 mb-4">
-            <h2 class="text-4xl text-center font-extrabold mb-4">Accedi</h2>
-            <p class="text-center text-gray-600 mb-4">
-                Per attivare una campagna di raccolta fondi personale o per accedere alla tua area riservata, inserisci la tua email.
-            </p>
 
-            <input type="hidden"
-                   name="csrfmiddlewaretoken"
-                   value="{{ csrf_token }}" />
- 
-            <div class="mb-4">
-                <input type="hidden" name="next" value="{{ form.next.value()|default('') }}" />
-                <input class="shadow appearance-none border rounded w-full text-base px-6 py-3.5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                       type="email"
-                       id="id_email"
-                       name="email"
-                       placeholder="Email"
-                       autofocus />
-            </div>
-            <div class="flex items-center justify-between">
-                <button class="btn-primary w-full"
-                        type="submit">Login</button>
-            </div>
-        </form>
-    {% endif %}
+<div class="w-full max-w-md mx-auto my-16 px-5">
+  {% if email_sent %}
+    <div class="bg-white px-8 pt-6 pb-8 mb-4">
+      <h2 class="text-4xl text-center font-extrabold mb-8">Controlla la tua email</h2>
+      <p class="block text-center text-gray-600 text-xl font-medium mb-2">Abbiamo mandato una email a</p>
+      <p class="block text-center text-gray-600 text-xl font-medium mb-2">
+        <span class="p-1 bg-blue-200 rounded">{{ email_sent_to|escape }}</span>
+      </p>
+      <p class="block text-center text-gray-600 text-xl font-medium mb-2">Contiene un link per accedere.</p>
+      <p class="block text-center text-gray-500 text-sm mt-6">
+        Se non arriva entro qualche minuto controlla lo spam, e verifica di aver usato l'indirizzo
+        con cui hai donato.
+      </p>
+    </div>
+  {% else %}
+    <form method="post" id="login-form" class="bg-white px-8 pt-6 pb-8 mb-4">
+      <h2 class="text-4xl text-center font-extrabold mb-4">Accedi</h2>
+      <p class="text-center text-gray-600 mb-4">
+        Per attivare una campagna di raccolta fondi personale o per accedere alla tua area
+        riservata, inserisci la tua email.
+      </p>
+
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+      <input type="hidden" name="next" value="{{ (form.next.value() or '')|escape }}" />
+
+      {% if error == 'token' %}
+        <p class="mb-4 p-3 rounded bg-amber-100 text-amber-900 text-sm">
+          Il link di accesso non e' piu' valido: vale una volta sola e per un'ora.
+          Richiedine uno nuovo.
+        </p>
+      {% endif %}
+
+      {% if form.non_field_errors() %}
+        <p class="mb-4 p-3 rounded bg-red-100 text-red-700 text-sm">{{ form.non_field_errors().as_text()|escape }}</p>
+      {% endif %}
+
+      <div class="mb-4">
+        <input class="shadow appearance-none border rounded w-full text-base px-6 py-3.5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+               type="email"
+               id="id_email"
+               name="email"
+               value="{{ (form.email.value() or '')|escape }}"
+               placeholder="Email"
+               required
+               autofocus />
+        {% if form.email.errors %}
+          <p class="text-red-500 p-2 text-sm">{{ form.email.errors.as_text()|escape }}</p>
+        {% endif %}
+      </div>
+
+      {% if captcha.enabled %}
+        <div class="mb-4">
+          <script type="module" async defer src="{{ captcha.script_url }}"></script>
+          {% if captcha.i18n_url %}<script type="module" async defer src="{{ captcha.i18n_url }}"></script>{% endif %}
+          <altcha-widget challenge="{{ captcha.challenge_url }}"
+                         name="{{ captcha.field_name }}"
+                         language="{{ captcha.language }}"
+                         workerurl="{{ captcha.worker_url }}"
+                         auto="onfocus"></altcha-widget>
+        </div>
+        <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px">
+          <label for="id_{{ captcha.honeypot_field }}">Non compilare</label>
+          <input type="text"
+                 id="id_{{ captcha.honeypot_field }}"
+                 name="{{ captcha.honeypot_field }}"
+                 value=""
+                 autocomplete="off"
+                 tabindex="-1" />
+        </div>
+      {% endif %}
+
+      {% if form.altcha.errors %}
+        <p class="text-red-500 p-2 text-sm">{{ form.altcha.errors.as_text()|escape }}</p>
+      {% endif %}
+
+      <div class="flex items-center justify-between">
+        <button class="btn-primary w-full disabled:opacity-60 disabled:cursor-not-allowed"
+                type="submit"
+                data-submit>
+          <span data-submit-idle>Accedi</span>
+          <span data-submit-pending class="hidden">Invio in corso...</span>
+        </button>
+      </div>
+    </form>
+
+<script>
+  (function () {
+    const form = document.getElementById('login-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function (event) {
+      if (form.dataset.submitted === 'true') {
+        event.preventDefault();
+        return;
+      }
+
+      form.dataset.submitted = 'true';
+
+      const button = form.querySelector('[data-submit]');
+      if (!button) return;
+
+      button.disabled = true;
+      button.setAttribute('aria-busy', 'true');
+
+      const idle = button.querySelector('[data-submit-idle]');
+      const pending = button.querySelector('[data-submit-pending]');
+      if (idle) idle.classList.add('hidden');
+      if (pending) pending.classList.remove('hidden');
+    });
+  })();
+</script>
+  {% endif %}
 </div>
