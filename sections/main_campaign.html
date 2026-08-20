@@ -172,39 +172,6 @@
 </div>
 
 
-<script>
-  function toggleDescription() {
-    var container = document.getElementById('description-container');
-    if (container.classList.contains('max-h-[1000px]')) {
-      container.classList.remove('max-h-[1000px]');
-      container.classList.add('max-h-none');
-      document.getElementById('show-all-btn').innerText = 'Mostra meno';
-    } else {
-      container.classList.add('max-h-[1000px]');
-      container.classList.remove('max-h-none');
-      document.getElementById('show-all-btn').innerText = 'Mostra tutto';
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", function() {
-    const container = document.getElementById('description-container');
-    const button = document.getElementById('show-all-btn');
-    const maxHeight = 1000;
-
-    if (button && container.scrollHeight < maxHeight) {
-      button.classList.remove('hidden');
-    }
-  });
-</script>
-
-<style>
-    #description-container {
-        transition: max-height 0.5s ease-in-out;
-    }
-</style>
-
-
-
 {# djlint:off #}
 {% schema %}
   {
