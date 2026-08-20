@@ -16,7 +16,7 @@
   <div id="userDropdown"
        class="absolute right-0 mt-2 z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg border w-56 ">
     <div class="px-4 py-3 text-sm text-gray-900">
-      {# `supporter.name` non esiste sul modello: e' `full_name`. #}
+      {# `supporter.name` non esiste sul modello: è `full_name`. #}
       {% if supporter.full_name %}<div class="font-medium">{{ supporter.full_name|escape }}</div>{% endif %}
       <div class="truncate text-gray-500">{{ supporter.email|escape }}</div>
     </div>
