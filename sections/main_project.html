@@ -2,6 +2,7 @@
   <div class="lg:container px-5 md:px-0">
     <img src="{{ project.cover.full }}"
          alt="{{ project.title }}"
+         data-project-cover
          class="object-contain md:h-96 w-full rounded-xl" />
   </div>
 {% endif %}
@@ -23,6 +24,6 @@
   "max_blocks": 0,
   "blocks": [],
   "locales": {},
-  "templates": ["article", "homepage", "page", "product"]
+  "templates": ["project"]
   }
 {% endschema %}
