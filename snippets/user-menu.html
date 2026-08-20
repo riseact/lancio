@@ -8,17 +8,17 @@
     {% if supporter.image %}
       <img class="w-8 h-8 rounded-full object-cover object-center"
            src="{{ supporter.image.url }}"
-           alt="{{ supporter }}" />
+           alt="{{ supporter|escape }}" />
     {% else %}
-      <span class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full text-sm font-medium text-gray-600 ">{{ supporter.initial }}</span>
+      <span class="flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full text-sm font-medium text-gray-600 ">{{ supporter.initial|escape }}</span>
     {% endif %}
   </button>
-  <!-- Dropdown menu -->
   <div id="userDropdown"
-       class="absolute right-0 mt-2 z-20 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 ">
+       class="absolute right-0 mt-2 z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-lg border w-56 ">
     <div class="px-4 py-3 text-sm text-gray-900">
-      <div>{{ supporter.name }}</div>
-      <div class="font-medium truncate">{{ supporter.email }}</div>
+      {# `supporter.name` non esiste sul modello: e' `full_name`. #}
+      {% if supporter.full_name %}<div class="font-medium">{{ supporter.full_name|escape }}</div>{% endif %}
+      <div class="truncate text-gray-500">{{ supporter.email|escape }}</div>
     </div>
     <ul class="py-1 text-sm text-gray-700 list-none"
         aria-labelledby="avatarButton">
