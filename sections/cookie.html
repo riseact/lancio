@@ -3,7 +3,8 @@
         .cookie-banner {
             width: 90%;  
         }
-        p{
+        .cookie-banner p,
+        .cookie-preferences-modal p {
             font-size: 0.9rem;
         }
 
@@ -16,7 +17,7 @@
             height: 6vh;
         }
 
-        h2{
+        .cookie-preferences-modal h2 {
             font-size: 1.1rem;
             font-weight: bold;
         }
@@ -28,7 +29,8 @@
         .cookie-banner{
             width: 50%;
         }
-        p{
+        .cookie-banner p,
+        .cookie-preferences-modal p {
             font-size: 1.2rem;
         }
         .cookie-banner a {
@@ -43,7 +45,7 @@
         .modal-buttons button{
             font-size: 1rem;
         }
-        h2{
+        .cookie-preferences-modal h2 {
             font-size: 1.5rem;
             font-weight: bold;
         }
@@ -123,10 +125,6 @@
         
     }
 
-    label{
-        display: ;
-    }
-    
     .modal-content {
         background-color: {{section.settings.bg_color}};
         color: {{section.settings.fg_color}};
@@ -139,7 +137,7 @@
         border-radius: 0.25rem;
     }
 
-    hr{
+    .modal-content hr {
         border-color: {{section.settings.fg_color}};
         margin: 1rem auto;
     }
@@ -173,14 +171,14 @@
         border-radius: 0.25rem;
     }
     
-    /* Scoped to this form: as a bare "form label" it added 15px under the label
-       of every field of every form on the page, lead box included. */
+    /* Agganciato a questo form: come "form label" aggiungeva 15px sotto l'etichetta
+       di ogni campo di ogni form della pagina, lead box compreso. */
     #cookiePreferencesForm label {
         display: block;
         margin-bottom: 15px;
     }
-    
-    form input {
+
+    #cookiePreferencesForm input {
         margin-right: 10px;
     }
 </style>
@@ -231,7 +229,7 @@
     function declineAll() {
         const form = document.getElementById("cookiePreferencesForm");
         for (let i = 0; i < form.elements.length; i++) {
-            if (form.elements[i].type === "checkbox" && !form.elements[i].name === "technical") {
+            if (form.elements[i].type === "checkbox" && form.elements[i].name !== "technical") {
                 form.elements[i].checked = false;
             }
         }
