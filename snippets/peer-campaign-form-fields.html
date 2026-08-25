@@ -1,0 +1,33 @@
+{# I due campi che il backend accetta: nome del promotore e messaggio.
+   Lo slug non è un campo — viene generato dal nome — e l'immagine si prende dal
+   profilo del sostenitore. Un input in più qui sarebbe una promessa che la vista
+   non mantiene. #}
+
+<div>
+  <label class="block text-gray-700 text-sm font-bold mb-2" for="id_peer_supporter_name">Il tuo nome</label>
+  <p class="text-sm text-gray-500">Il nome che comparirà sul form di donazione e nella pagina della campagna</p>
+  <input class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+         type="text"
+         id="id_peer_supporter_name"
+         name="peer_supporter_name"
+         value="{{ (form.peer_supporter_name.value() or '')|escape }}"
+         maxlength="250"
+         autofocus
+         required />
+  {% if form.peer_supporter_name.errors %}
+    <p class="text-red-500 p-2 text-sm">{{ form.peer_supporter_name.errors.as_text()|escape }}</p>
+  {% endif %}
+</div>
+
+<div>
+  <label class="block text-gray-700 text-sm font-bold mb-2" for="id_custom_message">Il tuo messaggio</label>
+  <p class="text-sm text-gray-500">Il testo che comparirà sul form di donazione e nella pagina della campagna</p>
+  <textarea class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
+            id="id_custom_message"
+            name="custom_message"
+            rows="5"
+            required>{{ (form.custom_message.value() or '')|escape }}</textarea>
+  {% if form.custom_message.errors %}
+    <p class="text-red-500 p-2 text-sm">{{ form.custom_message.errors.as_text()|escape }}</p>
+  {% endif %}
+</div>

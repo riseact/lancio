@@ -1,0 +1,32 @@
+{# Statistiche pubbliche di una campagna peer.
+   Vuole `peer_campaign` in contesto; usa `stats` se la vista la passa (pagina di
+   gestione e pagina peer pubblica) e ricade sull'aggregato del dataclass altrove. #}
+{% set peer_stats = stats or peer_campaign.stats %}
+
+<div class="grid grid-cols-3 gap-3 my-6">
+  <div class="border rounded-xl p-4">
+    <div class="text-xs uppercase text-gray-500">Raccolto</div>
+    <div class="text-lg font-bold">{{ peer_stats.amount|format_money }}</div>
+  </div>
+  <div class="border rounded-xl p-4">
+    <div class="text-xs uppercase text-gray-500">Donazioni</div>
+    <div class="text-lg font-bold">{{ peer_stats.total_donations }}</div>
+  </div>
+  <div class="border rounded-xl p-4">
+    <div class="text-xs uppercase text-gray-500">Sostenitori</div>
+    <div class="text-lg font-bold">{{ peer_stats.total_supporters }}</div>
+  </div>
+</div>
+
+{% if peer_campaign.is_goal_enabled and peer_campaign.goal %}
+  <div class="my-6">
+    <div class="flex justify-between text-sm mb-2">
+      <span>Obiettivo {{ peer_campaign.goal|format_money }}</span>
+      <span class="font-bold">{{ peer_campaign.goal_percentage|round|int }}%</span>
+    </div>
+    <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+      <div class="h-2 bg-[color:var(--primary-bg-color)]"
+           style="width: {{ [100, peer_campaign.goal_percentage|round|int]|min }}%"></div>
+    </div>
+  </div>
+{% endif %}

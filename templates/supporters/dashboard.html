@@ -59,21 +59,25 @@
     </div>
     {% else %}
       {% for peer_campaign in peer_campaigns %}
-        <a href="{{ peer_campaign.url }}">
-          <div class="flex items-center justify-between mb-5 hover:bg-gray-100 p-5 border rounded-xl">
-            <div class="text-gray-800 flex gap-4 items-center">
-              {% if peer_campaign.supporter_image %}
-                <img src="{{ peer_campaign.supporter_image }}"
-                     class="w-16 h-16 rounded-full object-cover"
-                     alt="{{ peer_campaign.supporter_name|escape }}" />
-              {% endif %}
-              <div>
-                <h3 class="text-lg">{{ peer_campaign.campaign.title|escape }}</h3>
-                <p class="text-sm">Totale raccolto: {{ peer_campaign.stats.amount|format_money }}</p>
-              </div>
+        {# Il link primario è la pagina di gestione, non quella pubblica: da qui
+           il promotore vuole vedere come sta andando e correggere il testo. #}
+        <div class="flex items-center justify-between mb-5 p-5 border rounded-xl">
+          <div class="text-gray-800 flex gap-4 items-center">
+            {% if peer_campaign.supporter_image %}
+              <img src="{{ peer_campaign.supporter_image }}"
+                   class="w-16 h-16 rounded-full object-cover"
+                   alt="{{ peer_campaign.supporter_name|escape }}" />
+            {% endif %}
+            <div>
+              <h3 class="text-lg">
+                <a class="text-blue-500 hover:underline" href="{{ peer_campaign.update_url_v2 }}">{{ peer_campaign.campaign.title|escape }}</a>
+              </h3>
+              <p class="text-sm">Totale raccolto: {{ peer_campaign.stats.amount|format_money }}</p>
+              <p class="text-sm text-gray-500">{{ peer_campaign.stats.total_donations }} donazioni</p>
             </div>
           </div>
-        </a>
+          <a href="{{ peer_campaign.url }}/" class="text-blue-500 text-sm hover:underline shrink-0 ml-4">Pagina pubblica</a>
+        </div>
       {% endfor %}
     {% endif %}
   </div>

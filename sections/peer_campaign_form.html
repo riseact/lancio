@@ -1,21 +1,116 @@
-<div class="container mx-auto mb-20">
+{# Tre pagine in una sezione, perché tre viste del core rendono questo stesso
+   template: la creazione (`campaigns/<slug>/fundraise/`), la gestione della
+   propria campagna (`.../update/v2/`, e la v1 `.../update/`) e il caso in cui
+   la campagna madre non accetta raccolte personali. #}
+<div class="w-full max-w-xl mx-auto px-5 py-12">
   {% if peer_campaign %}
-    <h1 class="text-center mb-6 mt-16">La tua campagna di fundraising</h1>
-  {% else %}
-    <h1 class="text-center mb-6 mt-16">Inizia una campagna di fundraising</h1>
-  {% endif %}
 
-  <div class="w-full max-w-xl mx-auto mt-8 px-5 pb-12">
-    {% if peer_campaign %}
-      <p>Ciao <strong>{{ supporter|escape }},</strong></p>
-      <p class="my-2">Qua puoi visualizzare e modificare le informazioni della tua campagna:</p>
-    {% else %}
-      <p>Grazie <strong>{{ supporter|escape }},</strong></p>
-      <p class="my-2">
-        sei a un passo dall'iniziare a raccogliere fondi per <strong>{{ campaign.title|escape }}</strong>.
-      </p>
-      <p class="my-2">Prima dobbiamo chiederti un paio di informazioni:</p>
+    <a href="{{ supporter_urls.dashboard }}" class="text-blue-500 text-sm hover:underline">Torna alla bacheca</a>
+
+    <h1 class="mt-4 mb-2">La tua raccolta fondi</h1>
+    <p class="text-gray-500">
+      per <a class="text-blue-500 hover:underline" href="{{ campaign.url }}/">{{ campaign.title|escape }}</a>
+    </p>
+
+    {% if peer_campaign_updated %}
+      <p class="mt-6 p-3 rounded bg-green-100 text-green-800 text-sm">Modifiche salvate.</p>
     {% endif %}
+
+    <div class="flex my-8 items-center justify-between">
+      <div>
+        <h2 class="text-xl">{{ peer_campaign.supporter_name|escape }}</h2>
+        {% if peer_campaign.custom_message %}
+          <p class="text-sm text-gray-500 mt-1">“{{ peer_campaign.custom_message|escape }}”</p>
+        {% endif %}
+      </div>
+      {% if peer_campaign.supporter_image %}
+        <img src="{{ peer_campaign.supporter_image }}"
+             class="w-16 h-16 rounded-full object-cover shrink-0 ml-4"
+             alt="{{ peer_campaign.supporter_name|escape }}" />
+      {% endif %}
+    </div>
+
+    <hr class="my-8" />
+
+    <h2 class="text-xl">Come sta andando</h2>
+    {% include "snippets/peer-campaign-stats.html" %}
+    <p class="text-sm text-gray-500">
+      Sono i dati pubblici della tua pagina: donazioni completate e in corso attribuite a te.
+      L'elenco dei donatori lo trovi sulla pagina pubblica.
+    </p>
+
+    <hr class="my-8" />
+
+    <h2 class="text-xl">Condividi</h2>
+    {% include "snippets/peer-campaign-actions.html" %}
+
+    <hr class="my-8" />
+
+    <h2 class="text-xl">Modifica</h2>
+    <p class="text-sm text-gray-500 mt-2">Nome e messaggio si possono cambiare quando vuoi.</p>
+
+    {% if form.non_field_errors() %}
+      <p class="mt-4 p-3 rounded bg-red-100 text-red-700 text-sm">{{ form.non_field_errors().as_text()|escape }}</p>
+    {% endif %}
+
+    {# `peer_campaign_update_url_v2` la passa la v2 della vista, con `__preview`
+       conservato. Sulla v1 non c'è: si ricade sull'indirizzo costruito dal core,
+       così il salvataggio torna sempre qui. #}
+    <form id="peer-form"
+          method="post"
+          action="{{ peer_campaign_update_url_v2 or peer_campaign.update_url_v2 }}"
+          class="grid grid-rows gap-8 mt-8">
+      <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+      {% include "snippets/peer-campaign-form-fields.html" %}
+
+      <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2">Indirizzo della pagina</label>
+        <p class="mt-2 bg-gray-50 rounded w-full text-sm p-2 text-gray-500 break-all">{{ peer_campaign.url|escape }}/</p>
+        <p class="text-sm text-gray-500 mt-2">
+          Non è modificabile: è il link che hai già condiviso, cambiarlo romperebbe tutti i rimandi alla pagina.
+        </p>
+      </div>
+
+      <div>
+        <label class="block text-gray-700 text-sm font-bold mb-2">La tua immagine</label>
+        <p class="text-sm text-gray-500">
+          È quella del tuo profilo. Si cambia da
+          <a class="text-blue-500 hover:underline" href="{{ supporter_urls.profile }}">Il mio profilo</a>.
+        </p>
+      </div>
+
+      <div class="mt-4">
+        <button class="block w-full mb-2 btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
+                type="submit"
+                data-submit>
+          <span data-submit-idle>Salva le modifiche</span>
+          <span data-submit-pending class="hidden">Invio in corso...</span>
+        </button>
+      </div>
+    </form>
+
+  {% elif not campaign.allow_peer_to_peer %}
+
+    {# Difensiva: oggi il core risponde 404 su una campagna che non accetta
+       raccolte personali, ma in anteprima dell'editor questa sezione si apre
+       comunque, e un form che non può funzionare è peggio di una spiegazione. #}
+    <h1 class="mb-6">Raccolte personali non attive</h1>
+    <p class="my-2">
+      La campagna <strong>{{ campaign.title|escape }}</strong> non accetta raccolte fondi personali.
+    </p>
+    <p class="my-2">Puoi comunque sostenerla con una donazione.</p>
+    <a class="block btn-primary mt-8" href="{{ campaign.url }}/">Vai alla campagna</a>
+
+  {% else %}
+
+    <h1 class="mb-6">Inizia una campagna di fundraising</h1>
+
+    <p>Grazie <strong>{{ supporter|escape }},</strong></p>
+    <p class="my-2">
+      sei a un passo dall'iniziare a raccogliere fondi per <strong>{{ campaign.title|escape }}</strong>.
+    </p>
+    <p class="my-2">Prima dobbiamo chiederti un paio di informazioni:</p>
 
     {% if form.non_field_errors() %}
       <p class="mt-4 p-3 rounded bg-red-100 text-red-700 text-sm">{{ form.non_field_errors().as_text()|escape }}</p>
@@ -26,90 +121,53 @@
           class="grid grid-rows gap-8 mt-8">
       <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
 
-      <div>
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="id_peer_supporter_name">Il tuo nome</label>
-        <p class="text-sm text-gray-500">Scegli il nome che comparirà sul form di donazione e nella pagina della campagna</p>
-        <input class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-               type="text"
-               id="id_peer_supporter_name"
-               name="peer_supporter_name"
-               value="{{ (form.peer_supporter_name.value() or '')|escape }}"
-               autofocus
-               required />
-        {% if form.peer_supporter_name.errors %}
-          <p class="text-red-500 p-2 text-sm">{{ form.peer_supporter_name.errors.as_text()|escape }}</p>
-        {% endif %}
-      </div>
+      {% include "snippets/peer-campaign-form-fields.html" %}
 
-      <div>
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="id_custom_message">Il tuo messaggio</label>
-        <p class="text-sm text-gray-500">Il testo che comparirà sul form di donazione e nella pagina della campagna</p>
-        <textarea class="mt-4 bg-gray-100 appearance-none rounded w-full text-sm p-2 text-gray-700 focus:outline-none focus:shadow-outline"
-                  id="id_custom_message"
-                  name="custom_message"
-                  required>{{ (form.custom_message.value() or '')|escape }}</textarea>
-        {% if form.custom_message.errors %}
-          <p class="text-red-500 p-2 text-sm">{{ form.custom_message.errors.as_text()|escape }}</p>
-        {% endif %}
-      </div>
-
-      {% if not peer_campaign %}
-        <div>
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="id_peer_slug">Identifica la tua campagna</label>
-          <p class="text-sm text-gray-500">Questa informazione determinerà il link alla tua campagna di fundraising personale</p>
-
-          <div class="flex mt-4 bg-gray-100 text-gray-700 rounded text-sm">
-            <span class="p-2 pr-0 text-gray-400">{{ campaign.url }}/</span>
-            <input class="grow min-w-0 appearance-none bg-gray-100 w-full p-2 pl-0 focus:outline-none focus:shadow-outline"
-                   type="text"
-                   id="id_peer_slug"
-                   name="peer_slug"
-                   value="{{ (form.peer_slug.value() or '')|escape }}"
-                   required />
-          </div>
-          {% if form.peer_slug.errors %}
-            <p class="text-red-500 p-2 text-sm">{{ form.peer_slug.errors.as_text()|escape }}</p>
-          {% endif %}
-        </div>
-      {% endif %}
+      <p class="text-sm text-gray-500">
+        L'indirizzo della tua pagina lo creiamo noi dal tuo nome, sotto
+        <span class="break-all">{{ campaign.url|escape }}/</span>.
+      </p>
 
       <div class="mt-4">
-        <button class="block w-full mb-2 disabled:opacity-60 disabled:cursor-not-allowed {% if peer_campaign %}btn-outline{% else %}btn-primary{% endif %}"
+        <button class="block w-full mb-2 btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
                 type="submit"
                 data-submit>
-          <span data-submit-idle>{% if peer_campaign %}Aggiorna{% else %}Inizia a raccogliere{% endif %}</span>
+          <span data-submit-idle>Inizia a raccogliere</span>
           <span data-submit-pending class="hidden">Invio in corso...</span>
         </button>
       </div>
     </form>
 
-<script>
-  (function () {
-    const form = document.getElementById('peer-form');
-    if (!form) return;
+  {% endif %}
 
-    form.addEventListener('submit', function (event) {
-      if (form.dataset.submitted === 'true') {
-        event.preventDefault();
-        return;
-      }
+  {% if peer_campaign or campaign.allow_peer_to_peer %}
+    <script>
+      (function () {
+        const form = document.getElementById('peer-form');
+        if (!form) return;
 
-      form.dataset.submitted = 'true';
+        form.addEventListener('submit', function (event) {
+          if (form.dataset.submitted === 'true') {
+            event.preventDefault();
+            return;
+          }
 
-      const button = form.querySelector('[data-submit]');
-      if (!button) return;
+          form.dataset.submitted = 'true';
 
-      button.disabled = true;
-      button.setAttribute('aria-busy', 'true');
+          const button = form.querySelector('[data-submit]');
+          if (!button) return;
 
-      const idle = button.querySelector('[data-submit-idle]');
-      const pending = button.querySelector('[data-submit-pending]');
-      if (idle) idle.classList.add('hidden');
-      if (pending) pending.classList.remove('hidden');
-    });
-  })();
-</script>
-  </div>
+          button.disabled = true;
+          button.setAttribute('aria-busy', 'true');
+
+          const idle = button.querySelector('[data-submit-idle]');
+          const pending = button.querySelector('[data-submit-pending]');
+          if (idle) idle.classList.add('hidden');
+          if (pending) pending.classList.remove('hidden');
+        });
+      })();
+    </script>
+  {% endif %}
 </div>
 
 {# djlint:off #}

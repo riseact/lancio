@@ -10,3 +10,6 @@ riseact.yml
 # local scratch checkouts
 /master/
 /lancio-prova/
+
+# scratch note, not part of the theme
+/todo

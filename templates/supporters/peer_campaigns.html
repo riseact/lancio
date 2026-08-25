@@ -8,23 +8,34 @@
       <p class="text-base">Non hai ancora organizzato nessuna raccolta fondi personale.</p>
     </div>
   {% else %}
-    <table class="w-full text-sm text-left text-gray-600 mt-8">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-100">
-        <tr>
-          <th scope="col" class="px-6 py-3">Campagna</th>
-          <th scope="col" class="px-6 py-3">Totale raccolto</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for peer_campaign in peer_campaigns %}
-          <tr class="bg-white border-b">
-            <th scope="row" class="px-6 py-4 font-medium text-blue-500 whitespace-nowrap">
-              <a href="{{ peer_campaign.url }}">{{ peer_campaign.campaign.title|escape }}</a>
-            </th>
-            <td class="px-6 py-4">{{ peer_campaign.stats.amount|format_money }}</td>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-600 mt-8">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-100">
+          <tr>
+            <th scope="col" class="px-6 py-3">Campagna</th>
+            <th scope="col" class="px-6 py-3">Totale raccolto</th>
+            <th scope="col" class="px-6 py-3">Donazioni</th>
+            <th scope="col" class="px-6 py-3">Sostenitori</th>
+            <th scope="col" class="px-6 py-3"><span class="sr-only">Azioni</span></th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {% for peer_campaign in peer_campaigns %}
+            <tr class="bg-white border-b">
+              <th scope="row" class="px-6 py-4 font-medium text-blue-500 whitespace-nowrap">
+                <a class="hover:underline" href="{{ peer_campaign.update_url_v2 }}">{{ peer_campaign.campaign.title|escape }}</a>
+              </th>
+              <td class="px-6 py-4">{{ peer_campaign.stats.amount|format_money }}</td>
+              <td class="px-6 py-4">{{ peer_campaign.stats.total_donations }}</td>
+              <td class="px-6 py-4">{{ peer_campaign.stats.total_supporters }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <a class="text-blue-500 hover:underline" href="{{ peer_campaign.update_url_v2 }}">Gestisci</a>
+                <a class="text-blue-500 hover:underline ml-4" href="{{ peer_campaign.url }}/">Pagina pubblica</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   {% endif %}
 </div>

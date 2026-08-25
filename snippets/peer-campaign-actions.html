@@ -1,0 +1,56 @@
+{# Comandi disponibili sulla propria campagna peer.
+   Vuole `peer_campaign` e `campaign`. `peer_campaign_public_url` la passa la vista
+   di gestione: è assoluta e senza `__preview`, cioè l'indirizzo che si condivide.
+   Senza di lei si ricade sul dominio dell'organizzazione. #}
+{% set public_url = peer_campaign_public_url or organization.base_site_url ~ peer_campaign.url ~ '/' %}
+
+<div class="gap-2 flex flex-col my-6">
+  <a class="block btn-primary" href="{{ peer_campaign.url }}/">Vedi la pagina pubblica</a>
+
+  {% if not campaign.is_lead %}
+    <a class="block btn-outline" href="{{ peer_campaign.url }}/donate/">Apri il form di donazione</a>
+  {% endif %}
+</div>
+
+<div>
+  <label class="block text-gray-700 text-sm font-bold mb-2" for="id_peer_public_url">Il link da condividere</label>
+  <div class="flex gap-2">
+    <input class="grow min-w-0 bg-gray-100 rounded text-sm p-2 text-gray-700"
+           id="id_peer_public_url"
+           type="text"
+           value="{{ public_url|escape }}"
+           readonly
+           data-copy-source />
+    <button class="btn-outline btn-sm shrink-0" type="button" data-copy-link>Copia</button>
+  </div>
+  <p class="text-sm text-gray-500 mt-2 hidden" data-copy-feedback>Link copiato.</p>
+</div>
+
+{% with url=public_url %}
+  {% include "snippets/share-button.html" %}
+{% endwith %}
+
+<script>
+  (function () {
+    const button = document.querySelector('[data-copy-link]');
+    const source = document.querySelector('[data-copy-source]');
+    const feedback = document.querySelector('[data-copy-feedback]');
+    if (!button || !source) return;
+
+    button.addEventListener('click', function () {
+      source.select();
+
+      const done = function () {
+        if (feedback) feedback.classList.remove('hidden');
+      };
+
+      // navigator.clipboard non esiste fuori dai contesti sicuri: la selezione
+      // resta, quindi il link è copiabile a mano anche quando questo ramo salta.
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(source.value).then(done, function () {});
+      } else if (document.execCommand) {
+        if (document.execCommand('copy')) done();
+      }
+    });
+  })();
+</script>

@@ -26,14 +26,14 @@
         <div id="community">
           <h2 class="text-2xl font-bold  mb-5">Campagne di raccolta fondi personali</h2>
           {% for peer_campaign in campaign.peer_campaigns %}
-            <a href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}"
+            <a href="{{ peer_campaign.url }}/"
                class="flex items-start rounded items-space-between mb-4 p-4 hover:bg-gray-100">
               {% if peer_campaign.supporter_image %}
                 <img class="w-12 h-12 mr-4 rounded-full object-cover object-center"
                      src="{{ peer_campaign.supporter_image }}"
-                     alt="{{ peer_campaign.supporter_name }}" />
+                     alt="{{ peer_campaign.supporter_name|escape }}" />
               {% else %}
-                <div class="w-12 h-12 rounded-full bg-[color:var(--primary-color)]">
+                <div class="w-12 h-12 rounded-full bg-[color:var(--primary-bg-color)]">
                   <svg xmlns="http://www.w3.org/2000/svg"
                        viewBox="0 0 24 24"
                        class="w-6 h-6">
@@ -42,28 +42,29 @@
                 </div>
               {% endif %}
               <div>
-                <h3 class="text-gray-800 text-xl font-bold">{{ peer_campaign.supporter_name }}</h3>
+                <h3 class="text-gray-800 text-xl font-bold">{{ peer_campaign.supporter_name|escape }}</h3>
                 {% if peer_campaign.custom_message %}
-                  <p class="text-gray-800 text-md mb-2">“{{ peer_campaign.custom_message }}”</p>
+                  <p class="text-gray-800 text-md mb-2">“{{ peer_campaign.custom_message|escape }}”</p>
                 {% else %}
-                  <p class="text-gray-800 text-md mb-2">“Aiuta {{ campaign.title }}”</p>
+                  <p class="text-gray-800 text-md mb-2">“Aiuta {{ campaign.title|escape }}”</p>
                 {% endif %}
               </div>
               <div class="flex flex-col items-end ml-4">
-                <h3 class="text-gray-800  text-lg">{{ peer_campaign.stats.amount|int }}€</h3>
+                <h3 class="text-gray-800  text-lg">{{ peer_campaign.stats.amount|format_money }}</h3>
               </div>
             </a>
           {% else %}
-            <div class="my-5">
-              <p class="text-gray-800 text-md mb-10">
-                Non è ancora stata avviata nessuna campagna di raccolta fondi personale
-                <br />
-                Inzia tu, aiuta questa causa!
-              </p>
-              <a class="btn-primary mt-2"
-                 href="/campaigns/{{ campaign.slug }}/fundraise">Inzia una campagna di raccolti fondi per questa causa</a>
-            </div>
+            <p class="text-gray-800 text-md mb-5">
+              Non è ancora stata avviata nessuna campagna di raccolta fondi personale.
+              <br />
+              Inizia tu, aiuta questa causa!
+            </p>
           {% endfor %}
+
+          {# Fuori dal ramo `else`: prima la chiamata all'azione compariva solo
+             quando la lista era vuota, cioè spariva al primo promotore. #}
+          <a class="btn-primary mt-2 inline-block"
+             href="/campaigns/{{ campaign.slug }}/fundraise/">Inizia una campagna di raccolta fondi per questa causa</a>
         </div>
       {% endif %}
 
@@ -78,7 +79,7 @@
                     src="{{ comment.supporter_image }}"
                     alt="{{ comment.supporter_name }}" />
             {% else %}
-              <div class="w-12 h-12 mr-4 flex justify-center items-center rounded-full bg-[color:var(--primary-color)]">
+              <div class="w-12 h-12 mr-4 flex justify-center items-center rounded-full bg-[color:var(--primary-bg-color)]">
                 <svg xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       class="w-6 h-6">
