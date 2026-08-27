@@ -59,8 +59,9 @@
     </div>
     {% else %}
       {% for peer_campaign in peer_campaigns %}
-        {# Il link primario è la pagina di gestione, non quella pubblica: da qui
-           il promotore vuole vedere come sta andando e correggere il testo. #}
+        {# Il link primario è la pagina di dettaglio nell'area, non quella
+           pubblica: da qui il promotore vuole vedere come sta andando e
+           correggere il testo. #}
         <div class="flex items-center justify-between mb-5 p-5 border rounded-xl">
           <div class="text-gray-800 flex gap-4 items-center">
             {% if peer_campaign.supporter_image %}
@@ -70,7 +71,7 @@
             {% endif %}
             <div>
               <h3 class="text-lg">
-                <a class="text-blue-500 hover:underline" href="{{ peer_campaign.update_url_v2 }}">{{ peer_campaign.campaign.title|escape }}</a>
+                <a class="text-blue-500 hover:underline" href="{{ peer_campaign.manage_url }}">{{ peer_campaign.campaign.title|escape }}</a>
               </h3>
               <p class="text-sm">Totale raccolto: {{ peer_campaign.stats.amount|format_money }}</p>
               <p class="text-sm text-gray-500">{{ peer_campaign.stats.total_donations }} donazioni</p>

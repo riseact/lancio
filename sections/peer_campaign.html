@@ -20,11 +20,12 @@
         </div>
       </div>
 
-      {# Chi sta guardando la propria pagina ha un ingresso diretto alla gestione:
-         è l'unico posto da cui la cerca dopo aver condiviso il link. #}
+      {# Chi sta guardando la propria pagina ha un ingresso diretto al dettaglio
+         nell'area sostenitore: è l'unico posto da cui la cerca dopo aver
+         condiviso il link. #}
       {% if supporter and peer_campaign.supporter and supporter.id == peer_campaign.supporter.id %}
         <a class="inline-block mt-5 text-blue-500 text-sm hover:underline"
-           href="{{ peer_campaign.update_url_v2 }}">Gestisci questa pagina</a>
+           href="{{ peer_campaign.manage_url }}">Gestisci questa pagina</a>
       {% endif %}
 
       <div class="my-5">
@@ -66,20 +67,6 @@
       {% if not campaign.is_lead %}
         <a class="my-10 block btn-primary"
            href="{{ peer_campaign.url }}/donate/">Dona ora</a>
-      {% endif %}
-
-      {% if campaign.public_donations_count > 0 %}
-        <div class="hidden" id="donations">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {% for donation in campaign.public_donations %}
-              <div class="border py-4 px-8">
-                <h5 class="font-bold">{{ donation.supporter.full_name }}</h5>
-                {{ donation.amount }} €
-                <p class="text-gray-600 text-sm mt-3 richtext">{{ donation.message }}</p>
-              </div>
-            {% endfor %}
-          </div>
-        </div>
       {% endif %}
     </div>
     <div class="col-span-3 hidden lg:block">

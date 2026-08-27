@@ -1,0 +1,124 @@
+{# Dettaglio di una raccolta personale dentro l'area sostenitore
+   (`/my/campaigns/<id>/`). La sezione `peer_campaign_form` mostra le stesse cose
+   su `.../update/v2/`, che resta l'indirizzo a cui inviano i temi già
+   rilasciati: qui il giro è tutto interno all'area, quindi si torna alle proprie
+   campagne e non alla pagina pubblica. #}
+<div class="w-full max-w-xl mx-auto px-5 py-12">
+  <a href="{{ supporter_urls.campaigns }}" class="text-blue-500 text-sm hover:underline">Torna alle mie campagne</a>
+
+  {# `peer_campaign.title` è "<nome> per <campagna>": è il titolo con cui la
+     raccolta compare ovunque, back office compreso. #}
+  <h1 class="mt-4 mb-2">{{ peer_campaign.title|escape }}</h1>
+  <p class="text-gray-500">
+    a sostegno di
+    <a class="text-blue-500 hover:underline" href="{{ campaign.url }}/">{{ campaign.title|escape }}</a>
+  </p>
+
+  {% if peer_campaign_updated %}
+    <p class="mt-6 p-3 rounded bg-green-100 text-green-800 text-sm">Modifiche salvate.</p>
+  {% endif %}
+
+  <div class="flex my-8 items-center justify-between">
+    <div>
+      <h2 class="text-xl">{{ peer_campaign.supporter_name|escape }}</h2>
+      {% if peer_campaign.custom_message %}
+        <p class="text-sm text-gray-500 mt-1">“{{ peer_campaign.custom_message|escape }}”</p>
+      {% endif %}
+    </div>
+    {% if peer_campaign.supporter_image %}
+      <img src="{{ peer_campaign.supporter_image }}"
+           class="w-16 h-16 rounded-full object-cover shrink-0 ml-4"
+           alt="{{ peer_campaign.supporter_name|escape }}" />
+    {% endif %}
+  </div>
+
+  <hr class="my-8" />
+
+  <h2 class="text-xl">Come sta andando</h2>
+  {% include "snippets/peer-campaign-stats.html" %}
+  <p class="text-sm text-gray-500">
+    Sono i dati pubblici della tua pagina: donazioni completate e in corso attribuite a te.
+    L'elenco dei donatori lo trovi sulla pagina pubblica.
+  </p>
+
+  <hr class="my-8" />
+
+  <h2 class="text-xl">Condividi</h2>
+  {% include "snippets/peer-campaign-actions.html" %}
+
+  <hr class="my-8" />
+
+  <h2 class="text-xl">Modifica</h2>
+  <p class="text-sm text-gray-500 mt-2">Nome e messaggio si possono cambiare quando vuoi.</p>
+
+  {% if form.non_field_errors() %}
+    <p class="mt-4 p-3 rounded bg-red-100 text-red-700 text-sm">{{ form.non_field_errors().as_text()|escape }}</p>
+  {% endif %}
+
+  {# `peer_campaign_manage_url` è questa stessa pagina con `__preview` conservato:
+     il salvataggio deve tornare qui, non sulla pagina pubblica. #}
+  <form id="peer-campaign-form"
+        method="post"
+        action="{{ peer_campaign_manage_url }}"
+        class="grid grid-rows gap-8 mt-8">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+
+    {% include "snippets/peer-campaign-form-fields.html" %}
+
+    <div>
+      <label class="block text-gray-700 text-sm font-bold mb-2">Indirizzo della pagina</label>
+      <p class="mt-2 bg-gray-50 rounded w-full text-sm p-2 text-gray-500 break-all">{{ peer_campaign.url|escape }}/</p>
+      <p class="text-sm text-gray-500 mt-2">
+        Non è modificabile: è il link che hai già condiviso, cambiarlo romperebbe tutti i rimandi alla pagina.
+      </p>
+    </div>
+
+    {# Immagine della raccolta: nascosta finché non è implementata. Oggi rimanda
+       alla foto del profilo, che però non è ancora modificabile da qui. #}
+    {#
+    <div>
+      <label class="block text-gray-700 text-sm font-bold mb-2">La tua immagine</label>
+      <p class="text-sm text-gray-500">
+        È quella del tuo profilo. Si cambia da
+        <a class="text-blue-500 hover:underline" href="{{ supporter_urls.profile }}">Il mio profilo</a>.
+      </p>
+    </div>
+    #}
+
+    <div class="mt-4">
+      <button class="block w-full mb-2 btn-primary disabled:opacity-60 disabled:cursor-not-allowed"
+              type="submit"
+              data-submit>
+        <span data-submit-idle>Salva le modifiche</span>
+        <span data-submit-pending class="hidden">Invio in corso...</span>
+      </button>
+    </div>
+  </form>
+
+<script>
+  (function () {
+    const form = document.getElementById('peer-campaign-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function (event) {
+      if (form.dataset.submitted === 'true') {
+        event.preventDefault();
+        return;
+      }
+
+      form.dataset.submitted = 'true';
+
+      const button = form.querySelector('[data-submit]');
+      if (!button) return;
+
+      button.disabled = true;
+      button.setAttribute('aria-busy', 'true');
+
+      const idle = button.querySelector('[data-submit-idle]');
+      const pending = button.querySelector('[data-submit-pending]');
+      if (idle) idle.classList.add('hidden');
+      if (pending) pending.classList.remove('hidden');
+    });
+  })();
+</script>
+</div>

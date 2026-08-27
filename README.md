@@ -51,7 +51,7 @@ Due cose che sorprendono sempre:
 | `sections/*.html` | blocchi componibili, ognuno si autodescrive con una coda `{% schema %}` |
 | `snippets/*.html` | frammenti inclusi con `{% include %}`. Niente schema, invisibili all'editor |
 | `templates/*.json` | **composizione della pagina**: quali sezioni, in che ordine, con quali impostazioni |
-| `templates/supporters/*.html` | pagine statiche non componibili (area sostenitore) |
+| `templates/supporters/*.html` | pagine statiche non componibili (area sostenitore). La chiave del template è il percorso, quindi un file nuovo qui serve una rotta del core che lo renda |
 | `config/settings_schema.json` | dichiara le impostazioni globali del tema |
 | `config/settings_data.json` | i **valori** di quelle impostazioni, più le sezioni globali |
 | `assets/*` | CSS, JS, font. Serviti su `/assets/<nome>` |
@@ -179,8 +179,9 @@ Aggiunte dalla vista che serve la pagina:
 | Variabile | Dove |
 |---|---|
 | `campaign` | `campaign`, `peer_campaign`, `thankyou` |
-| `peer_campaign`, `stats` | `peer_campaign`, `peer_campaign_form` |
+| `peer_campaign`, `stats` | `peer_campaign`, `peer_campaign_form`, `templates/supporters/peer_campaign.html` |
 | `peer_campaign_updated`, `peer_campaign_public_url`, `peer_campaign_update_url_v2` | pagina di gestione (`peer_campaign_form` servito su `.../update/v2/`) |
+| `peer_campaign_updated`, `peer_campaign_public_url`, `peer_campaign_manage_url` | dettaglio campagna dell'area (`templates/supporters/peer_campaign.html`, servito su `/my/campaigns/<id>/`) |
 | `form`, `custom_field_definitions`, `captcha`, `lead_form_success` | campagne di tipo lead |
 | `profile` | area sostenitore |
 
@@ -385,7 +386,7 @@ Ordinato per impatto. Quello che è già stato corretto sta in fondo.
    `{% asset 'theme.js' %}`. Il resto resta accanto alla sua sezione, ma agganciato
    con `addEventListener`, non `onclick`. Sono 8 `<script>` inline e 16 handler
    `onclick` da riportare a casa.
-2. **`snippets/campaign-donate-box.html:104` assegna `document.onkeydown`**, quindi
+2. **`snippets/campaign-donate-box.html:102` assegna `document.onkeydown`**, quindi
    cancella qualunque altro handler globale di tastiera. Diventa `addEventListener`
    quando il codice si sposta in `theme.js`.
 3. **Lo snippet del donate box viene incluso due volte** (colonna mobile e colonna

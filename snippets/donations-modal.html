@@ -1,5 +1,9 @@
 {# incluso una volta per pagina, fuori dalle colonne: un modale dentro un
-   contenitore posizionato viene ritagliato #}
+   contenitore posizionato viene ritagliato.
+   Come nel box donazioni: su una pagina peer l'elenco è quello della raccolta,
+   non quello della campagna madre. #}
+{% set donations_source = peer_campaign or campaign %}
+
 <div id="donation-modal"
      class="hidden fixed z-50 inset-0 bg-gray-900 bg-opacity-60 overflow-y-auto h-full w-full px-4">
   <div class="relative top-5 md:top-20 mx-auto shadow-xl rounded-md bg-white max-w-xl">
@@ -21,7 +25,7 @@
     <h3 class="font-bold text-center mb-10">Donazioni</h3>
     <div class="p-6 pt-0 m-5 md:m-15">
       <div class="max-h-[500px] overflow-auto">
-        {% for donation in campaign.public_donations %}
+        {% for donation in donations_source.public_donations %}
           <div class="flex items-start mb-4 md:px-10 border-b py-3">
             <div>
               <h3 class="text-gray-800 text-lg font-bold">

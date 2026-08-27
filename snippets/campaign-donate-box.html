@@ -1,3 +1,10 @@
+{# Su una pagina peer i numeri della raccolta sono quelli del promotore, non
+   quelli della campagna madre: `peer_campaign` espone gli stessi nomi di
+   `campaign` (`total_donated`, `total_donations`, `public_donations`), quindi
+   basta scegliere una volta da chi leggerli. L'obiettivo resta invece della
+   campagna: la barra qui sotto misura quello. #}
+{% set donations_source = peer_campaign or campaign %}
+
 <div class="{% if campaign.cost_examples|count == 0 %}sticky{% endif %} top-4 bg-white">
     
     <div class="border shadow-xl rounded-xl px-8 py-10">
@@ -11,13 +18,7 @@
                     </div>
                 {% else %}
                     <div class="text-center flex flex-col gap-4">
-                        <div class="text-5xl font-bold">
-                            {% if peer_campaign %}
-                                {{ peer_campaign.stats.amount|int }} € 
-                            {% else %}
-                                {{ campaign.total_donated|int }} € 
-                            {% endif %}
-                        </div>
+                        <div class="text-5xl font-bold">{{ donations_source.total_donated|int }} €</div>
                         <div class="pb-1 text-base text-gray-500 ">Obiettivo <b>{{ campaign.goal|int }}€</b></div>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-1.5 my-4">
@@ -29,13 +30,7 @@
         {% else %}
             {% if not hide_total_donated %}
                 <div class="text-center flex flex-col mb-5">
-                    <div class="text-5xl font-bold">
-                        {% if peer_campaign %}
-                            {{ peer_campaign.stats.amount|int }} € 
-                        {% else %}
-                            {{ campaign.total_donated|int }} € 
-                        {% endif %}
-                    </div>
+                    <div class="text-5xl font-bold">{{ donations_source.total_donated|int }} €</div>
                     <div class="text-base text-gray-500 ">Raccolti </div>
                 </div>
             {% endif %}
@@ -60,18 +55,18 @@
         </div>
         
         {% if not hide_total_donations and false%}
-            <div class="pb-1 text-md text-gray-500 dark:text-gray-400">{{campaign.total_donations}} donazioni</div>
+            <div class="pb-1 text-md text-gray-500 dark:text-gray-400">{{ donations_source.total_donations }} donazioni</div>
         {% endif %}
         
-        {% if campaign.total_donations > 0 and not hide_donations%}
+        {% if donations_source.total_donations > 0 and not hide_donations%}
             <div class="mt-5 ">
                 <div class="font-bold mb-3">Ultime donazioni</div>
-                {% for donation in campaign.public_donations[:3] %}
+                {% for donation in donations_source.public_donations[:3] %}
                     {% include 'snippets/donation-list-item.html' %}
                 {% endfor %}
 
                 {# la lista sopra ne mostra 3: il pulsante serve solo se ce n'è una quarta #}
-                {% if campaign.total_donations > 3 %}
+                {% if donations_source.total_donations > 3 %}
                     <button onclick="openModal('donation-modal')" class="block btn-outline text-sm w-full">Mostra tutte le donazioni</button>
                 {% endif %}
             </div>

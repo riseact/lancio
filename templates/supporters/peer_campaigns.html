@@ -23,13 +23,13 @@
           {% for peer_campaign in peer_campaigns %}
             <tr class="bg-white border-b">
               <th scope="row" class="px-6 py-4 font-medium text-blue-500 whitespace-nowrap">
-                <a class="hover:underline" href="{{ peer_campaign.update_url_v2 }}">{{ peer_campaign.campaign.title|escape }}</a>
+                <a class="hover:underline" href="{{ peer_campaign.manage_url }}">{{ peer_campaign.campaign.title|escape }}</a>
               </th>
               <td class="px-6 py-4">{{ peer_campaign.stats.amount|format_money }}</td>
               <td class="px-6 py-4">{{ peer_campaign.stats.total_donations }}</td>
               <td class="px-6 py-4">{{ peer_campaign.stats.total_supporters }}</td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <a class="text-blue-500 hover:underline" href="{{ peer_campaign.update_url_v2 }}">Gestisci</a>
+                <a class="text-blue-500 hover:underline" href="{{ peer_campaign.manage_url }}">Gestisci</a>
                 <a class="text-blue-500 hover:underline ml-4" href="{{ peer_campaign.url }}/">Pagina pubblica</a>
               </td>
             </tr>

@@ -1,7 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  // Le quattro cartelle in cui vive il markup del tema, non `./**/*.html`.
+  // Il glob generico prendeva anche node_modules, la suite in `test/`, le copie
+  // di lavoro (`/master/`, `/lancio-prova/`) e `to_migrate/`: classi di altri
+  // temi finivano in main.css, e senza nessun errore da nessuna parte.
   content: [
-    "./**/*.html"
+    "./layout/**/*.html",
+    "./sections/**/*.html",
+    "./snippets/**/*.html",
+    "./templates/**/*.html"
   ],
   safelist: [
     {
