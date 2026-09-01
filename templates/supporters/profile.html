@@ -19,7 +19,7 @@
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
     <input type="hidden" name="next" value="{{ (form.next.value() or '')|escape }}" />
 
-    {# L'immagine profilo è disattivata lato server: il form non ha più il campo `image`. #}
+    {# The profile image is disabled server side: the form has no `image` field. #}
 
     <div>
       <label class="block text-gray-700 text-sm font-bold mb-2" for="id_first_name">Nome</label>

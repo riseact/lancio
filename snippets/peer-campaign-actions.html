@@ -1,7 +1,6 @@
-{# Comandi disponibili sulla propria campagna peer.
-   Vuole `peer_campaign` e `campaign`. `peer_campaign_public_url` la passa la vista
-   di gestione: è assoluta e senza `__preview`, cioè l'indirizzo che si condivide.
-   Senza di lei si ricade sul dominio dell'organizzazione. #}
+{# Actions on one's own peer campaign. Requires `peer_campaign` and `campaign`.
+   `peer_campaign_public_url` comes from the manage view: absolute and without
+   `__preview`, the address to share. Falls back to the organization domain. #}
 {% set public_url = peer_campaign_public_url or organization.base_site_url ~ peer_campaign.url ~ '/' %}
 
 <div class="gap-2 flex flex-col my-6">
@@ -44,8 +43,8 @@
         if (feedback) feedback.classList.remove('hidden');
       };
 
-      // navigator.clipboard non esiste fuori dai contesti sicuri: la selezione
-      // resta, quindi il link è copiabile a mano anche quando questo ramo salta.
+      // navigator.clipboard is missing outside secure contexts: the selection
+      // stays, so the link can still be copied by hand.
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(source.value).then(done, function () {});
       } else if (document.execCommand) {

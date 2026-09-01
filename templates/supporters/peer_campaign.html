@@ -1,13 +1,12 @@
-{# Dettaglio di una raccolta personale dentro l'area sostenitore
-   (`/my/campaigns/<id>/`). La sezione `peer_campaign_form` mostra le stesse cose
-   su `.../update/v2/`, che resta l'indirizzo a cui inviano i temi già
-   rilasciati: qui il giro è tutto interno all'area, quindi si torna alle proprie
-   campagne e non alla pagina pubblica. #}
+{# Peer campaign detail inside the supporter area (`/my/campaigns/<id>/`). The
+   `peer_campaign_form` section renders the same data on `.../update/v2/`, the
+   address already released themes post to. Navigation stays inside the area:
+   back to my campaigns, not to the public page. #}
 <div class="w-full max-w-xl mx-auto px-5 py-12">
   <a href="{{ supporter_urls.campaigns }}" class="text-blue-500 text-sm hover:underline">Torna alle mie campagne</a>
 
-  {# `peer_campaign.title` è "<nome> per <campagna>": è il titolo con cui la
-     raccolta compare ovunque, back office compreso. #}
+  {# `peer_campaign.title` is "<name> per <campaign>", the title the campaign
+     appears under everywhere, back office included. #}
   <h1 class="mt-4 mb-2">{{ peer_campaign.title|escape }}</h1>
   <p class="text-gray-500">
     a sostegno di
@@ -55,8 +54,8 @@
     <p class="mt-4 p-3 rounded bg-red-100 text-red-700 text-sm">{{ form.non_field_errors().as_text()|escape }}</p>
   {% endif %}
 
-  {# `peer_campaign_manage_url` è questa stessa pagina con `__preview` conservato:
-     il salvataggio deve tornare qui, non sulla pagina pubblica. #}
+  {# `peer_campaign_manage_url` is this same page with `__preview` kept: saving
+     must return here, not to the public page. #}
   <form id="peer-campaign-form"
         method="post"
         action="{{ peer_campaign_manage_url }}"
@@ -73,8 +72,7 @@
       </p>
     </div>
 
-    {# Immagine della raccolta: nascosta finché non è implementata. Oggi rimanda
-       alla foto del profilo, che però non è ancora modificabile da qui. #}
+    {# Campaign image: hidden until it is implemented. #}
     {#
     <div>
       <label class="block text-gray-700 text-sm font-bold mb-2">La tua immagine</label>

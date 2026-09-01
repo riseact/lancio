@@ -61,17 +61,15 @@
             </p>
           {% endfor %}
 
-          {# Fuori dal ramo `else`: prima la chiamata all'azione compariva solo
-             quando la lista era vuota, cioè spariva al primo promotore. #}
+          {# Outside the `else`: the call to action shows even when peer campaigns exist. #}
           <a class="btn-primary mt-2 inline-block"
              href="/campaigns/{{ campaign.slug }}/fundraise/">Inizia una campagna di raccolta fondi per questa causa</a>
         </div>
       {% endif %}
 
       {% if not campaign.is_lead and not section.settings.hide_comments %}
-        {# `|list` materializza una volta sola: serve sia a sapere se la lista è
-           vuota sia a iterarla. Senza il controllo restava a video il titolo con
-           il nulla sotto, che sembra un errore di caricamento. #}
+        {# `|list` materializes the generator once: needed both to test for
+           emptiness and to iterate. #}
         {% set comments = campaign.comments|list %}
         {% if comments %}
           <hr class="my-5" />

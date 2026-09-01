@@ -1,8 +1,7 @@
-{# Su una pagina peer i numeri della raccolta sono quelli del promotore, non
-   quelli della campagna madre: `peer_campaign` espone gli stessi nomi di
-   `campaign` (`total_donated`, `total_donations`, `public_donations`), quindi
-   basta scegliere una volta da chi leggerli. L'obiettivo resta invece della
-   campagna: la barra qui sotto misura quello. #}
+{# On a peer page the totals are the fundraiser's, not the parent campaign's:
+   `peer_campaign` exposes the same names as `campaign` (`total_donated`,
+   `total_donations`, `public_donations`), so the source is chosen once. The goal
+   stays the campaign's, and that is what the bar below measures. #}
 {% set donations_source = peer_campaign or campaign %}
 
 <div class="{% if campaign.cost_examples|count == 0 %}sticky{% endif %} top-4 bg-white">
@@ -65,7 +64,7 @@
                     {% include 'snippets/donation-list-item.html' %}
                 {% endfor %}
 
-                {# la lista sopra ne mostra 3: il pulsante serve solo se ce n'è una quarta #}
+                {# The list above shows 3: the button is only needed from the fourth on. #}
                 {% if donations_source.total_donations > 3 %}
                     <button onclick="openModal('donation-modal')" class="block btn-outline text-sm w-full">Mostra tutte le donazioni</button>
                 {% endif %}

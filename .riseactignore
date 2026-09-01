@@ -21,8 +21,8 @@ tailwind.config.js
 .djlintrc
 .python-version
 
-# Temi di altre installazioni, tenuti qui per la migrazione: sono file .html
-# nella radice del tema, quindi senza questa riga la CLI li carica come asset.
+# Themes of other installations, kept here for migration: .html files under the
+# theme root, which the CLI would otherwise upload as theme assets.
 to_migrate
 
 # Repository documentation, not part of the theme.

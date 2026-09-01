@@ -1,7 +1,6 @@
-{# incluso una volta per pagina, fuori dalle colonne: un modale dentro un
-   contenitore posizionato viene ritagliato.
-   Come nel box donazioni: su una pagina peer l'elenco è quello della raccolta,
-   non quello della campagna madre. #}
+{# Included once per page, outside the columns: a modal inside a positioned
+   container gets clipped. As in the donate box, on a peer page the list is the
+   peer campaign's, not the parent campaign's. #}
 {% set donations_source = peer_campaign or campaign %}
 
 <div id="donation-modal"

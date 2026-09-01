@@ -21,8 +21,7 @@ function handleContactForm() {
         return response.json();
     })
     .then(function(data) {
-      // La vista risponde {"errors": ...}: leggere "error" al singolare voleva dire
-      // ringraziare anche quando il form era stato rifiutato.
+      // The view answers {"errors": ...}, plural.
       if (data.errors) {
           document.getElementById("contact_form_errors").innerHTML = "Compila correttamente tutti i campi";
       } else {
@@ -72,8 +71,8 @@ window.addEventListener("load", handleContactForm);
                 </div>
               </div>
 
-              {# Un campo nascosto ma obbligatorio blocca l'invio senza che il browser
-                 possa mostrare l'errore: se non va mostrato, non va renderizzato. #}
+              {# A hidden required field blocks the submit with no visible error:
+                 if it is not shown, it is not rendered. #}
               {% if b.settings.show_email %}
                 <div class="my-2">
                   <label class="block" for="id_email">Il tuo indirizzo email</label>

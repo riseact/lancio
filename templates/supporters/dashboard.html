@@ -59,9 +59,8 @@
     </div>
     {% else %}
       {% for peer_campaign in peer_campaigns %}
-        {# Il link primario è la pagina di dettaglio nell'area, non quella
-           pubblica: da qui il promotore vuole vedere come sta andando e
-           correggere il testo. #}
+        {# The primary link is the detail page in the supporter area, not the
+           public one: from here the fundraiser checks progress and edits. #}
         <div class="flex items-center justify-between mb-5 p-5 border rounded-xl">
           <div class="text-gray-800 flex gap-4 items-center">
             {% if peer_campaign.supporter_image %}

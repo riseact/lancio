@@ -1,6 +1,6 @@
-{# Statistiche pubbliche di una campagna peer.
-   Vuole `peer_campaign` in contesto; usa `stats` se la vista la passa (pagina di
-   gestione e pagina peer pubblica) e ricade sull'aggregato del dataclass altrove. #}
+{# Public stats of a peer campaign. Requires `peer_campaign`; uses `stats` when
+   the view passes it (manage page and public peer page), otherwise falls back to
+   the dataclass aggregate. #}
 {% set peer_stats = stats or peer_campaign.stats %}
 
 <div class="grid grid-cols-3 gap-3 my-6">

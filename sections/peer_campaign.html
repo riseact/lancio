@@ -20,9 +20,7 @@
         </div>
       </div>
 
-      {# Chi sta guardando la propria pagina ha un ingresso diretto al dettaglio
-         nell'area sostenitore: è l'unico posto da cui la cerca dopo aver
-         condiviso il link. #}
+      {# The owner gets a direct entry to the detail page in the supporter area. #}
       {% if supporter and peer_campaign.supporter and supporter.id == peer_campaign.supporter.id %}
         <a class="inline-block mt-5 text-blue-500 text-sm hover:underline"
            href="{{ peer_campaign.manage_url }}">Gestisci questa pagina</a>
@@ -62,17 +60,15 @@
              id="description-container">{{ campaign.content }}</div>
       {% endif %}
 
-      {# Fuori dal ramo della descrizione lunga: il pulsante compariva solo sulle
-         campagne con più di 2500 caratteri di testo. #}
+      {# Outside the long-description branch: the button shows on every campaign. #}
       {% if not campaign.is_lead %}
         <a class="my-10 block btn-primary"
            href="{{ peer_campaign.url }}/donate/">Dona ora</a>
       {% endif %}
 
-      {# `peer_campaign.comments`, non `campaign.comments`: sono i messaggi
-         lasciati su questa pagina personale, non quelli di tutta la causa.
-         `|list` materializza il generatore una volta sola, così sappiamo se la
-         lista è vuota senza consumarla prima del ciclo. #}
+      {# `peer_campaign.comments`, not `campaign.comments`: only the messages left
+         on this personal page. `|list` materializes the generator once, so the
+         emptiness check does not consume it. #}
       {% if not campaign.is_lead and not section.settings.hide_comments %}
         {% set comments = peer_campaign.comments|list %}
         {% if comments %}

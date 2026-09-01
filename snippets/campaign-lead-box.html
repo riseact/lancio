@@ -47,8 +47,8 @@
         </div>
         {% endif %}
 
-        {# Individuals and companies fill different fields: without this split a required
-           business name would block every individual signing up to the campaign. #}
+        {# Individuals and companies fill different fields: a required business
+           name must not block an individual. #}
         {% set has_supporter_type_choice = "business_name" in campaign.shown_fields
             and ("first_name" in campaign.shown_fields or "last_name" in campaign.shown_fields) %}
         {% set is_company = form and form["supporter_type"].value() == "COMPANY" %}
@@ -173,29 +173,29 @@
             </div>
         </div>
 
-        {# Antibot: il core decide se serve, quale endpoint usare e dove stanno gli
-           asset, cosi' il tema non sa nulla di come funziona la verifica. #}
+        {# Antibot: core decides whether it is needed, which endpoint to use and
+           where the assets are. #}
         {% if captcha.enabled %}
         <div class="mb-4">
-            {# Niente async: i moduli sono gia' differiti e girano prima di
-               DOMContentLoaded. Con async potrebbero girare dopo, e il codice in
-               fondo troverebbe un <altcha-widget> non ancora inizializzato. #}
+            {# No async: modules are already deferred and run before
+               DOMContentLoaded, so the script at the bottom always finds an
+               initialized <altcha-widget>. #}
             <script type="module" src="{{ captcha.script_url }}"></script>
             {% if captcha.i18n_url %}
             <script type="module" src="{{ captcha.i18n_url }}"></script>
             {% endif %}
             {% if captcha.worker_url %}
-            {# L'algoritmo non e' incluso nel widget e va registrato prima che risolva.
-               L'import ripete lo stesso URL dello script sopra: il browser lo esegue
-               una volta sola e ci garantisce l'ordine, che con async non e' scontato. #}
+            {# The algorithm is not bundled in the widget and must be registered
+               before it solves. The import repeats the URL of the script above:
+               the browser runs it once and the order is guaranteed. #}
             <script type="module">
                 import "{{ captcha.script_url }}";
                 window.$altcha.algorithms.set("{{ captcha.algorithm }}",
                     () => new Worker("{{ captcha.worker_url }}"));
             </script>
             {% endif %}
-            {# auto="onfocus": il calcolo parte mentre si compila il form, cosi'
-               nessuno aspetta dopo aver premuto il bottone. #}
+            {# auto="onfocus": the proof of work runs while the form is filled in,
+               so nobody waits after pressing the button. #}
             <altcha-widget challenge="{{ captcha.challenge_url }}"
                 name="{{ captcha.field_name }}"
                 language="{{ captcha.language }}"
@@ -257,10 +257,9 @@
             });
         }
 
-        // Il bottone deve dire sempre cosa sta succedendo. Senza questo, quando il
-        // proof of work non ha ancora finito il browser rifiuta l'invio in silenzio
-        // (il widget usa setCustomValidity e il messaggio nativo non si vede), e chi
-        // compila clicca due o tre volte credendo che il form sia rotto.
+        // The button always reports what is happening: while the proof of work is
+        // unfinished the browser rejects the submit silently (the widget uses
+        // setCustomValidity and the native message is not shown).
         function setupLeadSubmit(form) {
             var button = form.querySelector('[data-lead-submit]');
             if (!button) return;
@@ -294,15 +293,14 @@
 
                 if (verified()) return;
 
-                // Niente invio finche' il calcolo non finisce: lo facciamo noi appena
-                // il widget e' pronto, cosi' chi ha gia' cliccato non deve ricliccare.
+                // No submit until the proof of work ends: we submit as soon as the
+                // widget is ready, so an early click does not have to be repeated.
                 event.preventDefault();
                 waitingForCaptcha = true;
                 busy('Verifica in corso...');
 
-                // auto="onfocus" parte al primo campo toccato. Chi arriva con il form
-                // gia' compilato dal browser puo' non aver mai dato focus a niente:
-                // senza questa spinta resterebbe su uno spinner che non finisce.
+                // auto="onfocus" starts on the first field touched: a form filled in
+                // by the browser may never get focus, so start the verification here.
                 if (typeof widget.getState === 'function' && widget.getState() === 'unverified') {
                     widget.verify();
                 }
@@ -325,13 +323,13 @@
 
                 waitingForCaptcha = false;
                 idle();
-                // requestSubmit, non submit: fa passare la validazione dei campi, cosi'
-                // un campo obbligatorio vuoto viene segnalato invece di essere inviato.
+                // requestSubmit, not submit: it runs field validation, so an empty
+                // required field is reported instead of being sent.
                 form.requestSubmit ? form.requestSubmit(button) : form.submit();
             });
 
-            // Scaduto o in errore: il widget riparte da solo, ma il bottone deve
-            // tornare cliccabile o la persona resta bloccata su uno spinner infinito.
+            // Expired or failed: the widget restarts on its own, but the button
+            // must become clickable again.
             ['error', 'expired'].forEach(function (name) {
                 widget.addEventListener(name, function () {
                     waitingForCaptcha = false;

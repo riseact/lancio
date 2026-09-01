@@ -1,7 +1,7 @@
-{# Tre pagine in una sezione, perché tre viste del core rendono questo stesso
-   template: la creazione (`campaigns/<slug>/fundraise/`), la gestione della
-   propria campagna (`.../update/v2/`, e la v1 `.../update/`) e il caso in cui
-   la campagna madre non accetta raccolte personali. #}
+{# Three pages in one section, because three core views render this template:
+   creation (`campaigns/<slug>/fundraise/`), managing one's own campaign
+   (`.../update/v2/`, and v1 `.../update/`), and the parent campaign not
+   accepting peer campaigns. #}
 <div class="w-full max-w-xl mx-auto px-5 py-12">
   {% if peer_campaign %}
 
@@ -53,9 +53,9 @@
       <p class="mt-4 p-3 rounded bg-red-100 text-red-700 text-sm">{{ form.non_field_errors().as_text()|escape }}</p>
     {% endif %}
 
-    {# `peer_campaign_update_url_v2` la passa la v2 della vista, con `__preview`
-       conservato. Sulla v1 non c'è: si ricade sull'indirizzo costruito dal core,
-       così il salvataggio torna sempre qui. #}
+    {# `peer_campaign_update_url_v2` is passed by the v2 view, with `__preview`
+       kept. On v1 it is absent: fall back to the core-built address, so saving
+       always returns here. #}
     <form id="peer-form"
           method="post"
           action="{{ peer_campaign_update_url_v2 or peer_campaign.update_url_v2 }}"
@@ -92,9 +92,8 @@
 
   {% elif not campaign.allow_peer_to_peer %}
 
-    {# Difensiva: oggi il core risponde 404 su una campagna che non accetta
-       raccolte personali, ma in anteprima dell'editor questa sezione si apre
-       comunque, e un form che non può funzionare è peggio di una spiegazione. #}
+    {# Defensive: core answers 404 on a campaign that does not accept peer
+       campaigns, but the editor preview opens this section anyway. #}
     <h1 class="mb-6">Raccolte personali non attive</h1>
     <p class="my-2">
       La campagna <strong>{{ campaign.title|escape }}</strong> non accetta raccolte fondi personali.

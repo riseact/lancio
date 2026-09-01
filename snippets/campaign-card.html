@@ -5,8 +5,7 @@
                 class="w-full h-60 object-cover rounded-t-lg"
                 alt="{{ campaign.title }}"/>
         {% else %}
-            {# Same height as a cover: without it the card is 240px shorter and
-               breaks the alignment of the grid it sits in. #}
+            {# Same height as a cover, to keep the grid rows aligned. #}
             <div class="w-full h-60 rounded-t-lg bg-gray-100 flex items-center justify-center"
                  aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg"
