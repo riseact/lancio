@@ -68,6 +68,55 @@
         <a class="my-10 block btn-primary"
            href="{{ peer_campaign.url }}/donate/">Dona ora</a>
       {% endif %}
+
+      {# `peer_campaign.comments`, non `campaign.comments`: sono i messaggi
+         lasciati su questa pagina personale, non quelli di tutta la causa.
+         `|list` materializza il generatore una volta sola, così sappiamo se la
+         lista è vuota senza consumarla prima del ciclo. #}
+      {% if not campaign.is_lead and not section.settings.hide_comments %}
+        {% set comments = peer_campaign.comments|list %}
+        {% if comments %}
+          <hr class="my-5" />
+          <div id="comments">
+            <h2 class="text-2xl font-bold mb-5">Messaggi dai sostenitori</h2>
+            {% for comment in comments %}
+              <div class="flex items-start rounded items-space-between mb-4 p-4">
+                {% if comment.supporter_image and not comment.anonymous %}
+                  <img class="w-12 h-12 mr-4 rounded-full object-cover object-center"
+                       src="{{ comment.supporter_image }}"
+                       alt="{{ comment.supporter_name|escape }}" />
+                {% else %}
+                  <div class="w-12 h-12 mr-4 flex justify-center items-center rounded-full bg-[color:var(--primary-bg-color)]">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 24 24"
+                         class="w-6 h-6">
+                      <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                    </svg>
+                  </div>
+                {% endif %}
+                <div>
+                  <h3 class="text-gray-800 text-lg font-bold">
+                    {% if comment.anonymous %}
+                      Anonimo
+                    {% else %}
+                      {{ comment.supporter_name|escape }}
+                    {% endif %}
+                    {% if comment.donation_amount and not section.settings.hide_donations %}
+                      <span class="font-normal">ha donato</span> {{ comment.donation_amount }}€
+                    {% endif %}
+                  </h3>
+
+                  <p class="text-gray-800 text-base mt-1">“{{ comment.message|escape }}”</p>
+
+                  <div class="text-sm text-gray-500 mt-2">
+                    {{ comment.create_date.strftime('%d/%m/%Y') }}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endif %}
     </div>
     <div class="col-span-3 hidden lg:block">
       {% if campaign.is_lead %}
@@ -108,6 +157,11 @@
     "id": "hide_total_donations",
     "type": "checkbox",
     "label": "Hide Total Donations"
+  },
+  {
+    "id": "hide_comments",
+    "type": "checkbox",
+    "label": "Hide comments"
   }
 ],
 "locales": {},
