@@ -1,11 +1,9 @@
 <div class="flex items-start mb-4">
     <div>
         <h3 class="text-gray-800 text-base font-bold">
-            {% if not donation.public %}
-                Anonimo
-            {% else %}
-                {{ donation.supporter.full_name }}
-            {% endif %}
+            {% with donor_name=donation.supporter.full_name, donor_anonymous=not donation.public %}
+                {% include "snippets/donor-name.html" %}
+            {% endwith %}
             <span class="font-normal">ha donato</span> {{ donation.amount }}€
         </h3>
 

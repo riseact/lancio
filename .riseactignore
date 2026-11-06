@@ -28,3 +28,7 @@ to_migrate
 # Repository documentation, not part of the theme.
 LICENSE.md
 README.md
+
+# Template creati dalla suite e2e (specs/project-campaigns-order.spec.js).
+# `riseact theme dev` li scarica dal tema di anteprima: non vanno né committati né rilasciati.
+templates/*.e2e-*.json

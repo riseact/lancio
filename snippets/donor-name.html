@@ -1,0 +1,19 @@
+{# Donor name as the section asks for it. Requires `donor_name` (the full name)
+   and `donor_anonymous`; reads `donor_name_display`. "short" keeps the first
+   name and the initial of the surname, "hidden" drops the name for everyone.
+   Anything else, a section saved before the setting existed included, prints
+   the full name. Comments only carry the full name, hence the split. #}
+{%- if donor_anonymous -%}
+  Anonimo
+{%- elif donor_name_display == 'hidden' or not donor_name -%}
+  Un sostenitore
+{%- elif donor_name_display == 'short' -%}
+  {%- set name_parts = donor_name.split() -%}
+  {%- if name_parts|length > 1 -%}
+    {{ name_parts[:-1]|join(' ')|escape }} {{ name_parts[-1][0]|escape }}.
+  {%- else -%}
+    {{ donor_name|escape }}
+  {%- endif -%}
+{%- else -%}
+  {{ donor_name|escape }}
+{%- endif -%}

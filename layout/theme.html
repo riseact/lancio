@@ -48,7 +48,7 @@
     <div class="flex-1">{{ content_for_layout }}</div>
 
     {% section 'footer' %}
-    {# Nell'editor/anteprima del tema il banner coprirebbe la pagina a ogni reload. #}
+    {# In the theme editor/preview the banner would cover the page on every reload. #}
     {% if not preview %}
     {% section 'cookie' %}
     {% endif %}

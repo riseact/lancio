@@ -1,0 +1,55 @@
+{#
+  Grid of a project's campaigns, in the order chosen by whoever manages the site.
+
+  Receives `project_campaigns` (the project's published campaigns) and reads from
+  the section that includes it:
+  - the `campaign` blocks, in `block_order` order: the campaigns pinned to the top,
+    reorderable by dragging them in the editor;
+  - `section.settings.campaigns_sort` for all the others.
+
+  The order does not live in core: to sort the campaigns of a single project, create
+  a `project.<name>` template and assign it to the project from its detail page.
+#}
+{# `project.campaigns` is a generator that builds one campaign per iteration: it can be consumed only once #}
+{% set all_campaigns = project_campaigns|list if project_campaigns else [] %}
+{% set project_ids = all_campaigns|map(attribute='id')|list %}
+
+{#
+  A block may point to a campaign that left the project (the project rules
+  recompute it), is unpublished, deleted or belongs to another project: in those
+  cases it is ignored, so the template stays valid without anyone touching it.
+#}
+{% set ns = namespace(pinned=[]) %}
+{% for key in section.block_order or [] %}
+    {% set block = section.blocks[key] %}
+    {% if block and block.type == 'campaign' %}
+        {% set picked = block.settings.campaign %}
+        {% if picked and picked.id in project_ids and picked.id not in ns.pinned %}
+            {% set ns.pinned = ns.pinned + [picked.id] %}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+{% set others = all_campaigns|rejectattr('id', 'in', ns.pinned)|list %}
+{% set sort = section.settings.campaigns_sort %}
+{% if sort == 'title' %}
+    {% set others = others|sort(attribute='title') %}
+{% elif sort == 'newest' %}
+    {% set others = others|sort(attribute='id', reverse=true) %}
+{% elif sort == 'most_raised' %}
+    {% set others = others|sort(attribute='total_donated', reverse=true) %}
+{% elif sort == 'closest_to_goal' %}
+    {% set others = others|sort(attribute='goal_percentage', reverse=true) %}
+{% endif %}
+
+<div class="{{ grid_class }}"
+     data-project-campaigns>
+    {% for pinned_id in ns.pinned %}
+        {% for campaign in all_campaigns if campaign.id == pinned_id %}
+            {% include "snippets/campaign-card.html" %}
+        {% endfor %}
+    {% endfor %}
+    {% for campaign in others %}
+        {% include "snippets/campaign-card.html" %}
+    {% endfor %}
+</div>

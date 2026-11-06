@@ -182,7 +182,7 @@ Aggiunte dalla vista che serve la pagina:
 | `peer_campaign`, `stats` | `peer_campaign`, `peer_campaign_form`, `templates/supporters/peer_campaign.html` |
 | `peer_campaign_updated`, `peer_campaign_public_url`, `peer_campaign_update_url_v2` | pagina di gestione (`peer_campaign_form` servito su `.../update/v2/`) |
 | `peer_campaign_updated`, `peer_campaign_public_url`, `peer_campaign_manage_url` | dettaglio campagna dell'area (`templates/supporters/peer_campaign.html`, servito su `/my/campaigns/<id>/`) |
-| `form`, `custom_field_definitions`, `captcha`, `lead_form_success` | campagne di tipo lead |
+| `form`, `custom_field_definitions`, `privacy_field_definitions`, `captcha`, `lead_form_success` | campagne di tipo lead |
 | `profile` | area sostenitore |
 
 ### Captcha
@@ -228,8 +228,18 @@ L'implementazione di riferimento è in `snippets/campaign-lead-box.html`.
 - `settings` genera i campi nell'editor visuale. Tipi in uso nel tema: `text`,
   `richtext`, `checkbox`, `select`, `slider`, `color_picker`, `image_picker`,
   `menu_picker`, `campaign_picker`, `header`.
+- In una sezione anche `header` vuole `id` e `label`, oltre a `content`: il core
+  lo valida come ogni altro campo e senza quei due rifiuta l'intero file
+  (`assetCreate ... validation errors for SectionSchema`). L'editor mostra solo
+  `content`. In `config/settings_schema.json` invece bastano `type` e `content`.
 - `blocks` sono elementi ripetibili. Si iterano con `section.block_order` (ordinati)
-  oppure con `section.blocks.items()`.
+  oppure con `section.blocks.items()`. L'editor li riordina trascinandoli e li
+  elenca solo con il `name` dello schema, non con il loro contenuto.
+- I `*_picker` dentro un blocco vengono idratati come quelli della sezione:
+  `block.settings.campaign` è già l'oggetto campagna, o `None` se è stata cancellata.
+- Il tipo `paragraph` non è un testo informativo: l'editor lo mostra come un campo
+  rich text da compilare. Anche `info` di un campo viene ignorato dall'editor, quindi
+  le istruzioni per chi configura vanno qui, non nello schema.
 - `presets` serve perché la sezione sia aggiungibile a una pagina dall'editor. Una
   sezione senza presets si può usare solo se un `templates/*.json` la nomina.
 - `templates` limita in quali pagine la sezione compare. Le sezioni `main_*`
@@ -239,6 +249,32 @@ L'implementazione di riferimento è in `snippets/campaign-lead-box.html`.
 
 Lo schema viene validato al momento della release: un JSON non valido blocca la
 pubblicazione. Non viene validato durante `theme dev`.
+
+### Ordine delle campagne di un progetto
+
+`main_project` (pagina del progetto) e `featured_project` (campagne del progetto in
+home o in una pagina) mostrano le campagne con `snippets/project-campaigns-grid.html`:
+
+1. prima le campagne dei blocchi `Campagna`, nell'ordine in cui sono trascinate;
+2. poi tutte le altre del progetto, secondo l'impostazione *Ordina le altre campagne
+   per*. `Predefinito` è l'ordine restituito dal core, cioè quello di prima della 0.7.0.
+
+Un blocco che punta a una campagna non pubblicata, cancellata, uscita dal progetto o
+di un altro progetto viene ignorato senza errori.
+
+L'ordine sta nel tema, non nel core. Siccome `templates/project.json` è uno solo per
+tutti i progetti, per dare a un progetto un ordine suo:
+
+1. nell'editor del tema, dal selettore dei template, crea un nuovo template a partire
+   da *Progetto* (diventa `templates/project.<nome>.json`);
+2. nella sezione principale aggiungi i blocchi `Campagna` e ordinali;
+3. nella scheda del progetto, in admin, scegli quel template nella card *Template*.
+
+I progetti senza template personalizzato continuano a usare `project.json`. I template
+creati così appartengono all'organizzazione: gli aggiornamenti del tema non li toccano.
+
+Una campagna nuova che entra nel progetto non ha un blocco, quindi finisce dopo quelle
+fissate finché qualcuno non la aggiunge.
 
 ## CSS
 

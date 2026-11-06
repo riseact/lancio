@@ -1,3 +1,18 @@
+{# Materialized once: the list below and the counter in the donate box read the
+   same peer campaigns. #}
+{% set peer_campaigns = campaign.peer_campaigns|list if campaign.allow_peer_to_peer else [] %}
+{% set peer_campaigns_count = peer_campaigns|length %}
+{% set hide_donate_button = section.settings.hide_donate_button %}
+{% set hide_fundraise_button = section.settings.hide_fundraise_button %}
+{% set hide_share_buttons = section.settings.hide_share_buttons %}
+{% set hide_total_donated = section.settings.hide_total_donated %}
+{% set hide_goal = section.settings.hide_goal %}
+{% set hide_donations = section.settings.hide_donations %}
+{% set show_total_donations = section.settings.show_total_donations %}
+{% set show_total_supporters = section.settings.show_total_supporters %}
+{% set show_peer_campaigns_count = section.settings.show_peer_campaigns_count %}
+{% set donor_name_display = section.settings.donor_name_display %}
+
 <div class="container mx-auto mb-20">
   <h1 class="my-5 font-bold md:my-10">{{ campaign.title }}</h1>
   <div class="grid grid-cols-9 gap-8">
@@ -12,28 +27,29 @@
        {% if campaign.is_lead %}
         {% include "snippets/campaign-lead-box.html" %}
       {% else %}
-        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations, hide_donations=section.settings.hide_donations%}
-          {% include "snippets/campaign-donate-box.html" %}
-        {% endwith %}
+        {% include "snippets/campaign-donate-box.html" %}
         {% include "snippets/campaign-cost-examples.html" %}
         {% endif %}
       </div>
 
       <div class="md:mt-10 relative" id="description-container">{{ campaign.content }}</div>
 
-      {% if campaign.allow_peer_to_peer %}
+      {% if campaign.allow_peer_to_peer and not section.settings.hide_peer_campaigns %}
         <hr class="my-5" />
         <div id="community">
           <h2 class="text-2xl font-bold  mb-5">Campagne di raccolta fondi personali</h2>
-          {% for peer_campaign in campaign.peer_campaigns %}
+          {% for peer_campaign in peer_campaigns %}
+            {# `supporter_name` and `title` are both optional on the peer campaign:
+               the owner's name is the last resort. #}
+            {% set fundraiser_name = peer_campaign.supporter_name or peer_campaign.title or (peer_campaign.supporter.full_name if peer_campaign.supporter) %}
             <a href="{{ peer_campaign.url }}/"
                class="flex items-start rounded items-space-between mb-4 p-4 hover:bg-gray-100">
               {% if peer_campaign.supporter_image %}
-                <img class="w-12 h-12 mr-4 rounded-full object-cover object-center"
+                <img class="w-12 h-12 mr-4 shrink-0 rounded-full object-cover object-center"
                      src="{{ peer_campaign.supporter_image }}"
-                     alt="{{ peer_campaign.supporter_name|escape }}" />
+                     alt="{{ fundraiser_name|escape }}" />
               {% else %}
-                <div class="w-12 h-12 rounded-full bg-[color:var(--primary-bg-color)]">
+                <div class="w-12 h-12 mr-4 shrink-0 flex justify-center items-center rounded-full bg-[color:var(--primary-bg-color)]">
                   <svg xmlns="http://www.w3.org/2000/svg"
                        viewBox="0 0 24 24"
                        class="w-6 h-6">
@@ -42,7 +58,7 @@
                 </div>
               {% endif %}
               <div>
-                <h3 class="text-gray-800 text-xl font-bold">{{ peer_campaign.supporter_name|escape }}</h3>
+                <h3 class="text-gray-800 text-xl font-bold">{{ fundraiser_name|escape }}</h3>
                 {% if peer_campaign.custom_message %}
                   <p class="text-gray-800 text-md mb-2">“{{ peer_campaign.custom_message|escape }}”</p>
                 {% else %}
@@ -56,63 +72,24 @@
           {% else %}
             <p class="text-gray-800 text-md mb-5">
               Non è ancora stata avviata nessuna campagna di raccolta fondi personale.
-              <br />
-              Inizia tu, aiuta questa causa!
+              {% if not hide_fundraise_button %}
+                <br />
+                Inizia tu, aiuta questa causa!
+              {% endif %}
             </p>
           {% endfor %}
 
           {# Outside the `else`: the call to action shows even when peer campaigns exist. #}
-          <a class="btn-primary mt-2 inline-block"
-             href="/campaigns/{{ campaign.slug }}/fundraise/">Inizia una campagna di raccolta fondi per questa causa</a>
+          {% if not hide_fundraise_button %}
+            <a class="btn-primary mt-2 inline-block"
+               href="/campaigns/{{ campaign.slug }}/fundraise/">Inizia una campagna di raccolta fondi per questa causa</a>
+          {% endif %}
         </div>
       {% endif %}
 
       {% if not campaign.is_lead and not section.settings.hide_comments %}
-        {# `|list` materializes the generator once: needed both to test for
-           emptiness and to iterate. #}
         {% set comments = campaign.comments|list %}
-        {% if comments %}
-          <hr class="my-5" />
-          <div id="comments">
-            <h2 class="text-2xl font-bold  mb-5">Messaggi dai sostenitori</h2>
-            {% for comment in comments %}
-              <div class="flex items-start rounded items-space-between mb-4 p-4 ">
-                {% if comment.supporter_image and not comment.anonymous %}
-                  <img class="w-12 h-12 mr-4 rounded-full object-cover object-center"
-                        src="{{ comment.supporter_image }}"
-                        alt="{{ comment.supporter_name|escape }}" />
-                {% else %}
-                  <div class="w-12 h-12 mr-4 flex justify-center items-center rounded-full bg-[color:var(--primary-bg-color)]">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          class="w-6 h-6">
-                      <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
-                    </svg>
-                  </div>
-                {% endif %}
-                <div>
-                  <h3 class="text-gray-800 text-lg font-bold">
-                    {% if comment.anonymous %}
-                      Anonimo
-                    {% else %}
-                      {{ comment.supporter_name|escape }}
-                    {% endif %}
-                    {% if comment.donation_amount and not section.settings.hide_donations %}
-                      <span class="font-normal">ha donato</span> {{ comment.donation_amount }}€
-                    {% endif %}
-                  </h3>
-
-                  <p class="text-gray-800 text-base mt-1">“{{ comment.message|escape }}”</p>
-
-                  <div class="text-sm text-gray-500 mt-2">
-                    {{ comment.create_date.strftime('%d/%m/%Y') }}
-                  </div>
-                </div>
-              </div>
-
-            {% endfor %}
-          </div>
-        {% endif %}
+        {% include "snippets/supporter-comments.html" %}
       {% endif %}
     </div>
 
@@ -120,9 +97,7 @@
       {% if campaign.is_lead %}
         {% include "snippets/campaign-lead-box.html" %}
       {% else %}
-        {% with hide_total_donated=section.settings.hide_total_donated, hide_total_donations=section.settings.hide_total_donations, hide_donations=section.settings.hide_donations%}
-          {% include "snippets/campaign-donate-box.html" %}
-        {% endwith %}
+        {% include "snippets/campaign-donate-box.html" %}
 
         {% include "snippets/campaign-cost-examples.html" %}
       {% endif %}
@@ -130,9 +105,7 @@
   </div>
 </div>
 
-{% with hide_donations=section.settings.hide_donations %}
-  {% include "snippets/donations-modal.html" %}
-{% endwith %}
+{% include "snippets/donations-modal.html" %}
 
 
 {# djlint:off #}
@@ -142,24 +115,108 @@
   "limit": 1,
   "settings": [
     {
-      "id": "hide_donations",
+      "id": "header_buttons",
+      "type": "header",
+      "label": "Pulsanti",
+      "content": "Pulsanti"
+    },
+    {
+      "id": "hide_donate_button",
       "type": "checkbox",
-      "label": "Hide donations"
+      "label": "Nascondi i pulsanti \"Dona ora\"",
+      "default": false
+    },
+    {
+      "id": "hide_fundraise_button",
+      "type": "checkbox",
+      "label": "Nascondi i pulsanti \"Raccogli donazioni\"",
+      "default": false
+    },
+    {
+      "id": "hide_share_buttons",
+      "type": "checkbox",
+      "label": "Nascondi i pulsanti di condivisione sui social",
+      "default": false
+    },
+    {
+      "id": "header_goal",
+      "type": "header",
+      "label": "Raccolta e obiettivo",
+      "content": "Raccolta e obiettivo"
     },
     {
       "id": "hide_total_donated",
       "type": "checkbox",
-      "label": "Hide Total Donated"
+      "label": "Nascondi il totale raccolto"
     },
     {
-      "id": "hide_total_donations",
+      "id": "hide_goal",
       "type": "checkbox",
-      "label": "Hide Total Donations"
+      "label": "Nascondi l'obiettivo e la barra di avanzamento",
+      "default": false
+    },
+    {
+      "id": "header_counters",
+      "type": "header",
+      "label": "Contatori",
+      "content": "Contatori"
+    },
+    {
+      "id": "show_total_donations",
+      "type": "checkbox",
+      "label": "Mostra il numero di donazioni",
+      "default": false
+    },
+    {
+      "id": "show_total_supporters",
+      "type": "checkbox",
+      "label": "Mostra il numero di donatori",
+      "default": false
+    },
+    {
+      "id": "show_peer_campaigns_count",
+      "type": "checkbox",
+      "label": "Mostra il numero di raccolte personali",
+      "default": false
+    },
+    {
+      "id": "header_lists",
+      "type": "header",
+      "label": "Elenchi",
+      "content": "Elenchi"
+    },
+    {
+      "id": "hide_donations",
+      "type": "checkbox",
+      "label": "Nascondi le ultime donazioni e gli importi donati"
     },
     {
       "id": "hide_comments",
       "type": "checkbox",
-      "label": "Hide comments"
+      "label": "Nascondi i messaggi dei sostenitori"
+    },
+    {
+      "id": "hide_peer_campaigns",
+      "type": "checkbox",
+      "label": "Nascondi l'elenco delle raccolte personali",
+      "default": false
+    },
+    {
+      "id": "header_donor_names",
+      "type": "header",
+      "label": "Nomi dei donatori",
+      "content": "Nomi dei donatori"
+    },
+    {
+      "id": "donor_name_display",
+      "type": "select",
+      "label": "Nome del donatore in donazioni e messaggi",
+      "options": [
+        { "value": "full", "label": "Nome e cognome" },
+        { "value": "short", "label": "Nome e iniziale del cognome" },
+        { "value": "hidden", "label": "Nascosto" }
+      ],
+      "default": "full"
     }
   ],
   "locales": {},

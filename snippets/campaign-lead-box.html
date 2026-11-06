@@ -154,6 +154,32 @@
         </div>
         {% endfor %}
 
+        {# The consents configured on the campaign, one checkbox each, as in the
+           checkout. Without them, the generic privacy checkbox below. #}
+        {% if privacy_field_definitions %}
+        {% for definition in privacy_field_definitions %}
+        {% set pf_key = "pf_" ~ definition.code %}
+        <div class="mb-4">
+            <div class="flex">
+                <div class="flex items-center h-5">
+                    <input type="checkbox" id="id_{{ pf_key }}" name="{{ pf_key }}"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded"
+                        {% if form[pf_key].value() %}checked{% endif %}
+                        {% if definition.is_required %}required{% endif %} />
+                </div>
+                <div class="ml-2 text-sm">
+                    <label for="id_{{ pf_key }}" class="text-gray-900">
+                        {{ definition.message or definition.label }}
+                        {% if definition.is_required %}*{% endif %}
+                    </label>
+                </div>
+            </div>
+            {% if form.errors[pf_key] %}
+            <p class="text-red-500 p-2 text-sm">{{ form.errors[pf_key].as_text() }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% else %}
         <div class="mb-4">
             <div class="flex">
                 <div class="flex items-center h-5">
@@ -172,6 +198,7 @@
                 {% endif %}
             </div>
         </div>
+        {% endif %}
 
         {# Antibot: core decides whether it is needed, which endpoint to use and
            where the assets are. #}
@@ -215,9 +242,11 @@
     </form>
 
     {# Same sharing block as the donate box, shown before and after signing up. #}
-    {% with url=current_url %}
-        {% include 'snippets/share-button.html' %}
-    {% endwith %}
+    {% if not hide_share_buttons %}
+        {% with url=current_url %}
+            {% include 'snippets/share-button.html' %}
+        {% endwith %}
+    {% endif %}
 </div>
 
 {# The snippet is included twice (mobile + desktop): bind once, on every form. #}

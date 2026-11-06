@@ -5,17 +5,17 @@
     <a href="{{ section.settings.project.url }}"
        class="uppercase underline font-light text-xs">Mostra tutte le campagne</a>
   </div>
- 
+
   <h4 class="my-5">{{ section.settings.project.title }}</h4>
   {% if section.settings.description %}
     <p class="text-gray-500 text-sm md:w-96">{{ section.settings.description }}</p>
   {% endif %}
 
-  <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-    {% for campaign in section.settings.project.campaigns %}
-      {% include "snippets/campaign-card.html" %}
-    {% endfor %}
-  </div>
+  {% if section.settings.project %}
+    {% with project_campaigns=section.settings.project.campaigns, grid_class="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" %}
+      {% include "snippets/project-campaigns-grid.html" %}
+    {% endwith %}
+  {% endif %}
 </div>
 
 {# djlint:off #}
@@ -37,22 +37,51 @@
          "id":"description",
          "type":"textarea",
          "label":"Description"
+      },
+      {
+         "id":"campaigns_header",
+         "type":"header",
+         "label":"Ordine delle campagne",
+         "content":"Ordine delle campagne"
+      },
+      {
+         "id":"campaigns_sort",
+         "type":"select",
+         "label":"Ordina le altre campagne per",
+         "options":[
+            { "value":"default", "label":"Predefinito" },
+            { "value":"title", "label":"Titolo (A-Z)" },
+            { "value":"newest", "label":"Più recenti" },
+            { "value":"most_raised", "label":"Più raccolto" },
+            { "value":"closest_to_goal", "label":"Più vicine all'obiettivo" }
+         ],
+         "default":"default"
       }
    ],
-   "max_blocks":0,
+   "max_blocks":50,
    "blocks":[
-      
+      {
+         "type":"campaign",
+         "name":"Campagna",
+         "settings":[
+            {
+               "id":"campaign",
+               "type":"campaign_picker",
+               "label":"Campagna"
+            }
+         ]
+      }
    ],
    "presets":{
       "settings":{
-         
+
       },
       "blocks":[
-         
+
       ]
    },
    "locales":{
-      
+
    },
    "templates":[
       "article",

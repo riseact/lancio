@@ -1,61 +1,115 @@
 {# On a peer page the totals are the fundraiser's, not the parent campaign's:
    `peer_campaign` exposes the same names as `campaign` (`total_donated`,
-   `total_donations`, `public_donations`), so the source is chosen once. The goal
-   stays the campaign's, and that is what the bar below measures. #}
+   `total_donations`, `total_supporters`, `public_donations`), so the source is
+   chosen once. The goal follows the same source: a peer page measures its own
+   goal, and shows none when the fundraiser did not set one, because the bar
+   would compare the fundraiser's total with the campaign's goal.
+
+   Settings arrive from the section through `with`: `hide_*` for what was
+   always shown, `show_*` for counters added later, which stay off on sites
+   that already had the theme. `peer_campaigns_count` is computed by the
+   campaign section, which also lists them. #}
 {% set donations_source = peer_campaign or campaign %}
+{% if peer_campaign %}
+    {% set goal_source = peer_campaign if peer_campaign.is_goal_enabled and peer_campaign.goal else none %}
+{% else %}
+    {% set goal_source = campaign if campaign.is_goal_enabled and campaign.goal else none %}
+{% endif %}
+{% set total_donated = donations_source.total_donated or 0 %}
+{% set show_peer_count = show_peer_campaigns_count and not peer_campaign and campaign.allow_peer_to_peer %}
 
 <div class="{% if campaign.cost_examples|count == 0 %}sticky{% endif %} top-4 bg-white">
     
     <div class="border shadow-xl rounded-xl px-8 py-10">
 
-        {% if campaign.is_goal_enabled and campaign.goal %}
+        {% if goal_source and not hide_goal %}
             <div class="mb-5">
                 {% if hide_total_donated %}
                     <div class="text-center">
-                        <div class="text-4xl font-bold">{{ campaign.goal|int }} € </div>
+                        <div class="text-4xl font-bold">{{ goal_source.goal|int }} € </div>
                         <div class="pb-1 text-sm text-gray-500 ">obiettivo di raccolta</div>
                     </div>
                 {% else %}
-                    <div class="text-center flex flex-col gap-4">
-                        <div class="text-5xl font-bold">{{ donations_source.total_donated|int }} €</div>
-                        <div class="pb-1 text-base text-gray-500 ">Obiettivo <b>{{ campaign.goal|int }}€</b></div>
+                    {% set goal_percentage = goal_source.goal_percentage|round|int %}
+                    {% set goal_missing = goal_source.goal - total_donated %}
+                    <div class="text-center flex flex-col gap-2">
+                        <div class="text-5xl font-bold">{{ total_donated|int }} €</div>
+                        <div class="text-base text-gray-500">raccolti su un obiettivo di <b>{{ goal_source.goal|int }} €</b></div>
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-1.5 my-4">
-                        <div class="bg-[color:var(--primary-bg-color)] h-1.5 rounded-full"
-                            style="width: {{ [campaign.goal_percentage, 100]|min }}%"></div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mt-4"
+                         role="progressbar"
+                         aria-label="Avanzamento verso l'obiettivo"
+                         aria-valuemin="0"
+                         aria-valuemax="100"
+                         aria-valuenow="{{ [goal_percentage, 100]|min }}">
+                        <div class="bg-[color:var(--primary-bg-color)] h-2 rounded-full"
+                            style="width: {{ [goal_percentage, 100]|min }}%"></div>
+                    </div>
+                    <div class="flex justify-between gap-2 text-sm text-gray-500 mt-2">
+                        <span><b>{{ goal_percentage }}%</b> dell'obiettivo</span>
+                        {% if goal_missing > 0 %}
+                            <span>mancano <b>{{ goal_missing|round(0, 'ceil')|int }} €</b></span>
+                        {% else %}
+                            <span class="font-bold">Obiettivo raggiunto</span>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
-        {% else %}
-            {% if not hide_total_donated %}
-                <div class="text-center flex flex-col mb-5">
-                    <div class="text-5xl font-bold">{{ donations_source.total_donated|int }} €</div>
-                    <div class="text-base text-gray-500 ">Raccolti </div>
-                </div>
-            {% endif %}
+        {% elif not hide_total_donated %}
+            <div class="text-center flex flex-col mb-5">
+                <div class="text-5xl font-bold">{{ total_donated|int }} €</div>
+                <div class="text-base text-gray-500 ">Raccolti </div>
+            </div>
+        {% endif %}
+
+        {% if show_total_donations or show_total_supporters or show_peer_count %}
+            <div class="flex divide-x border-y py-3 mb-5 text-center">
+                {% if show_total_donations %}
+                    {% set n = donations_source.total_donations or 0 %}
+                    <div class="flex-1 px-1" data-counter="donations">
+                        <div class="text-xl font-bold">{{ n }}</div>
+                        <div class="text-xs text-gray-500">{{ 'donazione' if n == 1 else 'donazioni' }}</div>
+                    </div>
+                {% endif %}
+                {% if show_total_supporters %}
+                    {% set n = donations_source.total_supporters or 0 %}
+                    <div class="flex-1 px-1" data-counter="supporters">
+                        <div class="text-xl font-bold">{{ n }}</div>
+                        <div class="text-xs text-gray-500">{{ 'donatore' if n == 1 else 'donatori' }}</div>
+                    </div>
+                {% endif %}
+                {% if show_peer_count %}
+                    {% set n = peer_campaigns_count or 0 %}
+                    <div class="flex-1 px-1" data-counter="peer-campaigns">
+                        <div class="text-xl font-bold">{{ n }}</div>
+                        <div class="text-xs text-gray-500">{{ 'raccolta personale' if n == 1 else 'raccolte personali' }}</div>
+                    </div>
+                {% endif %}
+            </div>
         {% endif %}
 
         <div class="gap-2 flex flex-col">
-            {% if peer_campaign %}
-                <a class="block btn-primary"
-                href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/donate/">Dona ora</a>
-            {% else %}
-                <a class="block btn-primary" href="/campaigns/{{ campaign.slug }}/donate/">Dona ora</a>
+            {# UI only: the donate page stays reachable by its URL. #}
+            {% if not hide_donate_button %}
+                {% if peer_campaign %}
+                    <a class="block btn-primary"
+                    href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/donate/">Dona ora</a>
+                {% else %}
+                    <a class="block btn-primary" href="/campaigns/{{ campaign.slug }}/donate/">Dona ora</a>
+                {% endif %}
             {% endif %}
 
-            {% if campaign.allow_peer_to_peer and not peer_campaign%}
+            {% if campaign.allow_peer_to_peer and not peer_campaign and not hide_fundraise_button %}
                 <a class="block btn-outline mt-2"
                 href="/campaigns/{{ campaign.slug }}/fundraise/">Raccogli donazioni</a>
             {% endif %}
 
-            {% with url=current_url %}
-                {% include 'snippets/share-button.html' %}
-            {% endwith %}
+            {% if not hide_share_buttons %}
+                {% with url=current_url %}
+                    {% include 'snippets/share-button.html' %}
+                {% endwith %}
+            {% endif %}
         </div>
-        
-        {% if not hide_total_donations and false%}
-            <div class="pb-1 text-md text-gray-500 dark:text-gray-400">{{ donations_source.total_donations }} donazioni</div>
-        {% endif %}
         
         {% if donations_source.total_donations > 0 and not hide_donations%}
             <div class="mt-5 ">

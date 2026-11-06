@@ -28,11 +28,9 @@
           <div class="flex items-start mb-4 md:px-10 border-b py-3">
             <div>
               <h3 class="text-gray-800 text-lg font-bold">
-                {% if not donation.public %}
-                  Anonimo
-                {% else %}
-                  {{ donation.supporter.full_name }}
-                {% endif %}
+                {% with donor_name=donation.supporter.full_name, donor_anonymous=not donation.public %}
+                  {% include "snippets/donor-name.html" %}
+                {% endwith %}
                 {% if not hide_donations %}
                   <span class="font-normal">ha donato</span> {{ donation.amount }}€
                 {% endif %}
@@ -44,12 +42,14 @@
         {% endfor %}
       </div>
 
-      {% if peer_campaign %}
-        <a class="mb-5 mt-10 block btn-primary"
-           href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/donate/">Dona anche tu</a>
-      {% else %}
-        <a class="mb-5 mt-10 block btn-primary"
-           href="/campaigns/{{ campaign.slug }}/donate/">Dona anche tu</a>
+      {% if not hide_donate_button %}
+        {% if peer_campaign %}
+          <a class="mb-5 mt-10 block btn-primary"
+             href="/campaigns/{{ campaign.slug }}/{{ peer_campaign.slug }}/donate/">Dona anche tu</a>
+        {% else %}
+          <a class="mb-5 mt-10 block btn-primary"
+             href="/campaigns/{{ campaign.slug }}/donate/">Dona anche tu</a>
+        {% endif %}
       {% endif %}
     </div>
   </div>

@@ -14,3 +14,7 @@ riseact.yml
 
 # scratch note, not part of the theme
 /todo
+
+# Template creati dalla suite e2e (specs/project-campaigns-order.spec.js).
+# `riseact theme dev` li scarica dal tema di anteprima: non vanno né committati né rilasciati.
+templates/*.e2e-*.json

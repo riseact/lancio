@@ -9,20 +9,50 @@
 <div class="lg:container mb-20 px-5 md:px-0">
   <h2 class="my-10">{{ project.title }}</h2>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    {% for campaign in project.campaigns %}
-      {% include "snippets/campaign-card.html" %}
-    {% endfor %}
-  </div>
+  {% with project_campaigns=project.campaigns, grid_class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" %}
+    {% include "snippets/project-campaigns-grid.html" %}
+  {% endwith %}
 </div>
 
 {# djlint:off #}
 {% schema %}
   {
   "name": "Main Project",
-  "settings": [],
-  "max_blocks": 0,
-  "blocks": [],
+  "settings": [
+    {
+      "id": "campaigns_header",
+      "type": "header",
+      "label": "Ordine delle campagne",
+      "content": "Ordine delle campagne"
+    },
+    {
+      "id": "campaigns_sort",
+      "type": "select",
+      "label": "Ordina le altre campagne per",
+      "options": [
+        { "value": "default", "label": "Predefinito" },
+        { "value": "title", "label": "Titolo (A-Z)" },
+        { "value": "newest", "label": "Più recenti" },
+        { "value": "most_raised", "label": "Più raccolto" },
+        { "value": "closest_to_goal", "label": "Più vicine all'obiettivo" }
+      ],
+      "default": "default"
+    }
+  ],
+  "max_blocks": 50,
+  "blocks": [
+    {
+      "type": "campaign",
+      "name": "Campagna",
+      "settings": [
+        {
+          "id": "campaign",
+          "type": "campaign_picker",
+          "label": "Campagna"
+        }
+      ]
+    }
+  ],
   "locales": {},
   "templates": ["project"]
   }
