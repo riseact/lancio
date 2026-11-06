@@ -178,12 +178,35 @@ Aggiunte dalla vista che serve la pagina:
 
 | Variabile | Dove |
 |---|---|
-| `campaign` | `campaign`, `peer_campaign`, `thankyou` |
+| `campaign` | `campaign`, `peer_campaign` |
+| `checkout_campaign`, `checkout_campaign_url`, `checkout_supporter`, `checkout_donation`, `form`, `message_published` | `thankyou`, la thank you page dopo una donazione |
+| `lead_campaign`, `lead_campaign_url`, `lead_supporter` | `lead_thankyou`, la thank you page dopo una lead |
 | `peer_campaign`, `stats` | `peer_campaign`, `peer_campaign_form`, `templates/supporters/peer_campaign.html` |
 | `peer_campaign_updated`, `peer_campaign_public_url`, `peer_campaign_update_url_v2` | pagina di gestione (`peer_campaign_form` servito su `.../update/v2/`) |
 | `peer_campaign_updated`, `peer_campaign_public_url`, `peer_campaign_manage_url` | dettaglio campagna dell'area (`templates/supporters/peer_campaign.html`, servito su `/my/campaigns/<id>/`) |
 | `form`, `custom_field_definitions`, `privacy_field_definitions`, `captcha`, `lead_form_success` | campagne di tipo lead |
 | `profile` | area sostenitore |
+
+### Thank you page: donazione e lead
+
+Le due thank you page sono pagine distinte, ciascuna con le sue varianti
+(`thankyou.<nome>.json`, `lead_thankyou.<nome>.json`) scelte per campagna dall'admin.
+
+| | Donazione | Lead |
+|---|---|---|
+| Template | `thankyou` | `lead_thankyou` |
+| URL | `/campaigns/<slug>/thankyou/<token checkout>` | `/campaigns/<slug>/thankyou/lead/<token>` |
+| Anteprima | `.../thankyou/__preview__` | `.../thankyou/lead/__preview__` |
+| Sostenitore | `checkout_supporter` | `lead_supporter`, stessi campi |
+
+Il contesto è lo stesso con il prefisso `lead_` al posto di `checkout_`, meno quello
+che una lead non ha: la donazione e il form del messaggio. Il token della lead è
+firmato dal core e vale 12 mesi.
+
+Il core manda alla thank you lead **solo se il tema ha `templates/lead_thankyou.json`**.
+Senza, la pagina campagna si ricarica con `lead_form_success` e il lead box conferma
+in linea: è il comportamento dei temi precedenti alla 0.7.0, e il ramo resta in
+`snippets/campaign-lead-box.html` per i temi derivati da questo.
 
 ### Captcha
 

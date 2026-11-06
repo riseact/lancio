@@ -1,0 +1,10 @@
+{
+    "name": "lead_thankyou",
+    "sections": {
+        "main_lead_thankyou": {
+            "type": "main_lead_thankyou",
+            "settings": {}
+        }
+    },
+    "order": ["main_lead_thankyou"]
+}

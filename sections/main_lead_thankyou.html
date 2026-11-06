@@ -1,0 +1,54 @@
+{# Thank you page di una campagna lead: la gemella di main_thankyou.html, stessa
+   struttura e stesse classi. Al posto del form del messaggio, che chiede una
+   donazione, c'è subito il ritorno alla campagna con la condivisione. #}
+<div class="max-w-screen-sm mx-auto mb-10 mt-5">
+
+  {% if lead_campaign.cover %}
+    <img src="{{ lead_campaign.cover.full }}"
+        alt="{{ lead_campaign.title|escape }}"
+        class="object-cover h-72 md:h-96 w-full mb-5 rounded-xl"/>
+  {% endif %}
+
+  {% if lead_supporter.first_name %}
+    <h2>Grazie, {{ lead_supporter.first_name|escape }}! Ora fai parte di questa causa.</h2>
+  {% else %}
+    <h2>Grazie! Ora fai parte di questa causa.</h2>
+  {% endif %}
+
+  <p class="text-lg mt-5">
+    Abbiamo ricevuto la tua adesione a {{ lead_campaign.title|escape }}.
+  </p>
+
+  <p class="text-lg mt-5">
+    Ti terremo aggiornato sui progressi della campagna e su come puoi continuare a fare la differenza.
+  </p>
+
+  <p class="text-lg mt-5">
+    Grazie di cuore!
+  </p>
+
+  <h3 class="mt-8">Fai crescere la causa</h3>
+
+  <p class="my-5">
+    Condividi la campagna con chi conosci: ogni persona in più la avvicina al suo obiettivo.
+  </p>
+
+  <div class="my-10">
+    <a class="btn btn-primary inline-block" href="{{ lead_campaign_url }}">Torna alla pagina della campagna</a>
+  </div>
+
+  {% with url=lead_campaign_url %}
+    {% include 'snippets/share-button.html' %}
+  {% endwith %}
+</div>
+
+{# djlint:off #}
+{% schema %}
+  {
+  "name": "Thank You Page Lead",
+  "limit": 1,
+  "settings": [],
+  "locales": {},
+  "templates": ["lead_thankyou"]
+  }
+{% endschema %}
